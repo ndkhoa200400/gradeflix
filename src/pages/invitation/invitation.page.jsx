@@ -20,7 +20,7 @@ const Invitation = () => {
           <Card.Header variant="top" className="p-4">
             <div className="p-2 d-flex justify-content-center align-items-center">
               <img src="/logo.png" alt="" width={24} height={24} />
-              <span className="mx-2">Gradebook</span>
+              <span className="mx-2">Gradeflix</span>
             </div>
 
             <div className="text-muted">Lớp học trực tuyến, học hoặc là biến.</div>

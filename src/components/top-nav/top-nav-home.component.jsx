@@ -18,7 +18,7 @@ const TopNavigationHome = ({ onClassCreated }) => {
       <div className="container-fluid">
         <a className="navbar-brand d-flex align-items-center" href="/">
           <img src="/logo.png" alt="" width={24} height={24} />
-          <span>Gradebook</span>
+          <span>Gradeflix</span>
         </a>
         <Dropdown>
           <OverlayTrigger
