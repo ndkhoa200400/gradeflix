@@ -8,10 +8,14 @@ const TopNavigation = ({ title, titleLink }) => {
             className="navbar-brand d-flex align-items-center"
             href={titleLink}
           >
+            <img src="/logo.png" alt="" width={24} height={24} />
             <span className="font-weight-bold">{title}</span>
           </a>
         ) : (
-          <div className="navbar-brand d-flex align-items-center">{title}</div>
+          <div className="navbar-brand d-flex align-items-center">
+            <img src="/logo.png" alt="" width={24} height={24} />
+            <span className="font-weight-bold">{title}</span>
+          </div>
         )}
       </div>
     </nav>
