@@ -86,3 +86,7 @@ nav .btn-add-classroom::after {
   max-width: 750px;
   
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}

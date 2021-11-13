@@ -2,3 +2,7 @@
 {
     text-align: left;
 }
+
+.avatar img {
+    object-fit: cover;
+}
