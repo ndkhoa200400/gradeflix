@@ -10,6 +10,7 @@ import {
   Route,
   Routes as Switch,
 } from "react-router-dom";
+import Invitation from "./pages/Invitation/Invitation.page";
 function App() {
   return (
     <div className="App">
@@ -30,8 +31,16 @@ function App() {
             path="/me"
             element={
               <PrivateRoute>
-                {" "}
                 <Profile />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/invitation"
+            element={
+              <PrivateRoute>
+                <Invitation />
               </PrivateRoute>
             }
           />
