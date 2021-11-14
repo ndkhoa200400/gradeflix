@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Avatar from "../Avatar/Avatar.component";
 import CreateClassRoomForm from "../create-classroom-form/create-classroom-form.component";
 const TopNavigationHome = ({ onClassCreated }) => {
   const [showCreateClass, setShowCreateClass] = useState(false);
-  const [showJoinClass, setShowJoinClass] = useState(false);
   const handleClose = () => {
     setShowCreateClass(false);
-    setShowJoinClass(false);
   };
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -16,11 +16,12 @@ const TopNavigationHome = ({ onClassCreated }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light px-3">
       <div className="container-fluid">
-        <a className="navbar-brand d-flex align-items-center" href="/">
+        <Link className="navbar-brand d-flex align-items-center" to="/">
           <img src="/logo.png" alt="" width={24} height={24} />
           <span>Gradeflix</span>
-        </a>
-        <Dropdown>
+        </Link>
+
+        <Dropdown >
           <OverlayTrigger
             placement="left"
             delay={{ show: 250, hide: 50 }}
@@ -42,15 +43,10 @@ const TopNavigationHome = ({ onClassCreated }) => {
             >
               Thêm lớp học
             </Dropdown.Item>
-
-            <Dropdown.Item type="button" onClick={() => setShowJoinClass(true)}>
-              Tham gia lớp học
-            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        
       </div>
-
+      <Avatar />
       <CreateClassRoomForm
         show={showCreateClass}
         handleClose={handleClose}
