@@ -67,9 +67,7 @@ const Tab = ({ id }) => {
                 </div>
                 <div class={toggleState === 2 ? "tab-pane  show active" : "tab-pane fade"} id="ex1-tabs-2" role="tabpanel" aria-labelledby="ex1-tab-2">
                 <div className="col-lg-7 mx-auto">
-                    
-                        <ListMember></ListMember>
-                    
+                        <ListMember id = {id}></ListMember>
                 </div>
                 </div>
                 <div class={toggleState === 3 ? "tab-pane  show active" : "tab-pane fade"} id="ex1-tabs-3" role="tabpanel" aria-labelledby="ex1-tab-3">
