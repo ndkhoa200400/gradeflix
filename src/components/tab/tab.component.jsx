@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ListMember from "../Classroom/Listmember.component";
-import Assignment from "../Classroom/assignment.component";
+import ListMember from "../listMember/Listmember.component";
+import Assignment from "../assignment/assignment.component";
 const trangchutt = [{ title: 'Hoc 25/5', info: 'lam bai ' }, { title: 'Hoc 30/4', info: 'Bai ve rea' }, { title: 'Hoc 30/4', info: 'Bai ve rea' }];
 
 const Tab = ({ id }) => {

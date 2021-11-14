@@ -1,8 +1,8 @@
-import ListStudent from "../Classroom/liststudent.component";
-import ListTeacher from "../Classroom/listteacher.component";
+import ListStudent from "../listStudent/liststudent.component";
+import ListTeacher from "../listTeacher/listteacher.component";
 import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
-import Spining from "../../components/spinning/spinning.component";
+import Spining from "../spinning/spinning.component";
 const students = [
   { name: "student", id: "18127107" },
   { name: "Dang Huy", id: "18127107" },
