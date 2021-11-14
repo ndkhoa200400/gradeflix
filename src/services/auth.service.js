@@ -13,4 +13,17 @@ const logOut = () =>{
     Cookies.remove('token')
 }
 
-export {isLoggedIn, saveToken, loadToken, logOut};
+/**
+ * Save user information into local storage
+ */
+const saveUserInfo = (data) =>
+{
+    localStorage.setItem('user', JSON.stringify(data))
+}
+
+const getUserInfo = () =>{
+    const user = localStorage.getItem('user')
+    return user ? JSON.parse(user) : null
+}
+
+export {isLoggedIn, saveToken, loadToken, logOut, saveUserInfo, getUserInfo};

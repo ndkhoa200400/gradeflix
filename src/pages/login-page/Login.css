@@ -1,14 +1,20 @@
-@media all and (min-width: 480px) {
-    .Login {
-      padding: 60px 0;
-    }
-  
-    .Login form {
-      margin: 0 auto;
-      max-width: 320px;
-    }
-    .error-text {
-      color: red !important;
-    }
-    
+.login {
+  margin: auto;
+  width: fit-content;
+}
+
+@media (min-width: 567px) {
+  .login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
+}
+
+@media (max-width: 567px) {
+  .login {
+    display: block;
+    margin: 1rem auto;
+  }
+}
