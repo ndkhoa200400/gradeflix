@@ -1,6 +1,7 @@
 import "./App.css";
 import HomePage from "./pages/home-page";
 import LoginPage from "./pages/login-page";
+import ClassroomPage from "./pages/classroom-page";
 import SignupPage from "./pages/signup-page";
 import PrivateRoute from "./components/private-router";
 import Profile from "./pages/Profile/Profile.page";
@@ -16,6 +17,11 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
+          <Route path = '/classrooms/:id/:tab' 
+                      element = {<PrivateRoute>
+                        <ClassroomPage/>
+                      </PrivateRoute>}
+              />
           <Route
             path="/"
             element={

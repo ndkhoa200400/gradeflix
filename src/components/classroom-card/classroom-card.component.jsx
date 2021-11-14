@@ -1,4 +1,5 @@
 import React from "react";
+import {useNavigate, Link} from 'react-router-dom';
 const ClassroomCard = ({ classroom }) => {
   const maxLength = 80;
   classroom.description =
@@ -19,7 +20,7 @@ const ClassroomCard = ({ classroom }) => {
         />
          <div className="dark-overlay"></div>
 
-        <a className="classroom-name font-weight-bold text-truncate" href="/">
+        <a className="classroom-name font-weight-bold text-truncate" href={"/classrooms/"+classroom.id}>
           <span>{classroom.name}</span>
           <br/>
           <span className="classroom-subject">{classroom.subject}</span>
