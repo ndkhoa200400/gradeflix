@@ -27,6 +27,8 @@ const SignupPage = () =>{
       
         console.log(res);
         AuthenService.saveToken(res.token);
+        delete res.token
+        AuthenService.saveUserInfo(res)
         navigate('/', {replace: true});
       } catch (error) {
        

@@ -1,18 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Container } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { postApiMethod } from "../../api/api-handler";
+import Spining from "../../components/spinning/spinning.component";
 import TopNavigation from "../../components/top-nav/top-nav.component";
-
+import { useQuery } from "../../custome-hook";
 // query string:
-// /inv/classroomId=?&role=?
+// /invitation/classroomId=?&role=?
 // /classrooms/{id}/acceptInvitation?role=
 
 const Invitation = () => {
-  const acceptInviataion = () => {
-    postApiMethod(`classrooms/${1}/accept-invitation?role=${1}`, {});
+  const query = useQuery();
+  const navigate = useNavigate();
+  const [invitationInfo, setInvitationInfo] = useState(null);
+
+  useEffect(() => {
+    if (query) {
+      const classroomId = query.get("classroomId");
+      const role = query.get("role");
+      const token = query.get("token");
+      return setInvitationInfo({
+        classroomId,
+        role,
+        token,
+      });
+    }
+  }, [query]);
+
+  const acceptInviataion = async () => {
+    if (!invitationInfo) return alert("Đã xảy ra lỗi. Vui lòng thử lại sau");
+    try {
+      await postApiMethod(
+        `classrooms/${invitationInfo.classroomId}/accept-invitation?role=${
+          invitationInfo.role
+        }${invitationInfo.token ? "&token=" + invitationInfo.token : ""}`,
+        {}
+      );
+      alert("Tham gia thành công");
+      navigate(`/classrooms/${invitationInfo.classroomId}`, { replace: true });
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
-  return (
+  return invitationInfo ? (
     <div>
       <TopNavigation title={"Tham gia lớp học của bạn"} />
       <Container className=" text-center">
@@ -23,11 +54,16 @@ const Invitation = () => {
               <span className="mx-2">Gradeflix</span>
             </div>
 
-            <div className="text-muted">Lớp học trực tuyến, học hoặc là biến.</div>
+            <div className="text-muted">
+              Lớp học trực tuyến, học hoặc là biến.
+            </div>
           </Card.Header>
           <Card.Body className="p-4">
             <Card.Title>Tham gia lớp học</Card.Title>
-            <p>Bạn đang tham gia lớp học với tư cách học viên.</p>
+            <p>
+              Bạn đang tham gia lớp học với tư cách{" "}
+              {invitationInfo.role === "TEACHER" ? "giáo viên" : "học sinh"}
+            </p>
             <Button
               onClick={acceptInviataion}
               variant="primary"
@@ -39,6 +75,8 @@ const Invitation = () => {
         </Card>
       </Container>
     </div>
+  ) : (
+    <Spining isFull={true} />
   );
 };
 
