@@ -48,6 +48,7 @@ const TopNavigationHome = ({ onClassCreated }) => {
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+        
       </div>
 
       <CreateClassRoomForm
