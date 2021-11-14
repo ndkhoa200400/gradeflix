@@ -3,19 +3,12 @@ import {Form, Button,Container, Row, Col} from "react-bootstrap";
 import './Login.css';
 import {useNavigate, Link} from 'react-router-dom';
 import { postApiMethod } from "../../api/api-handler";
-import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 import * as AuthenService from "../../services/auth.service"
 ///users/login
 const LoginPage = () =>{
-    const responseFacebook = (response) => {
+    const responseGoogle = (response) => {
         console.log(response);
-       // setData(response);
-        //setPicture(response.picture.data.url);
-        if (response.accessToken) {
-        //  setLogin(true);
-        } else {
-        //  setLogin(false);
-        }
       }
     const [validated, setValidated] = useState(false);
     const navigate = useNavigate();
@@ -74,13 +67,13 @@ const LoginPage = () =>{
                             </Button>
                         </Form>
                     </div>
-                    <FacebookLogin
-                        appId="612167976904652"
-                        autoLoad={true}
-                        fields="name,email,picture"
-                        scope="public_profile"
-                        callback={responseFacebook}
-                        icon="fa-facebook" />
+                    <GoogleLogin
+                        clientId="477434060458-odbrlr945j5lqbqjpti9gedl0c2a3upk.apps.googleusercontent.com"
+                        buttonText="Login"
+                        onSuccess={responseGoogle}
+                        onFailure={responseGoogle}
+                        cookiePolicy={'single_host_origin'}
+                    />
                 </Col>
                 
             </Row>

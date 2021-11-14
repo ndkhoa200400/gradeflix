@@ -12,4 +12,5 @@ const loadToken = () =>{
 const logOut = () =>{
     Cookies.remove('token')
 }
+
 export {isLoggedIn, saveToken, loadToken, logOut};
