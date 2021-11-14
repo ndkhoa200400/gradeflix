@@ -5,6 +5,7 @@ import {loadToken} from "../services/auth.service"
 const apiLink = process.env.REACT_APP_API_LINK;
 // try-catch in caller Function to detect Error
 export const getApiMethod = async (link, params = "") => {
+    console.log("start call API:" + link.toString());
     const token = loadToken();
     const res = await axios(`${apiLink}${link}?${JSON.stringify(params)}`, { headers: {
       'Access-Control-Allow-Origin': '*',

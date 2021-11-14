@@ -1,6 +1,7 @@
 import "./App.css";
 import HomePage from "./pages/home-page";
 import LoginPage from "./pages/login-page";
+import ClassroomPage from "./pages/classroom-page";
 import SignupPage from "./pages/signup-page";
 import PrivateRoute from "./components/private-router";
 // React router
@@ -12,6 +13,11 @@ function App() {
       <div className="App">
         <Router>
           <Switch> 
+          <Route path = '/classrooms/:id' 
+                      element = {<PrivateRoute>
+                        <ClassroomPage/>
+                      </PrivateRoute>}
+              />
               <Route path = '/' 
                       element = {<PrivateRoute>
                                   <HomePage />
@@ -19,6 +25,7 @@ function App() {
               />
               <Route path = '/login' element = {<LoginPage />}/>
               <Route path = '/signup' element = {<SignupPage />}/>
+              
           </Switch>
         </Router> 
       </div>
