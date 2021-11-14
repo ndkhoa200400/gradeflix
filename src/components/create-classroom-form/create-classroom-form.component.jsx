@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { getApiMethod, postApiMethod } from "../../api/api-handler";
+import React, { useState } from "react";
+import { postApiMethod } from "../../api/api-handler";
 import Spining from "../spinning/spinning.component";
 import { useForm } from "react-hook-form";
 import { Modal, Button, Form } from "react-bootstrap";
@@ -12,9 +12,11 @@ const CreateClassRoomForm = ({ show, handleClose, onClassCreated }) => {
   } = useForm();
   const [onSubmiting, setOnSubmiting] = useState(false);
 
-  useEffect(() => {
-    return reset();
-  }, [show]);
+  const closeModal = () =>{
+    
+    handleClose()
+    reset()
+  }
 
   const onSubmit = async (data) => {
     setOnSubmiting(true);
@@ -41,7 +43,7 @@ const CreateClassRoomForm = ({ show, handleClose, onClassCreated }) => {
     setOnSubmiting(false);
   };
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Tạo lớp học</Modal.Title>
         {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}

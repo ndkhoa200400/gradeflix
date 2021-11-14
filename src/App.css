@@ -8,8 +8,13 @@ nav .btn-add-classroom:hover {
   background-color: gainsboro;
 }
 
-nav .btn-add-classroom::after {
+nav .btn-add-classroom::after, .avatar-dropdown:after {
   display: none !important;
+}
+
+.avatar-dropdown {
+  outline: none !important; 
+  border: none !important;
 }
 
 /* Classroom card */

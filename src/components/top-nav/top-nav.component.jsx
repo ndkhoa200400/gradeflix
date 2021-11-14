@@ -1,16 +1,18 @@
 import React from "react";
+import Avatar from "../Avatar/Avatar.component";
+import { Link } from "react-router-dom";
 const TopNavigation = ({ title, titleLink }) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light px-3">
       <div className="container-fluid">
         {titleLink ? (
-          <a
+          <Link
             className="navbar-brand d-flex align-items-center"
-            href={titleLink}
+            to={titleLink}
           >
             <img src="/logo.png" alt="" width={24} height={24} />
             <span className="font-weight-bold">{title}</span>
-          </a>
+          </Link>
         ) : (
           <div className="navbar-brand d-flex align-items-center">
             <img src="/logo.png" alt="" width={24} height={24} />
@@ -18,6 +20,7 @@ const TopNavigation = ({ title, titleLink }) => {
           </div>
         )}
       </div>
+      <Avatar/>
     </nav>
   );
 };

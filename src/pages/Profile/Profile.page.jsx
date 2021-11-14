@@ -1,58 +1,95 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import TopNavigation from "../../components/top-nav/top-nav.component";
 import { useForm } from "react-hook-form";
 import Spining from "../../components/spinning/spinning.component";
+import * as AuthenService from "../../services/auth.service";
+
+import { postApiMethod } from "../../api/api-handler";
+import dayjs from "dayjs";
+
 import "./style.css";
 const Profile = () => {
-  const { register, handleSubmit } = useForm();
-  const { register: registerPassword, handleSubmit: handleSumitPassword } =
-    useForm();
+  const { register, handleSubmit, setValue } = useForm();
+  const {
+    register: registerPassword,
+    handleSubmit: handleSumitPassword,
+    formState: { errors },
+  } = useForm();
+
   const [showChangePassword, setShowChangePassword] = useState(false);
   const [onSubmiting, setOnSubmiting] = useState(false);
   const [newImage, setNewImage] = useState(null);
-  const [image, setImage] = useState(
-    "https://source.unsplash.com/random/300x300"
-  );
+  const [image, setImage] = useState("./default-avatar.png");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const user = AuthenService.getUserInfo();
+
+    if (user.avatar) setImage(user.avatar);
+    setUser(user);
+    setValue("birthday", dayjs(user.birthday).format("YYYY-MM-DD"));
+    setValue("fullname", user.fullname);
+  }, [setValue]);
+
   const uploadImage = async (e) => {
     const files = e.target.files;
-
     const imageUpload = "imageupload";
-
     const data = new FormData();
     data.append("file", files[0]);
     setImage(URL.createObjectURL(files[0]));
     data.append("upload_preset", imageUpload);
     setNewImage(data);
   };
-  const changePassword = async(data)=>{
-    console.log('data', data);
-  }
 
-  const saveInfo = async (data) => {
-    // console.log("data", data);
-    setOnSubmiting(true);
-    if (newImage) {
-      await fetch(`${process.env.REACT_APP_CLOUDINARY_API_LINK}/image/upload`, {
-        method: "POST",
-        body: newImage,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("data", data);
-
-          //Lấy url: data['secure_url']
-
-          setNewImage(false);
-        })
-        .catch((error) => {
-          console.log("error", error);
-        });
+  const changePassword = async (data) => {
+    try {
+      const res = await postApiMethod("users/me/password", data);
+      AuthenService.saveToken(res.token);
+      alert("Đổi mật khẩu thành công");
+    } catch (error) {
+      console.log("error", error);
+      if (error.statusCode === 401) {
+        alert(error.message);
+      }
     }
+  };
 
+  const saveInfo = async (userBody) => {
+    setOnSubmiting(true);
+    try {
+      if (newImage) {
+        await fetch(
+          `${process.env.REACT_APP_CLOUDINARY_API_LINK}/image/upload`,
+          {
+            method: "POST",
+            body: newImage,
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("data", data);
+
+            userBody.avatar = data["secure_url"];
+
+            setNewImage(false);
+          })
+          .catch((error) => {
+            console.log("error", error);
+          });
+      }
+      const res = await postApiMethod("users/me", userBody);
+
+      setUser(res);
+      AuthenService.saveUserInfo(res);
+
+      alert("Đổi thông tin thành công!");
+    } catch (error) {
+      alert(error.message);
+    }
     setOnSubmiting(false);
   };
-  return (
+  return user ? (
     <div>
       <TopNavigation title="Gradeflix" titleLink="/" />
       <Container className="mt-5 ">
@@ -67,7 +104,7 @@ const Profile = () => {
             />
             <input type="file" id="upload" hidden onChange={uploadImage} />
             <label
-              for="upload"
+              htmlFor="upload"
               className="cursor-pointer btn btn-outline-primary"
             >
               Tải ảnh lên
@@ -80,7 +117,7 @@ const Profile = () => {
                 <Form.Control
                   type="email"
                   placeholder="Nhập email"
-                  value="nguyendangkhoa200400@gmail.com"
+                  value={user.email}
                   disabled={true}
                 />
               </Form.Group>
@@ -90,8 +127,18 @@ const Profile = () => {
                 <Form.Control
                   type="text"
                   placeholder="Nhập họ và tên"
-                  value="Nguyễn Đăng Khoa"
                   {...register("fullname", { required: true })}
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBirthday">
+                <Form.Label>Ngày sinh</Form.Label>
+                <Form.Control
+                  type="date"
+                  // value={user.birthay ?? undefined}
+
+                  // onChange={(e)=>user.birthay=e.target.value}
+                  {...register("birthday", { required: true })}
                 />
               </Form.Group>
               <div className="d-flex">
@@ -118,26 +165,28 @@ const Profile = () => {
               Đổi mật khẩu
             </Button>
             <Form
-              className={`form-profile mt-3 ${
+              className={`form-profile my-3 ${
                 showChangePassword ? "" : "d-none"
               }`}
               onSubmit={handleSumitPassword(changePassword)}
             >
-              <Form.Group className="mb-3" controlId="formEmail">
+              <Form.Group className="mb-3" controlId="formOldPassword">
                 <Form.Label>Mật khẩu cũ</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu cũ"
                   {...registerPassword("oldPassword", { required: true })}
+                  isInvalid={errors.oldPassword}
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formFullname">
+              <Form.Group className="mb-3" controlId="formNewPassword">
                 <Form.Label>Mật khẩu mới</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Nhập mật khẩu mới"
                   {...registerPassword("newPassword", { required: true })}
+                  isInvalid={errors.newPassword}
                 />
               </Form.Group>
               <div className="d-flex">
@@ -157,6 +206,8 @@ const Profile = () => {
         </div>
       </Container>
     </div>
+  ) : (
+    <Spining isFull={true} />
   );
 };
 export default Profile;
