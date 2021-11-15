@@ -1,26 +1,21 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Card } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 //'/users/register
 import { postApiMethod } from "../../api/api-handler";
 import * as AuthenService from "../../services/auth.service";
 const SignupPage = () => {
-  const [validated, setValidated] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+    } = useForm();
   const navigate = useNavigate();
-  const handleSubmit = async (event) => {
-    const form = event.currentTarget;
-    const email = event.target.elements.email.value;
-    const password = event.target.elements.password.value;
-    const name = event.target.elements.name.value;
-    event.preventDefault();
-    event.stopPropagation();
-
-    if (form.checkValidity() === false) {
-      return;
-    }
-    setValidated(true);
+  const onSubmit = async (data) => {
+  
     try {
-      const data = { fullname: name, email, password };
       // gửi cho api
       const res = await postApiMethod("users/register", data);
 
@@ -30,10 +25,11 @@ const SignupPage = () => {
       AuthenService.saveUserInfo(res);
       navigate("/", { replace: true });
     } catch (error) {
+       setError("email", {
+                message: "Email đã tồn tại"
+            });
       console.log(error);
     }
-    event.preventDefault();
-    event.stopPropagation();
   };
   return (
     <Container>
@@ -50,53 +46,66 @@ const SignupPage = () => {
           <Form
             className="px-3 py-2"
             noValidate
-            validated={validated}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
-            <Form.Group className="mb-3" controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Email"
-                required
-                name="email"
-              />
-              <Form.Control.Feedback type="invalid">
-                Email không đúng định dạng
-              </Form.Control.Feedback>
-            </Form.Group>
+            <Form.Group className="mb-3" >
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        type="email"
+                        placeholder="Email"
+                        {...register("email", 
+                            { 
+                                required: 'Email không được bỏ trống',
+                                pattern:{
+                                    value: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ ,
+                                    message: 'Email không đúng định dạng'
+                                    }
+                            })}
+                        isInvalid={errors.email}
+                    />
+                     {errors.email?.message && (
+                        <Form.Control.Feedback type="invalid">
+                            {errors.email?.message}
+                        </Form.Control.Feedback>
+                        )}
+                       
+                    </Form.Group>
             <Form.Group className="mb-3" controlId="name">
               <Form.Label>Họ và tên</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Họ và tên"
                 required
-                name="name"
+                {...register("fullname", { required: 'Họ và tên không được bỏ trống', })}
+                isInvalid={errors.fullname}
               />
 
-              <Form.Control.Feedback type="invalid">
-                Không được bỏ trống
-              </Form.Control.Feedback>
+                {errors.fullname?.message && (
+                        <Form.Control.Feedback type="invalid">
+                            {errors.fullname?.message}
+                        </Form.Control.Feedback>
+                        )}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBirthday">
               <Form.Label>Ngày sinh</Form.Label>
               <Form.Control
                 type="date"
-               
               />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="password">
-              <Form.Label>Mật khẩu</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Mật khẩu"
-                required
-                name="password"
-              />
-              <Form.Control.Feedback type="invalid">
-                Không được bỏ trống
-              </Form.Control.Feedback>
-            </Form.Group>
+            <Form.Group className="mb-3" >
+                    <Form.Label>Mật khẩu</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Mật khẩu"
+                        {...register("password", { required: 'Mật không được bỏ trống', })}
+                        isInvalid={errors.password}
+                    />
+                    {errors.password?.message && (
+                        <Form.Control.Feedback type="invalid">
+                            {errors.password?.message}
+                        </Form.Control.Feedback>
+                        )}
+                    </Form.Group>
             <Button variant="primary" type="submit" className="w-100 mt-2 mb-4">
               Đăng ký
             </Button>
