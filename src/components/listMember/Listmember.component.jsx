@@ -19,9 +19,9 @@ const ListMember = (params) => {
         
     const tempTeachers = [];
     const tempStudents = [];
-    tempTeachers.push(data.host);
-    for (const user of data.users) {
-      if (user.userRole === "TEACHER") {
+    for (const user of data) {
+      console.log(data);
+      if (user.userRole === "TEACHER" || user.userRole === "HOST") {
         tempTeachers.push(user);
       } else {
         tempStudents.push(user);
@@ -36,8 +36,8 @@ const ListMember = (params) => {
     <div>
       {teachers && students ? (
         <div className="col-xs- col-sm- col-md- col-lg-">
-          <ListTeacher list={teachers}></ListTeacher>
-          <ListStudent list={students}></ListStudent>
+          <ListTeacher list={teachers} idClass={params.id.toString()}></ListTeacher>
+          <ListStudent list={students} idClass={params.id.toString()}></ListStudent>
         </div>
       ) : (
         <Spining></Spining>

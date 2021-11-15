@@ -1,4 +1,14 @@
-const ListStudent = ({ list }) => {
+import React, { useState } from "react";
+import CreateInviteForm from "../invite-form/invite-form.copoomponent";
+
+const ListStudent = ({ list, idClass}) => {
+  const [showInvite, setShowInvite] = useState(false);
+  const handleClose = () => {
+    setShowInvite(false);
+    setShowChangeID(false);
+  };
+  const [showChangeID, setShowChangeID] = useState(false);
+
   return (
     <div>
       <table className="table table-striped table-hover col-lg-3">
@@ -6,6 +16,9 @@ const ListStudent = ({ list }) => {
           <tr>
             <th>Tên</th>
             <th>MSSV</th>
+            <button type="button" class="btn btn-outline-dark" onClick={() => setShowInvite(true)}>
+              <i className="fas fa-plus fa-1x"></i>
+            </button>
           </tr>
         </thead>
         <tbody>
@@ -25,6 +38,12 @@ const ListStudent = ({ list }) => {
           ))}
         </tbody>
       </table>
+      <CreateInviteForm
+        show={showInvite}
+        handleClose={handleClose}
+        idClass={idClass}
+        role ="STUDENT"
+      />
     </div>
   );
 };
