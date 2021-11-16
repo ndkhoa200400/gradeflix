@@ -9,7 +9,7 @@ const ClassroomCard = ({ classroom }) => {
       : classroom.description;
   const user = AuthenService.getUserInfo();
   const isHost = classroom.hostId === user.id;
-  const image = classroom.host.avatar ?? "./default-avatar.png";
+  const image = classroom?.host?.avatar ?? "./default-avatar.png";
   return classroom ? (
     <Link to={"/classrooms/" + classroom.id + "/tab-detail"}>
       <div className="card classroom-item m-3">
