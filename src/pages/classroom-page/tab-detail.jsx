@@ -117,6 +117,7 @@ const TabDetail = ({classroom, onEditedClassRoom}) => {
                 </Col>
                 
             </Row>
+            
         </Container>
        
     )
