@@ -12,23 +12,23 @@ const ListMember = (params) => {
   const [students, setStudents] = useState(null);
   const [teachers, setTeachers] = useState(null);
   const getMembers = async () => {
-    // const data = await getApiMethod(
-    //   "classrooms/" + params.id.toString() + "/users"
-    // );
-    // console.log("🚀 ~ file: Listmember.component.jsx ~ line 18 ~ getMembers ~ data", data)
-        
-    // const tempTeachers = [];
-    // const tempStudents = [];
-    // tempTeachers.push(data.host);
-    // for (const user of data) {
-    //   if (user.userRole === "TEACHER") {
-    //     tempTeachers.push(user);
-    //   } else {
-    //     tempStudents.push(user);
-    //   }
-    // }
-    // setTeachers(tempTeachers)
-    // setStudents(tempStudents)
+    const data = await getApiMethod(
+      "classrooms/" + params.id.toString() + "/users"
+    );
+    console.log("🚀 ~ file: Listmember.component.jsx ~ line 18 ~ getMembers ~ data", data)
+
+    const tempTeachers = [];
+    const tempStudents = [];
+    for (const user of data) {
+      console.log(data);
+      if (user.userRole === "TEACHER" || user.userRole === "HOST") {
+        tempTeachers.push(user);
+      } else {
+        tempStudents.push(user);
+      }
+    }
+    setTeachers(tempTeachers)
+    setStudents(tempStudents)
   };
   useEffect(() => getMembers(), []);
 
@@ -36,8 +36,8 @@ const ListMember = (params) => {
     <div>
       {teachers && students ? (
         <div className="col-xs- col-sm- col-md- col-lg-">
-          <ListTeacher list={teachers}></ListTeacher>
-          <ListStudent list={students}></ListStudent>
+          <ListTeacher list={teachers} idClass={params.id.toString()}></ListTeacher>
+          <ListStudent list={students} idClass={params.id.toString()}></ListStudent>
         </div>
       ) : (
         <Spining></Spining>
