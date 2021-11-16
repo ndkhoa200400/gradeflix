@@ -32,7 +32,7 @@ nav .btn-add-classroom::after, .avatar-dropdown:after {
   height: 75px;
   z-index: 99;
   right: 16px;
-  top: 30%;
+  top: 25%;
 }
 
 .classroom-item:hover {
