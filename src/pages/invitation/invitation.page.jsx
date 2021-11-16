@@ -73,7 +73,7 @@ const Invitation = () => {
             </div>
 
             <div className="text-muted">
-              Lớp học trực tuyến, học hoặc là biến.
+              Lớp học trực tuyến, kết nối mọi người với nhau.
             </div>
           </Card.Header>
           <Card.Body className="p-4">
