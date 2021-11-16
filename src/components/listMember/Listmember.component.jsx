@@ -4,42 +4,67 @@ import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
 import Spining from "../spinning/spinning.component";
 
-const teachers = [{ name: "Nam" }, { name: "Huy" }];
 const ListMember = (params) => {
-  console.log(params)
   const [students, setStudents] = useState(null);
   const [teachers, setTeachers] = useState(null);
   const getMembers = async () => {
     const data = await getApiMethod(
       "classrooms/" + params.classroom.id.toString() + "/users"
     );
-    console.log("🚀 ~ file: Listmember.component.jsx ~ line 18 ~ getMembers ~ data", data)
-
     const tempTeachers = [];
     const tempStudents = [];
     for (const user of data) {
-      console.log(data);
+     
       if (user.userRole === "TEACHER" || user.userRole === "HOST") {
         tempTeachers.push(user);
       } else {
         tempStudents.push(user);
       }
     }
-    setTeachers(tempTeachers)
-    setStudents(tempStudents)
+    setTeachers(tempTeachers);
+    setStudents(tempStudents);
   };
   useEffect(() => getMembers(), []);
-
-  return (
+  const onKickMember = (user)=>{
+    const newTeachers = [...teachers]
+    for(var i = 0; i < newTeachers.length; i++){
+      if (newTeachers[i].id === user.id)
+      {
+        newTeachers.splice(i, 1);
+        setTeachers(newTeachers);
+        return;
+      }
+    }
+    const newStudents = [...students]
+    for(var i = 0; i < newStudents.length; i++){
+      if (newStudents[i].id === user.id)
+      {
+        newStudents.splice(i, 1);
+        setStudents(newStudents);
+        return;
+      }
+    }
+  }
+  const onEditStudentId = (user)=>{
+    const newStudents = [...students]
+    for(var i = 0; i < newStudents.length; i++){
+      if (newStudents[i].id === user.id)
+      {
+        
+        newStudents[i] = user;
+        setStudents(newStudents);
+        return;
+      }
+    }
+  }
+  return teachers && students ? (
+    <div className="show-list">
+      <ListTeacher list={teachers} classroom={params.classroom} onKickMember={onKickMember}></ListTeacher>
+      <ListStudent list={students} classroom={params.classroom} onKickMember={onKickMember} onEditStudentId={onEditStudentId}></ListStudent>
+    </div>
+  ) : (
     <div>
-      {teachers && students ? (
-        <div className="col-xs- col-sm- col-md- col-lg-">
-          <ListTeacher list={teachers} classroom={params.classroom}></ListTeacher>
-          <ListStudent list={students} classroom={params.classroom}></ListStudent>
-        </div>
-      ) : (
-        <Spining></Spining>
-      )}
+      <Spining isFull={false} className="mx-auto my-5"></Spining>
     </div>
   );
 };

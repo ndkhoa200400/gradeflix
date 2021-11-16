@@ -30,7 +30,7 @@ const EditClassRoomForm = ({ show, handleClose, onEditedClassRoom, classroom }) 
 
       reset();
     } catch (error) {
-      console.log( error);
+      //console.log( error);
       alert("Đã xảy ra lỗi! Vui lòng thử lại");
     }
     setOnSubmiting(false);

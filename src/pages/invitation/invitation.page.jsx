@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { postApiMethod } from "../../api/api-handler";
+import { getApiMethod, postApiMethod } from "../../api/api-handler";
 import Spining from "../../components/spinning/spinning.component";
 import TopNavigation from "../../components/top-nav/top-nav.component";
 import { useQuery } from "../../custome-hook";
@@ -14,21 +14,49 @@ const Invitation = () => {
   const navigate = useNavigate();
   const [invitationInfo, setInvitationInfo] = useState(null);
 
+  const checkJoinClass = async () => {
+    const classroomId = query.get("classroomId");
+    const role = query.get("role");
+    const token = query.get("token");
+    if (!classroomId || !role) {
+      alert("Đường dẫn bị lỗi. Vui lòng truy cập lại sau!");
+      navigate(`/`, {
+        replace: true,
+      });
+      return;
+    }
+    const res = await getApiMethod(
+      `classrooms/${classroomId}/check-join-class`
+    );
+    if (res.isJoined) {
+      //alert("Bạn đã tham gia vào lớp này!");
+      return navigate(`/classrooms/${classroomId}/tab-detail`, {
+        replace: true,
+      });
+    }
+    return setInvitationInfo({
+      classroomId,
+      role,
+      token,
+    });
+  };
+
   useEffect(() => {
     if (query) {
-      const classroomId = query.get("classroomId");
-      const role = query.get("role");
-      const token = query.get("token");
-      return setInvitationInfo({
-        classroomId,
-        role,
-        token,
-      });
+      return checkJoinClass();
     }
   }, [query]);
 
   const acceptInviataion = async () => {
-    if (!invitationInfo) return alert("Đã xảy ra lỗi. Vui lòng thử lại sau");
+    if (!invitationInfo) 
+    {
+        alert("Đã xảy ra lỗi. Vui lòng thử lại sau");
+        navigate(`/`, {
+          replace: true,
+        });
+        return;
+    }
+        
     try {
       await postApiMethod(
         `classrooms/${invitationInfo.classroomId}/accept-invitation?role=${
@@ -36,8 +64,10 @@ const Invitation = () => {
         }${invitationInfo.token ? "&token=" + invitationInfo.token : ""}`,
         {}
       );
-      alert("Tham gia thành công");
-      navigate(`/classrooms/${invitationInfo.classroomId}/tab-detail`, { replace: true });
+     
+      navigate(`/classrooms/${invitationInfo.classroomId}/tab-detail`, {
+        replace: true,
+      });
     } catch (error) {
       alert(error.message);
     }

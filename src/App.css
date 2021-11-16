@@ -23,6 +23,16 @@ nav .btn-add-classroom::after, .avatar-dropdown:after {
   height: 18rem;
   color: black;
   overflow: hidden;
+  position: relative;
+}
+
+.classroom-item .host-avatar{
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  z-index: 99;
+  right: 16px;
+  top: 30%;
 }
 
 .classroom-item:hover {
@@ -71,9 +81,9 @@ nav .btn-add-classroom::after, .avatar-dropdown:after {
   text-decoration: underline;
   outline: none !important;
   border: none !important;
-  background-color: hsla(0, 0%, 100%, 0.25);
   border-radius: inherit;
 }
+
 .classroom-item .header .classroom-subject {
   font-size: 0.9rem;
 }
@@ -94,4 +104,20 @@ nav .btn-add-classroom::after, .avatar-dropdown:after {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.classroom-banner {
+  object-fit: cover;
+}
+
+.user-action{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1rem;
+}
+
+.show-list {
+  max-width: 786px;
+  margin: 0px auto;
 }

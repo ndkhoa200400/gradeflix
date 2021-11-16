@@ -22,7 +22,7 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
   const onSubmit = async (data) => {
     if (classroom&&data.studentId === classroom.user.studentId){
       setError("studentId", {
-          message: "Hãy nhập mã số viên mới"
+          message: "Hãy nhập mã số sinh viên mới"
       });
       return;
     }
@@ -32,15 +32,15 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
 
       // gửi cho api
       const link = `classrooms/${classroom?classroom.id:""}/users/${classroom?classroom.user.id:""}`
-      console.log(link + data)
+      //console.log(link + data)
       const studentId = await postApiMethod(link, data);
-      console.log(data.studentId)
+     // console.log(data.studentId)
       onEditStudentId(data.studentId);
       handleClose();
 
       reset();
     } catch (error) {
-      console.log( error);
+      //console.log( error);
       setError("studentId", {
           message: "Mã số sinh viên đã tồn tại"
       });

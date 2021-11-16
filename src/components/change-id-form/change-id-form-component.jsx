@@ -4,13 +4,13 @@ import Spining from "../spinning/spinning.component";
 import { useForm } from "react-hook-form";
 import { Modal, Button, Form } from "react-bootstrap";
 
-const listemail = "huyly@kobiton.com,lydanghuy918@gmail.com"
-const ChangeIDForm = ({ show, handleClose, idClass, userId }) => {
+const ChangeIDForm = ({ show, handleClose, idClass, user, onEditStudentId }) => {
   const {
     register,
     handleSubmit,
     reset,
     getValues,
+    setError,
     formState: { errors },
   } = useForm();
   const [onSubmiting, setOnSubmiting] = useState(false);
@@ -21,17 +21,25 @@ const ChangeIDForm = ({ show, handleClose, idClass, userId }) => {
   }
 
   const onSubmit = async (data) => {
+    if (user&&data.studentId === user.studentId){
+      setError("studentId", {
+          message: "Hãy nhập mã số sinh viên mới"
+      });
+      return;
+    }
     setOnSubmiting(true);
     try {
       // Lấy ảnh ngẫu nhiên làm banner
 
-      console.log(data)
-      console.log("classrooms/" + idClass + "/users/" + userId);
+     // console.log(data)
+      //console.log("classrooms/" + idClass + "/users/" + userId);
       // gửi cho api
-      await postApiMethod("classrooms/" + idClass + "/users/" + userId, data);
+      await postApiMethod("classrooms/" + idClass + "/users/" + user.id, data);
 
       handleClose();
-
+      user.studentId = data.studentId
+      
+      onEditStudentId(user);
       reset();
     } catch (error) {
       console.log("error", error);
@@ -42,7 +50,7 @@ const ChangeIDForm = ({ show, handleClose, idClass, userId }) => {
   return (
     <Modal show={show} onHide={closeModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Đổi mã số sinh viên</Modal.Title>
+        <Modal.Title>Chỉnh sửa mã số sinh viên</Modal.Title>
         {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
       </Modal.Header>
       <Modal.Body>
@@ -50,12 +58,19 @@ const ChangeIDForm = ({ show, handleClose, idClass, userId }) => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <Form.Group className="mb-4">
-            <Form.Label> MSSV</Form.Label>
+            <Form.Label> Mã số sinh viên</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Nhập MSSV(bắt buộc)"
+              placeholder="Nhập mã số sinh viên"
               {...register("studentId")}
+              isInvalid={errors.studentId}
+              defaultValue={user?user.studentId:""}
             />
+             {errors.studentId?.message && (
+                  <Form.Control.Feedback type="invalid">
+                      {errors.studentId?.message}
+                  </Form.Control.Feedback>
+                  )}
           </Form.Group>
 
         </Form>
