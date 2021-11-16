@@ -16,7 +16,7 @@ const ListMember = (params) => {
       "classrooms/" + params.id.toString() + "/users"
     );
     console.log("🚀 ~ file: Listmember.component.jsx ~ line 18 ~ getMembers ~ data", data)
-        
+
     const tempTeachers = [];
     const tempStudents = [];
     for (const user of data) {
