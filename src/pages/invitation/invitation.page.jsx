@@ -37,7 +37,7 @@ const Invitation = () => {
         {}
       );
       alert("Tham gia thành công");
-      navigate(`/classrooms/${invitationInfo.classroomId}`, { replace: true });
+      navigate(`/classrooms/${invitationInfo.classroomId}/tab-detail`, { replace: true });
     } catch (error) {
       alert(error.message);
     }

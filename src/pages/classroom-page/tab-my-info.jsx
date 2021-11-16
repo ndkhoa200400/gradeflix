@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Col, Row, Container, Card, Button } from "react-bootstrap";
 import Spining from "../../components/spinning/spinning.component";
-const TabMyInfo = ({classroom}) => {
-    const [showEditClass, setEditCreateClass] = useState(false);
+import EditStudentIdModal from './edit-student-id-modal'
+const TabMyInfo = ({classroom, onEditStudentId}) => {
+    const [showEditStudentId, setEditStudentId] = useState(false);
     const handleClose = () => {
-        setEditCreateClass(false);
+        setEditStudentId(false);
     };
     const openModal = () =>{
-        setEditCreateClass(true);
+        setEditStudentId(true);
     }
-    console.log(classroom);
     return (
         <Container>
             {!classroom ? <Spining />:
@@ -26,7 +26,7 @@ const TabMyInfo = ({classroom}) => {
                                     Mã số sinh viên
                                 </div>
                                 <div>
-                                    Mã số s 
+                                    {classroom.user.studentId}
                                 </div>
                             </Card.Text>
                             <Card.Text style = {{display: "flex",lexDirection:'row', justifyContent:"space-between"}}>
@@ -64,6 +64,12 @@ const TabMyInfo = ({classroom}) => {
                             <br/>
                             <div style = {{display: "flex",lexDirection:'row', justifyContent:"center"}}>
                                 <Button variant="outline-success" onClick = {openModal}>Chỉnh sửa mã số sinh viên</Button>
+                                <EditStudentIdModal
+                                        show={showEditStudentId}
+                                        handleClose={handleClose}
+                                        onEditStudentId={onEditStudentId}
+                                        classroom = {classroom}
+                                    />
                             </div>
                             
                             

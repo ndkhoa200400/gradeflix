@@ -20,7 +20,7 @@ const ClassroomCard = ({ classroom }) => {
         />
          <div className="dark-overlay"></div>
 
-        <Link className="classroom-name font-weight-bold text-truncate" to={"/classrooms/"+classroom.id + "/tabDetail"}>
+        <Link className="classroom-name font-weight-bold text-truncate" to={"/classrooms/"+classroom.id + "/tab-detail"}>
           <span>{classroom.name}</span>
           <br/>
           <span className="classroom-subject">{classroom.subject}</span>

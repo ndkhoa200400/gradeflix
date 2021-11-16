@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useState} from "react";
 import { Form, Button, Container, Card } from "react-bootstrap";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 //'/users/register
 import { postApiMethod } from "../../api/api-handler";
 import * as AuthenService from "../../services/auth.service";
+import Spining from "../../components/spinning/spinning.component"
 const SignupPage = () => {
+  const [onSubmiting, setOnSubmiting] = useState(false);
   const {
     register,
     handleSubmit,
@@ -14,7 +16,7 @@ const SignupPage = () => {
     } = useForm();
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-  
+    setOnSubmiting(true);
     try {
       // gửi cho api
       const res = await postApiMethod("users/register", data);
@@ -22,6 +24,7 @@ const SignupPage = () => {
       console.log(res);
       AuthenService.saveToken(res.token);
       delete res.token;
+      res.loginType = "email"
       AuthenService.saveUserInfo(res);
       navigate("/", { replace: true });
     } catch (error) {
@@ -30,8 +33,11 @@ const SignupPage = () => {
             });
       console.log(error);
     }
+    setOnSubmiting(false);
   };
-  return (
+  const auth = AuthenService.isLoggedIn();
+  return auth ?  <Navigate to="/" />: 
+  (
     <Container>
       <Card className="login">
         <Card.Header className="text-center bg-transparent p-3 px-lg-5 ">
@@ -41,6 +47,9 @@ const SignupPage = () => {
           </div>
           <h2>Chào mừng bạn tới Gradeflix</h2>
           <h4>Tạo tài khoản</h4>
+          <div style = {{display: "flex", flexDirection: 'row', justifyContent: 'center'}}>
+              {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+          </div>
         </Card.Header>
         <Card.Body>
           <Form
@@ -90,6 +99,7 @@ const SignupPage = () => {
               <Form.Label>Ngày sinh</Form.Label>
               <Form.Control
                 type="date"
+                name = "birthday"
               />
             </Form.Group>
             <Form.Group className="mb-3" >
