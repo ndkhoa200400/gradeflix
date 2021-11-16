@@ -5,7 +5,7 @@ import ClassroomPage from "./pages/classroom-page";
 import SignupPage from "./pages/signup-page";
 import PrivateRoute from "./components/private-router";
 import Profile from "./pages/Profile/Profile.page";
-import Invitation from "./pages/Invitation/invitation.page";
+import Invitation from "./pages/invitation/invitation.page";
 // React router
 import {
   BrowserRouter as Router,
@@ -17,11 +17,14 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route path = '/classrooms/:id/:tab' 
-                      element = {<PrivateRoute>
-                        <ClassroomPage/>
-                      </PrivateRoute>}
-              />
+          <Route
+            path="/classrooms/:id/:tab"
+            element={
+              <PrivateRoute>
+                <ClassroomPage />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/"
             element={
