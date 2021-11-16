@@ -27,7 +27,8 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
       const link = `classrooms/${classroom?classroom.id:""}/users/${classroom?classroom.user.id:""}`
       console.log(link + data)
       const studentId = await postApiMethod(link, data);
-      onEditStudentId(studentId);
+      console.log(data.studentId)
+      onEditStudentId(data.studentId);
       handleClose();
 
       reset();

@@ -38,8 +38,9 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
         setClassroom(newClassroom);
     }
     const onEditStudentId = (studentId) =>{
-        classroom.studentId = studentId
+        classroom.user.studentId = studentId
         setClassroom(classroom);
+        console.log(classroom)
     }
     useEffect(() => getClassroom(), []);
     return (

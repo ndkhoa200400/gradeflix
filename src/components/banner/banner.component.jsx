@@ -62,11 +62,16 @@ const Banner = ({ classroom }) => {
                         <div style = {{position: "absolute", bottom: "20px", left: "20px"}}>
                             <h3 className="card-title" >{classroom.name}</h3>
                         </div>
-                        <Button variant="outline-light" 
-                            style = {{position: "absolute", top: "20px", right: "20px"}}
-                            onClick = {openModal}>
-                            <i class="fas fa-sign-out-alt"></i>
-                        </Button>
+                        {classroom&&classroom.user.userRole === "HOST"
+                            ? null
+                            :
+                            <Button variant="outline-light" 
+                                style = {{position: "absolute", top: "20px", right: "20px"}}
+                                onClick = {openModal}>
+                                <i class="fas fa-sign-out-alt"></i>
+                            </Button>
+                        }
+                        
                     </div>
                 </div>
                 <ModalConFirmOutRoom
