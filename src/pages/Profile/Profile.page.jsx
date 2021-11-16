@@ -22,7 +22,7 @@ const Profile = () => {
   const [newImage, setNewImage] = useState(null);
   const [image, setImage] = useState("./default-avatar.png");
   const [user, setUser] = useState(null);
-
+  const loginEmail = AuthenService.getUserInfo().loginType === "email"
   useEffect(() => {
     const user = AuthenService.getUserInfo();
 
@@ -156,14 +156,17 @@ const Profile = () => {
             </Form>
 
             <hr></hr>
-
-            <Button
-              variant="outline-primary"
-              className="px-3 py-2 text-left"
-              onClick={() => setShowChangePassword(!showChangePassword)}
-            >
-              Đổi mật khẩu
-            </Button>
+            {loginEmail ?
+              <Button
+                variant="outline-primary"
+                className="px-3 py-2 text-left"
+                onClick={() => setShowChangePassword(!showChangePassword)}
+              >
+                Đổi mật khẩu
+              </Button>
+              : null
+            }  
+            
             <Form
               className={`form-profile my-3 ${
                 showChangePassword ? "" : "d-none"

@@ -95,7 +95,7 @@ const EditClassRoomForm = ({ show, handleClose, onEditedClassRoom, classroom }) 
           Đóng
         </Button>
         <Button variant="outline-primary" onClick={handleSubmit(onSubmit)}>
-          Tạo lớp
+          Chỉnh sửa
         </Button>
       </Modal.Footer>
     </Modal>

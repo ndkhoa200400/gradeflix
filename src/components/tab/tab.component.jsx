@@ -3,10 +3,11 @@ import { Row, Container, Nav, Col ,Navbar} from "react-bootstrap";
 import "./tab.css"
 const trangchutt = [{ title: 'Hoc 25/5', info: 'lam bai ' }, { title: 'Hoc 30/4', info: 'Bai ve rea' }, { title: 'Hoc 30/4', info: 'Bai ve rea' }];
 
-const Tab = ({ id }) => {
+const Tab = ({ id,classroom }) => {
     const urlTab1 = "/classrooms/"+ id + "/tab-detail";
     const urlTab2 = "/classrooms/"+ id + "/tab-people";
     const urlTab3 = "/classrooms/"+ id + "/tab-my-info";
+    console.log(classroom)
     return (
         <Container>
             <Row style = {{padding: "10px"}}>
@@ -16,7 +17,7 @@ const Tab = ({ id }) => {
                                     <NavLink
                                             to= {urlTab1}
                                             className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}
-                                        >Trang chủ</NavLink>
+                                        >Thông tin chung</NavLink>
                             </Nav.Item>
                             <Nav.Item>
                                 <NavLink 
@@ -26,14 +27,19 @@ const Tab = ({ id }) => {
                                         Danh sách
                                 </NavLink>
                             </Nav.Item>
-                            <Nav.Item>
-                                <NavLink
-                                        to={urlTab3}
-                                        className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}
-                                    >
-                                        Thông tin của tôi
-                                </NavLink >
-                            </Nav.Item>
+                            {classroom &&classroom.user.userRole === "STUDENT"?
+                                <Nav.Item>
+                                    <NavLink
+                                            to={urlTab3}
+                                            className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}
+                                        >
+                                            Thông tin của tôi
+                                    </NavLink >
+                                </Nav.Item>
+                                :
+                                null
+                            }
+                            
                         </Nav>
                 </Col>
                 

@@ -1,16 +1,41 @@
-import React from "react";
+import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card } from "react-bootstrap";
 import "./Login.css";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link,Navigate } from "react-router-dom";
 import { postApiMethod } from "../../api/api-handler";
 import GoogleLogin from 'react-google-login';
 import * as AuthenService from "../../services/auth.service"
+import Spining from "../../components/spinning/spinning.component"
+const client_id = process.env.REACT_APP_CLIENT_GOOGLE;
 ///users/login
 const LoginPage = () => {
-    const responseGoogle = (response) => {
+    
+    console.log(process.env);
+    const [onSubmiting, setOnSubmiting] = useState(false);
+    const responseGoogle = async (response) => {
+        console.log(response.tokenId);
+        setOnSubmiting(true);
+        try {
+            // gửi cho api
+            const res = await postApiMethod("users/login-with-google", {token: response.tokenId});
+
+            console.log(res);
+            AuthenService.saveToken(res.token);
+            delete res.token;
+            res.loginType = "google"
+            AuthenService.saveUserInfo(res);
+            navigate("/", { replace: true });
+        } catch (error) {
+           
+            console.log(error);
+        }
+        setOnSubmiting(false);
+    }
+    const responseGoogleFail = (response)=>{
         console.log(response);
-      }
+        
+    }
     const {
     register,
     handleSubmit,
@@ -18,8 +43,9 @@ const LoginPage = () => {
     formState: { errors },
     } = useForm();
     const navigate = useNavigate();
+    
     const onSubmit = async (data) => {
-      
+        setOnSubmiting(true);
         try {
             // gửi cho api
             const res = await postApiMethod("users/login", data);
@@ -27,6 +53,7 @@ const LoginPage = () => {
             console.log(res);
             AuthenService.saveToken(res.token);
             delete res.token;
+            res.loginType = "email"
             AuthenService.saveUserInfo(res);
             navigate("/", { replace: true });
         } catch (error) {
@@ -38,8 +65,11 @@ const LoginPage = () => {
             });
             console.log(error);
         }
+        setOnSubmiting(false);
     };
-    return (
+    const auth = AuthenService.isLoggedIn();
+    return auth ?  <Navigate to="/" />:
+     (
         <Container>
             <Card className="login">
                 <Card.Header className="text-center bg-transparent p-3  px-lg-5 ">
@@ -49,6 +79,10 @@ const LoginPage = () => {
                 </div>
                 <h2>Chào mừng bạn quay lại</h2>
                 <h4>Đăng nhập</h4>
+                <div style = {{display: "flex", flexDirection: 'row', justifyContent: 'center'}}>
+                    {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+                </div>
+                
                 </Card.Header>
                 <Card.Body>
                 <Form
@@ -99,10 +133,10 @@ const LoginPage = () => {
                     </Button>
                     <div className="w-100 text-center mb-4 h-25">
                     <GoogleLogin
-                                clientId="477434060458-odbrlr945j5lqbqjpti9gedl0c2a3upk.apps.googleusercontent.com"
+                                clientId={client_id}
                                 buttonText="Đăng nhập với Google"
                                 onSuccess={responseGoogle}
-                                onFailure={responseGoogle}
+                                onFailure={responseGoogleFail}
                                 cookiePolicy={'single_host_origin'}
                               
                             />
