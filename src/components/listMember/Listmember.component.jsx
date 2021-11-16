@@ -3,17 +3,15 @@ import ListTeacher from "../listTeacher/listteacher.component";
 import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
 import Spining from "../spinning/spinning.component";
-const students = [
-  { name: "student", id: "18127107" },
-  { name: "Dang Huy", id: "18127107" },
-];
+
 const teachers = [{ name: "Nam" }, { name: "Huy" }];
 const ListMember = (params) => {
+  console.log(params)
   const [students, setStudents] = useState(null);
   const [teachers, setTeachers] = useState(null);
   const getMembers = async () => {
     const data = await getApiMethod(
-      "classrooms/" + params.id.toString() + "/users"
+      "classrooms/" + params.classroom.id.toString() + "/users"
     );
     console.log("🚀 ~ file: Listmember.component.jsx ~ line 18 ~ getMembers ~ data", data)
 
@@ -36,8 +34,8 @@ const ListMember = (params) => {
     <div>
       {teachers && students ? (
         <div className="col-xs- col-sm- col-md- col-lg-">
-          <ListTeacher list={teachers} idClass={params.id.toString()}></ListTeacher>
-          <ListStudent list={students} idClass={params.id.toString()}></ListStudent>
+          <ListTeacher list={teachers} classroom={params.classroom}></ListTeacher>
+          <ListStudent list={students} classroom={params.classroom}></ListStudent>
         </div>
       ) : (
         <Spining></Spining>

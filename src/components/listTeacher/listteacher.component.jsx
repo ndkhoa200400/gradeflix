@@ -4,18 +4,13 @@ import ChangeID from "../change-id-form/change-id-form-component";
 import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import { postApiMethod } from "../../api/api-handler";
-const ListTeacher = ({ list, idClass }) => {
+const ListTeacher = ({ list, classroom }) => {
+  const idClass = classroom.id;
   const [showInvite, setShowInvite] = useState(false);
   const handleClose = () => {
     setShowInvite(false);
-    setShowChangeID(false);
   };
-  const [showChangeID, setShowChangeID] = useState(false);
-  const renderTooltip = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
-
-    </Tooltip>
-  );
+ 
 
   const KickMember = async (id) => {
     const data = await postApiMethod(
@@ -47,38 +42,31 @@ const ListTeacher = ({ list, idClass }) => {
                 ></img>
                 {item.fullname}
               </td>
+              {
+              
+              classroom.user.userRole === "HOST" && item.userRole ==="TEACHER" ? 
               <div>
-                <Dropdown >
-                  <OverlayTrigger
-                    placement="left"
-                    delay={{ show: 250, hide: 50 }}
-                    overlay={renderTooltip}
+              <Dropdown >
+               
+                  <Dropdown.Toggle
+                    variant="light"
+                    className="btn btn-light btn-add-classroom"
+                    data-bs-toggle="dropdown"
+                    id="addClassroomBtn"
                   >
-                    <Dropdown.Toggle
-                      variant="light"
-                      className="btn btn-light btn-add-classroom"
-                      data-bs-toggle="dropdown"
-                      id="addClassroomBtn"
-                    >
 
-                    </Dropdown.Toggle>
-                  </OverlayTrigger>
-                  <Dropdown.Menu>
-                    <Dropdown.Item
-                      type="button"
-                      onClick={() => setShowChangeID(true)}
-                    >
-                      Chỉnh sửa
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      type="button"
-                      onClick={() => KickMember(item.id)}
-                    >
-                      Đá
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
+                  </Dropdown.Toggle>
+        
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    type="button"
+                    onClick={() => KickMember(item.id)}
+                  >
+                    Đá
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div> : <hr></hr> }
             </tr>
 
           ))}
@@ -86,12 +74,6 @@ const ListTeacher = ({ list, idClass }) => {
       </table>
       <CreateInviteForm
         show={showInvite}
-        handleClose={handleClose}
-        idClass={idClass}
-        role="TEACHER"
-      />
-      <ChangeID
-        show={showChangeID}
         handleClose={handleClose}
         idClass={idClass}
         role="TEACHER"
