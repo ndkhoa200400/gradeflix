@@ -1,11 +1,15 @@
 import React from "react";
 import {useNavigate, Link} from 'react-router-dom';
+import * as AuthenService from "../../services/auth.service";
 const ClassroomCard = ({ classroom }) => {
   const maxLength = 80;
   classroom.description =
     classroom?.description?.length > maxLength
       ? classroom.description.substring(0, maxLength) + "..."
       : classroom.description;
+  const user = AuthenService.getUserInfo()
+  const isHost = classroom.hostId === user.id
+  const image = user.image ?? './default-avatar.png'
   return classroom ? (
     <div className="card classroom-item m-3">
       <div
@@ -27,10 +31,12 @@ const ClassroomCard = ({ classroom }) => {
         </Link>
 
 
-        <div className="classroom-host">Thầy X</div>
+        {!isHost && <div className="classroom-host">{classroom.host.fullname}</div>}
+        
       </div>
-      {/* <div className="card-body">{classroom.description}</div> */}
+     
       <div className="card-body">{classroom.description}</div>
+      {<img src={image} className="host-avatar"></img>}
     </div>
   ) : null;
 };

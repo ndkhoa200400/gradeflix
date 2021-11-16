@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { postApiMethod } from "../../api/api-handler";
+import { getApiMethod, postApiMethod } from "../../api/api-handler";
 import Spining from "../../components/spinning/spinning.component";
 import TopNavigation from "../../components/top-nav/top-nav.component";
 import { useQuery } from "../../custome-hook";
@@ -14,11 +14,23 @@ const Invitation = () => {
   const navigate = useNavigate();
   const [invitationInfo, setInvitationInfo] = useState(null);
 
-  useEffect(() => {
+  useEffect(async () => {
     if (query) {
       const classroomId = query.get("classroomId");
       const role = query.get("role");
       const token = query.get("token");
+      if (!classroomId || !role) {
+        return alert("Đường dẫn bị lỗi. Vui lòng truy cập lại sau!");
+      }
+      const res = await getApiMethod(
+        `classrooms/${classroomId}/check-join-class`
+      );
+      if (res.isJoined) {
+        alert("Bạn đã tham gia vào lớp này!");
+        return navigate(`/classrooms/${classroomId}`, {
+          replace: true,
+        });
+      }
       return setInvitationInfo({
         classroomId,
         role,

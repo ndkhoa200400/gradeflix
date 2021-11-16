@@ -8,7 +8,8 @@ const HomePage = ()=>{
     const [classrooms, setClassrooms] = useState();
 
     const getClassrooms = async () => {
-    const data = await getApiMethod("classrooms");
+    const params = `filter={\"include\":[\"host\"]}`
+    const data = await getApiMethod("classrooms", params);
         setClassrooms(data);
     };
     const handleOnClassCreate = (newClass) =>{

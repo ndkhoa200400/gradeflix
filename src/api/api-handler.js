@@ -6,7 +6,7 @@ const apiLink = process.env.REACT_APP_API_LINK;
 // try-catch in caller Function to detect Error
 export const getApiMethod = async (link, params = "") => {
     const token = loadToken();
-    const res = await axios(`${apiLink}${link}?${JSON.stringify(params)}`, { headers: {
+    const res = await axios(`${apiLink}${link}?${(params)}`, { headers: {
       'Access-Control-Allow-Origin': '*',
       "Content-Type": "application/json",
       "Authorization": `Bearer ${token}`
