@@ -3,7 +3,7 @@ import CreateInviteForm from "../invite-form/invite-form.copoomponent";
 import ChangeID from "../change-id-form/change-id-form-component";
 import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 
-import { getApiMethod } from "../../api/api-handler";
+import { postApiMethod } from "../../api/api-handler";
 const ListTeacher = ({ list, idClass }) => {
   const [showInvite, setShowInvite] = useState(false);
 const handleClose = () => {
@@ -18,9 +18,10 @@ const renderTooltip = (props) => (
 );
 
 const KickMember =async (id) => {
-  const data = await getApiMethod(
+  const data = await postApiMethod(
     "classrooms/" + idClass+ "/users/"+id+"/kick"
   );
+  console.log("🚀 ~ file: Listmember.component.jsx ~ line 18 ~ getMembers ~ data", data)
 }
 return (
     <div>

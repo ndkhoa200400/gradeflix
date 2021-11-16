@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { Modal, Button, Form } from "react-bootstrap";
 
 const listemail="huyly@kobiton.com,lydanghuy918@gmail.com"
-const ChangeIDForm = ({ show, handleClose, idClass, role}) => {
+const ChangeIDForm = ({ show, handleClose, idClass, userId}) => {
   const {
     register,
     handleSubmit,
@@ -26,9 +26,10 @@ const ChangeIDForm = ({ show, handleClose, idClass, role}) => {
       // Lấy ảnh ngẫu nhiên làm banner
       
        console.log(data)
+       console.log("classrooms/"+idClass+ "/users/"+userId);
       // gửi cho api
-      await postApiMethod("classrooms/"+idClass+ "/ussers/"+role, data);
-
+      await postApiMethod("classrooms/"+idClass+ "/users/"+userId, data);
+      
       handleClose();
 
       reset();
