@@ -8,6 +8,7 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm();
   const [onSubmiting, setOnSubmiting] = useState(false);
@@ -19,6 +20,12 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
   }
 
   const onSubmit = async (data) => {
+    if (classroom&&data.studentId === classroom.user.studentId){
+      setError("studentId", {
+          message: "Hãy nhập mã số viên mới"
+      });
+      return;
+    }
     setOnSubmiting(true);
     try {
      
@@ -34,7 +41,10 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
       reset();
     } catch (error) {
       console.log( error);
-      alert("Đã xảy ra lỗi! Vui lòng thử lại");
+      setError("studentId", {
+          message: "Mã số sinh viên đã tồn tại"
+      });
+     
     }
     setOnSubmiting(false);
   };
@@ -45,16 +55,21 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
         {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Form.Group className="mb-3">
             <Form.Label>Mã số sinh viên</Form.Label>
             <Form.Control
                 type="text"
                 placeholder="Nhập mã số sinh viên"
                 {...register("studentId", {  })}
+                isInvalid={errors.studentId}
                 defaultValue={classroom?classroom.user.studentId:""}
             />
-           
+            {errors.studentId?.message && (
+                  <Form.Control.Feedback type="invalid">
+                      {errors.studentId?.message}
+                  </Form.Control.Feedback>
+                  )}
           </Form.Group>
 
         
