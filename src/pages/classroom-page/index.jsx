@@ -16,7 +16,7 @@ const getContentTab = (tab, idClass, classroom, onEditedClassRoom)=>{
         return (<TabMyInfo classroom = {classroom}/>);
     else 
         if (tab === "tab-people")
-            return (<TabPeople idClass = {idClass}/>);
+            return (<TabPeople classroom = {classroom}/>);
     return  (<TabDetail classroom = {classroom} onEditedClassRoom={onEditedClassRoom}/>);
 }
 const ClassroomPage = ({ isFull = true, ...props }) => {

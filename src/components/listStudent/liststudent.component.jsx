@@ -4,22 +4,19 @@ import CreateInviteForm from "../invite-form/invite-form.copoomponent";
 import ChangeID from "../change-id-form/change-id-form-component";
 import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 
-import { getApiMethod } from "../../api/api-handler";
-const ListStudent = ({ list, idClass }) => {
+import { postApiMethod } from "../../api/api-handler";
+const ListStudent = ({ list, classroom }) => {
+  const idClass = classroom.id;
   const [showInvite, setShowInvite] = useState(false);
   const handleClose = () => {
     setShowInvite(false);
     setShowChangeID(false);
   };
   const [idUser, setidUser] = useState(0);
-  const renderTooltip = (props) => (
-    <Tooltip id="button-tooltip" {...props}>
 
-    </Tooltip>
-  );
 
   const KickMember = async (id) => {
-    const data = await getApiMethod(
+    const data = await postApiMethod(
       "classrooms/" + idClass + "/users/" + id + "/kick"
     );
   }
@@ -51,22 +48,21 @@ const ListStudent = ({ list, idClass }) => {
                 {item.fullname}
               </td>
               <td>{item.studentId}</td>
-              <div>
+              {
+                 (classroom.user.userRole === "TEACHER" || classroom.user.userRole ==="HOST") ?
+                <div>
                 <Dropdown >
-                  <OverlayTrigger
-                    placement="left"
-                    delay={{ show: 250, hide: 50 }}
-                    overlay={renderTooltip}
-                  >
-                    <Dropdown.Toggle
-                      variant="light"
-                      className="btn btn-light btn-add-classroom"
-                      data-bs-toggle="dropdown"
-                      id="addClassroomBtn"
-                    >
 
-                    </Dropdown.Toggle>
-                  </OverlayTrigger>
+
+                  <Dropdown.Toggle
+                    variant="light"
+                    className="btn btn-light btn-add-classroom"
+                    data-bs-toggle="dropdown"
+                    id="addClassroomBtn"
+                  >
+
+                  </Dropdown.Toggle>
+
                   <Dropdown.Menu>
                     <Dropdown.Item
                       type="button"
@@ -86,7 +82,9 @@ const ListStudent = ({ list, idClass }) => {
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-              </div>
+              </div> : <hr></hr>
+                
+              }
             </tr>
           ))}
         </tbody>

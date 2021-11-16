@@ -4,7 +4,6 @@ import Spining from "../spinning/spinning.component";
 import { useForm } from "react-hook-form";
 import { Modal, Button, Form } from "react-bootstrap";
 
-const listemail = "huyly@kobiton.com,lydanghuy918@gmail.com"
 const CreateInviteForm = ({ show, handleClose, idClass, role }) => {
   const {
     register,
@@ -41,7 +40,7 @@ const CreateInviteForm = ({ show, handleClose, idClass, role }) => {
   return (
     <Modal show={show} onHide={closeModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Mời Giáo viên</Modal.Title>
+        <Modal.Title>{role === "TEACHER" ? "Mời Giáo viên" : "Mời học sinh"}</Modal.Title>
         {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
       </Modal.Header>
       <Modal.Body>
@@ -60,7 +59,7 @@ const CreateInviteForm = ({ show, handleClose, idClass, role }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline-secondary" onClick={handleClose}>
-          Đóng
+          Hủy
         </Button>
         <Button variant="outline-primary"
           onClick={handleSubmit(onSubmit)}

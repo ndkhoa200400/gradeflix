@@ -67,7 +67,7 @@ const ChangeIDForm = ({ show, handleClose, idClass, userId }) => {
         <Button variant="outline-primary"
           onClick={handleSubmit(onSubmit)}
         >
-          Mời
+          Xác nhận
         </Button>
       </Modal.Footer>
     </Modal>
