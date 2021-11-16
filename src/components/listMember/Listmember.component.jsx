@@ -12,23 +12,23 @@ const ListMember = (params) => {
   const [students, setStudents] = useState(null);
   const [teachers, setTeachers] = useState(null);
   const getMembers = async () => {
-    const data = await getApiMethod(
-      "classrooms/" + params.id.toString() + "/users"
-    );
-    console.log("🚀 ~ file: Listmember.component.jsx ~ line 18 ~ getMembers ~ data", data)
+    // const data = await getApiMethod(
+    //   "classrooms/" + params.id.toString() + "/users"
+    // );
+    // console.log("🚀 ~ file: Listmember.component.jsx ~ line 18 ~ getMembers ~ data", data)
         
-    const tempTeachers = [];
-    const tempStudents = [];
-    tempTeachers.push(data.host);
-    for (const user of data.users) {
-      if (user.userRole === "TEACHER") {
-        tempTeachers.push(user);
-      } else {
-        tempStudents.push(user);
-      }
-    }
-    setTeachers(tempTeachers)
-    setStudents(tempStudents)
+    // const tempTeachers = [];
+    // const tempStudents = [];
+    // tempTeachers.push(data.host);
+    // for (const user of data) {
+    //   if (user.userRole === "TEACHER") {
+    //     tempTeachers.push(user);
+    //   } else {
+    //     tempStudents.push(user);
+    //   }
+    // }
+    // setTeachers(tempTeachers)
+    // setStudents(tempStudents)
   };
   useEffect(() => getMembers(), []);
 
