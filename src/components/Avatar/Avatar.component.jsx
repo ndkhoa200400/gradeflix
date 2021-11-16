@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Avatar = () => {
   const navigate = useNavigate();
   const user = AuthenService.getUserInfo();
-  const avatar = user.avatar ?? "./default-avatar.png";
+  const avatar = user.avatar ?? "/default-avatar.png";
 
   const logout = () => {
     AuthenService.logOut();

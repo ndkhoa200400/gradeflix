@@ -8,6 +8,7 @@ import TabDetail from "./tab-detail";
 import TabPeople from "./tab-people";
 import TabMyInfo from "./tab-my-info";
 
+import TopNavigation from "../../components/top-nav/top-nav.component";
 const getContentTab = (
   tab,
   idClass,
@@ -27,7 +28,6 @@ const getContentTab = (
     <TabDetail classroom={classroom} onEditedClassRoom={onEditedClassRoom} />
   );
 };
-
 
 const ClassroomPage = ({ isFull = true, ...props }) => {
   const params = useParams();
@@ -49,19 +49,22 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
   };
   useEffect(() => getClassroom(), []);
   return classroom ? (
-    <div className="container classroom">
-      <div className="banner">
-        <Banner classroom={classroom}></Banner>
-      </div>
+    <div>
+      <TopNavigation title="Gradeflix" titleLink="/" />
+      <div className="container classroom">
+        <div className="banner mt-3">
+          <Banner classroom={classroom}></Banner>
+        </div>
 
-      <Tab id={params.id} classroom={classroom} className="tab"></Tab>
-      {getContentTab(
-        params.tab,
-        params.id,
-        classroom,
-        onEditedClassRoom,
-        onEditStudentId
-      )}
+        <Tab id={params.id} classroom={classroom} className="tab"></Tab>
+        {getContentTab(
+          params.tab,
+          params.id,
+          classroom,
+          onEditedClassRoom,
+          onEditStudentId
+        )}
+      </div>
     </div>
   ) : (
     <Spining />
