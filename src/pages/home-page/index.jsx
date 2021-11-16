@@ -4,29 +4,29 @@ import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
 
 import Spining from "../../components/spinning/spinning.component";
-const HomePage = ()=>{
-    const [classrooms, setClassrooms] = useState();
+const HomePage = () => {
+  const [classrooms, setClassrooms] = useState();
 
-    const getClassrooms = async () => {
-    const params = `filter={\"include\":[\"host\"]}`
+  const getClassrooms = async () => {
+    const params = `filter={\"include\":[\"host\"]}`;
     const data = await getApiMethod("classrooms", params);
-        setClassrooms(data);
-    };
-    const handleOnClassCreate = (newClass) =>{
-        setClassrooms([...classrooms, newClass])
-      }
-    useEffect(() => getClassrooms(), []);
-    return (
-        <div> 
-             <TopNavigationHome onClassCreated={handleOnClassCreate} />
-            {classrooms ? (
-            <div className="container-fluid h-full">
-                <ClassroomList classrooms={classrooms} />
-            </div>
-            ) : (
-            <Spining />
-            )}
+    setClassrooms(data);
+  };
+  const handleOnClassCreate = (newClass) => {
+    setClassrooms([...classrooms, newClass]);
+  };
+  useEffect(() => getClassrooms(), []);
+  return (
+    <div>
+      <TopNavigationHome onClassCreated={handleOnClassCreate} />
+      {classrooms ? (
+        <div className="container-fluid h-full">
+          <ClassroomList classrooms={classrooms} />
         </div>
-    )
-}
+      ) : (
+        <Spining />
+      )}
+    </div>
+  );
+};
 export default HomePage;
