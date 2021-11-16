@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CreateInviteForm from "../invite-form/invite-form.copoomponent";
 
 import ChangeID from "../change-id-form/change-id-form-component";
-import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Dropdown, OverlayTrigger, Tooltip, Table } from "react-bootstrap";
 
 import { postApiMethod } from "../../api/api-handler";
 const ListStudent = ({ list, classroom }) => {
@@ -14,81 +14,90 @@ const ListStudent = ({ list, classroom }) => {
   };
   const [idUser, setidUser] = useState(0);
 
-
   const KickMember = async (id) => {
     const data = await postApiMethod(
       "classrooms/" + idClass + "/users/" + id + "/kick"
     );
-  }
+  };
 
   const [showChangeID, setShowChangeID] = useState(false);
 
   return (
-    <div>
-      <table className="table table-striped table-hover col-lg-3">
+    <div className="student-info my-5">
+      <div>
+        <h2>Sinh viên</h2>
+      </div>
+      <Table hover>
         <thead>
-          <tr>
+          <tr className="">
             <th>Tên</th>
             <th>MSSV</th>
-            <button type="button" class="btn btn-outline-dark" onClick={() => setShowInvite(true)}>
-              <i className="fas fa-plus fa-1x"></i>
-            </button>
+            <th align="right" className="text-end">
+              <button
+                type="button"
+                class="btn btn-outline-dark ms-auto"
+                onClick={() => setShowInvite(true)}
+              >
+                <i className="fas fa-plus fa-1x"></i>
+              </button>
+            </th>
           </tr>
         </thead>
         <tbody>
           {list.map((item) => (
             <tr>
-              <td>
-                <img
-                  src={item.avatar ?? "./default-avatar.png"}
-                  width={24}
-                  height={24}
-                  className="me-2"
-                ></img>
-                {item.fullname}
+              <td className="py-3 ">
+                <div className="user-info">
+                  <img
+                    src={item.avatar ?? "/default-avatar.png"}
+                    width={24}
+                    height={24}
+                    className="me-2"
+                    alt="member avatar"
+                  ></img>
+                  {item.fullname}{" "}
+                 
+                </div>
               </td>
               <td>{item.studentId}</td>
-              {
-                 (classroom.user.userRole === "TEACHER" || classroom.user.userRole ==="HOST") ?
-                <div>
-                <Dropdown >
+              {classroom.user.userRole === "TEACHER" ||
+              classroom.user.userRole === "HOST" ? (
+                <td align="right">
+                  <Dropdown className="">
+                    <Dropdown.Toggle
+                      variant="light"
+                      className="btn btn-light btn-add-classroom"
+                      data-bs-toggle="dropdown"
+                      id="addClassroomBtn"
+                    ></Dropdown.Toggle>
 
-
-                  <Dropdown.Toggle
-                    variant="light"
-                    className="btn btn-light btn-add-classroom"
-                    data-bs-toggle="dropdown"
-                    id="addClassroomBtn"
-                  >
-
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item
-                      type="button"
-                      onClick={() => {
-                        setShowChangeID(true);
-                        setidUser(item.id);
-                      }
-                      }
-                    >
-                      Chỉnh sửa
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      type="button"
-                      onClick={() => KickMember(item.id)}
-                    >
-                      Đá
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div> : <hr></hr>
-                
-              }
+                    <Dropdown.Menu>
+                      <Dropdown.Item
+                        type="button"
+                        onClick={() => {
+                          setShowChangeID(true);
+                          setidUser(item.id);
+                        }}
+                      >
+                        Chỉnh sửa
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        type="button"
+                        onClick={() => KickMember(item.id)}
+                      >
+                        Đá
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </td>
+              ) : (
+                <td></td>
+              )}
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
+
       <CreateInviteForm
         show={showInvite}
         handleClose={handleClose}

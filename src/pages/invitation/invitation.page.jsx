@@ -14,28 +14,32 @@ const Invitation = () => {
   const navigate = useNavigate();
   const [invitationInfo, setInvitationInfo] = useState(null);
 
-  useEffect(async () => {
-    if (query) {
-      const classroomId = query.get("classroomId");
-      const role = query.get("role");
-      const token = query.get("token");
-      if (!classroomId || !role) {
-        return alert("Đường dẫn bị lỗi. Vui lòng truy cập lại sau!");
-      }
-      const res = await getApiMethod(
-        `classrooms/${classroomId}/check-join-class`
-      );
-      if (res.isJoined) {
-        alert("Bạn đã tham gia vào lớp này!");
-        return navigate(`/classrooms/${classroomId}`, {
-          replace: true,
-        });
-      }
-      return setInvitationInfo({
-        classroomId,
-        role,
-        token,
+  const checkJoinClass = async () => {
+    const classroomId = query.get("classroomId");
+    const role = query.get("role");
+    const token = query.get("token");
+    if (!classroomId || !role) {
+      return alert("Đường dẫn bị lỗi. Vui lòng truy cập lại sau!");
+    }
+    const res = await getApiMethod(
+      `classrooms/${classroomId}/check-join-class`
+    );
+    if (res.isJoined) {
+      alert("Bạn đã tham gia vào lớp này!");
+      return navigate(`/classrooms/${classroomId}`, {
+        replace: true,
       });
+    }
+    return setInvitationInfo({
+      classroomId,
+      role,
+      token,
+    });
+  };
+
+  useEffect(() => {
+    if (query) {
+      return checkJoinClass();
     }
   }, [query]);
 
@@ -49,7 +53,9 @@ const Invitation = () => {
         {}
       );
       alert("Tham gia thành công");
-      navigate(`/classrooms/${invitationInfo.classroomId}/tab-detail`, { replace: true });
+      navigate(`/classrooms/${invitationInfo.classroomId}/tab-detail`, {
+        replace: true,
+      });
     } catch (error) {
       alert(error.message);
     }
