@@ -21,7 +21,7 @@ const ModalConFirmOutRoom = ({ show, handleClose, classroom }) => {
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Rời khỏi lớp</Modal.Title>
+        <Modal.Title>Bạn có chắc muốn rời khỏi lớp?</Modal.Title>
         {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
       </Modal.Header>
 
