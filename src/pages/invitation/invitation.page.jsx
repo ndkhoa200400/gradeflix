@@ -19,14 +19,18 @@ const Invitation = () => {
     const role = query.get("role");
     const token = query.get("token");
     if (!classroomId || !role) {
-      return alert("Đường dẫn bị lỗi. Vui lòng truy cập lại sau!");
+      alert("Đường dẫn bị lỗi. Vui lòng truy cập lại sau!");
+      navigate(`/`, {
+        replace: true,
+      });
+      return;
     }
     const res = await getApiMethod(
       `classrooms/${classroomId}/check-join-class`
     );
     if (res.isJoined) {
-      alert("Bạn đã tham gia vào lớp này!");
-      return navigate(`/classrooms/${classroomId}`, {
+      //alert("Bạn đã tham gia vào lớp này!");
+      return navigate(`/classrooms/${classroomId}/tab-detail`, {
         replace: true,
       });
     }
@@ -44,7 +48,15 @@ const Invitation = () => {
   }, [query]);
 
   const acceptInviataion = async () => {
-    if (!invitationInfo) return alert("Đã xảy ra lỗi. Vui lòng thử lại sau");
+    if (!invitationInfo) 
+    {
+        alert("Đã xảy ra lỗi. Vui lòng thử lại sau");
+        navigate(`/`, {
+          replace: true,
+        });
+        return;
+    }
+        
     try {
       await postApiMethod(
         `classrooms/${invitationInfo.classroomId}/accept-invitation?role=${
@@ -52,7 +64,7 @@ const Invitation = () => {
         }${invitationInfo.token ? "&token=" + invitationInfo.token : ""}`,
         {}
       );
-      alert("Tham gia thành công");
+     
       navigate(`/classrooms/${invitationInfo.classroomId}/tab-detail`, {
         replace: true,
       });

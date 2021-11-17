@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import Avatar from "../Avatar/Avatar.component";
+import Avatar from "../avatar/avatar.component";
 import CreateClassRoomForm from "../create-classroom-form/create-classroom-form.component";
 const TopNavigationHome = ({ onClassCreated }) => {
   const [showCreateClass, setShowCreateClass] = useState(false);

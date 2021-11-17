@@ -7,13 +7,14 @@ import { postApiMethod } from "../../api/api-handler";
 import GoogleLogin from "react-google-login";
 import * as AuthenService from "../../services/auth.service";
 import Spining from "../../components/spinning/spinning.component";
+import { loadPreUrl, savePreUrl } from "../../services/location.service";
 const client_id = process.env.REACT_APP_CLIENT_GOOGLE;
 ///users/login
 const LoginPage = () => {
-  console.log(process.env);
+  const preUrl = loadPreUrl()?loadPreUrl():"/";
   const [onSubmiting, setOnSubmiting] = useState(false);
   const responseGoogle = async (response) => {
-    console.log(response.tokenId);
+    //console.log(response);
     setOnSubmiting(true);
     try {
       // gửi cho api
@@ -21,19 +22,20 @@ const LoginPage = () => {
         token: response.tokenId,
       });
 
-      console.log(res);
+     // console.log(res);
       AuthenService.saveToken(res.token);
       delete res.token;
       res.loginType = "google";
       AuthenService.saveUserInfo(res);
-      navigate("/", { replace: true });
+      navigate(preUrl, { replace: true });
+      savePreUrl("/");
     } catch (error) {
-      console.log(error);
+    //  console.log(error);
     }
     setOnSubmiting(false);
   };
   const responseGoogleFail = (response) => {
-    console.log(response);
+   // console.log(response);
   };
   const {
     register,
@@ -42,19 +44,22 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-
+  
+  console.log(navigate);
   const onSubmit = async (data) => {
     setOnSubmiting(true);
     try {
       // gửi cho api
       const res = await postApiMethod("users/login", data);
 
-      console.log(res);
+      //console.log(res);
       AuthenService.saveToken(res.token);
       delete res.token;
       res.loginType = "email";
       AuthenService.saveUserInfo(res);
-      navigate("/", { replace: true });
+      
+      navigate(preUrl, { replace: true });
+      savePreUrl("/");
     } catch (error) {
       setError("email", {
         message: "Email hoặc mật khẩu không đúng",
@@ -62,7 +67,7 @@ const LoginPage = () => {
       setError("password", {
         message: "Email hoặc mật khẩu không đúng",
       });
-      console.log(error);
+      //console.log(error);
     }
     setOnSubmiting(false);
   };

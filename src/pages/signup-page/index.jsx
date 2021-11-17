@@ -21,7 +21,7 @@ const SignupPage = () => {
       // gửi cho api
       const res = await postApiMethod("users/register", data);
 
-      console.log(res);
+      //console.log(res);
       AuthenService.saveToken(res.token);
       delete res.token;
       res.loginType = "email";
@@ -31,7 +31,7 @@ const SignupPage = () => {
       setError("email", {
         message: "Email đã tồn tại",
       });
-      console.log(error);
+      //console.log(error);
     }
     setOnSubmiting(false);
   };

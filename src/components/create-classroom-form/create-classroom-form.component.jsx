@@ -37,7 +37,7 @@ const CreateClassRoomForm = ({ show, handleClose, onClassCreated }) => {
 
       reset();
     } catch (error) {
-      console.log("error", error);
+      //console.log("error", error);
       alert("Đã xảy ra lỗi! Vui lòng thử lại");
     }
     setOnSubmiting(false);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Col, Row, Container, Card, Button, Toast } from "react-bootstrap";
+import { Col, Row, Card, Button, Toast } from "react-bootstrap";
 import EditClassRoomForm from "./edit-classroom-form";
 const TabDetail = ({ classroom, onEditedClassRoom }) => {
   const [showEditClass, setEditCreateClass] = useState(false);

@@ -14,7 +14,7 @@ const ListMember = (params) => {
     const tempTeachers = [];
     const tempStudents = [];
     for (const user of data) {
-      console.log(data);
+     
       if (user.userRole === "TEACHER" || user.userRole === "HOST") {
         tempTeachers.push(user);
       } else {
@@ -25,11 +25,42 @@ const ListMember = (params) => {
     setStudents(tempStudents);
   };
   useEffect(() => getMembers(), []);
-
+  const onKickMember = (user)=>{
+    const newTeachers = [...teachers]
+    for(var i = 0; i < newTeachers.length; i++){
+      if (newTeachers[i].id === user.id)
+      {
+        newTeachers.splice(i, 1);
+        setTeachers(newTeachers);
+        return;
+      }
+    }
+    const newStudents = [...students]
+    for(var i = 0; i < newStudents.length; i++){
+      if (newStudents[i].id === user.id)
+      {
+        newStudents.splice(i, 1);
+        setStudents(newStudents);
+        return;
+      }
+    }
+  }
+  const onEditStudentId = (user)=>{
+    const newStudents = [...students]
+    for(var i = 0; i < newStudents.length; i++){
+      if (newStudents[i].id === user.id)
+      {
+        
+        newStudents[i] = user;
+        setStudents(newStudents);
+        return;
+      }
+    }
+  }
   return teachers && students ? (
     <div className="show-list">
-      <ListTeacher list={teachers} classroom={params.classroom}></ListTeacher>
-      <ListStudent list={students} classroom={params.classroom}></ListStudent>
+      <ListTeacher list={teachers} classroom={params.classroom} onKickMember={onKickMember}></ListTeacher>
+      <ListStudent list={students} classroom={params.classroom} onKickMember={onKickMember} onEditStudentId={onEditStudentId}></ListStudent>
     </div>
   ) : (
     <div>

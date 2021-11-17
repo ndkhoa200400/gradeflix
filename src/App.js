@@ -4,7 +4,7 @@ import LoginPage from "./pages/login-page";
 import ClassroomPage from "./pages/classroom-page";
 import SignupPage from "./pages/signup-page";
 import PrivateRoute from "./components/private-router";
-import Profile from "./pages/Profile/Profile.page";
+import Profile from "./pages/profile/profile.page";
 import Invitation from "./pages/invitation/invitation.page";
 // React router
 import {

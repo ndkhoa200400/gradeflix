@@ -1,6 +1,6 @@
 import Banner from "../../components/banner/banner.component";
 import Tab from "../../components/tab/tab.component";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
 import Spining from "../../components/spinning/spinning.component";
@@ -32,8 +32,18 @@ const getContentTab = (
 const ClassroomPage = ({ isFull = true, ...props }) => {
   const params = useParams();
   const [classroom, setClassroom] = useState();
-  console.log(params);
+  //console.log(params);
+  const navigate = useNavigate();
   const getClassroom = async () => {
+    const res = await getApiMethod(
+      `classrooms/${params.id.toString()}/check-join-class`
+    );
+    if (!res.isJoined) {
+      //alert("Bạn đã tham gia vào lớp này!");
+      return navigate(`/`, {
+        replace: true,
+      });
+    }
     const data = await getApiMethod("classrooms/" + params.id.toString());
 
     setClassroom(data);
@@ -45,8 +55,9 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
   const onEditStudentId = (studentId) => {
     classroom.user.studentId = studentId;
     setClassroom(classroom);
-    console.log(classroom);
+   // console.log(classroom);
   };
+ 
   useEffect(() => getClassroom(), []);
   return classroom ? (
     <div>

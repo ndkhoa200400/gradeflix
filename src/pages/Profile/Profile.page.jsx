@@ -48,7 +48,7 @@ const Profile = () => {
       AuthenService.saveToken(res.token);
       alert("Đổi mật khẩu thành công");
     } catch (error) {
-      console.log("error", error);
+      //console.log("error", error);
       if (error.statusCode === 401) {
         alert(error.message);
       }
@@ -68,14 +68,14 @@ const Profile = () => {
         )
           .then((res) => res.json())
           .then((data) => {
-            console.log("data", data);
+            //console.log("data", data);
 
             userBody.avatar = data["secure_url"];
 
             setNewImage(false);
           })
           .catch((error) => {
-            console.log("error", error);
+           // console.log("error", error);
           });
       }
       const res = await postApiMethod("users/me", userBody);

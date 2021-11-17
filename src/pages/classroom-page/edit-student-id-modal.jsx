@@ -8,6 +8,7 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm();
   const [onSubmiting, setOnSubmiting] = useState(false);
@@ -19,22 +20,31 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
   }
 
   const onSubmit = async (data) => {
+    if (classroom&&data.studentId === classroom.user.studentId){
+      setError("studentId", {
+          message: "Hãy nhập mã số sinh viên mới"
+      });
+      return;
+    }
     setOnSubmiting(true);
     try {
      
 
       // gửi cho api
       const link = `classrooms/${classroom?classroom.id:""}/users/${classroom?classroom.user.id:""}`
-      console.log(link + data)
+      //console.log(link + data)
       const studentId = await postApiMethod(link, data);
-      console.log(data.studentId)
+     // console.log(data.studentId)
       onEditStudentId(data.studentId);
       handleClose();
 
       reset();
     } catch (error) {
-      console.log( error);
-      alert("Đã xảy ra lỗi! Vui lòng thử lại");
+      //console.log( error);
+      setError("studentId", {
+          message: "Mã số sinh viên đã tồn tại"
+      });
+     
     }
     setOnSubmiting(false);
   };
@@ -45,16 +55,21 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
         {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
       </Modal.Header>
       <Modal.Body>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Form.Group className="mb-3">
             <Form.Label>Mã số sinh viên</Form.Label>
             <Form.Control
                 type="text"
                 placeholder="Nhập mã số sinh viên"
                 {...register("studentId", {  })}
+                isInvalid={errors.studentId}
                 defaultValue={classroom?classroom.user.studentId:""}
             />
-           
+            {errors.studentId?.message && (
+                  <Form.Control.Feedback type="invalid">
+                      {errors.studentId?.message}
+                  </Form.Control.Feedback>
+                  )}
           </Form.Group>
 
         
