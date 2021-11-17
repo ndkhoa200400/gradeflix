@@ -105,7 +105,9 @@ const SignupPage = () => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBirthday">
               <Form.Label>Ngày sinh</Form.Label>
-              <Form.Control type="date" name="birthday" />
+              <Form.Control type="date"
+              {...register("birthday", {
+              })}  />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Mật khẩu</Form.Label>
