@@ -23,7 +23,7 @@ const CreateInviteForm = ({ show, handleClose, idClass, role }) => {
     setOnSubmiting(true);
     try {
       // Lấy ảnh ngẫu nhiên làm banner
-      data.userEmails = getValues("userEmails").split(",");
+      data.userEmails = getValues("userEmails").split(/[,  ;]/);
       //console.log(data)
       // gửi cho api
       await postApiMethod("classrooms/" + idClass + "/send-invitation?role=" + role, data);
