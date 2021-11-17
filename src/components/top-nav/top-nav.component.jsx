@@ -1,5 +1,5 @@
 import React from "react";
-import Avatar from "../avatar/avatar.component";
+import Avatar from "../avatar-user/avatar-user.component";
 import { Link } from "react-router-dom";
 const TopNavigation = ({ title, titleLink }) => {
   return (
