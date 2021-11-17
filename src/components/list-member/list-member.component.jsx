@@ -1,5 +1,5 @@
-import ListStudent from "../listStudent/liststudent.component";
-import ListTeacher from "../listTeacher/listteacher.component";
+import ListStudent from "../list-student/list-student.component";
+import ListTeacher from "../list-teacher/list-teacher.component";
 import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
 import Spining from "../spinning/spinning.component";
