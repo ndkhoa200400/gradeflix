@@ -1,30 +1,68 @@
 import React, { useState } from "react";
 import { postApiMethod } from "../../api/api-handler";
-import Spining from "../../components/spinning/spinning.component"
+import Spining from "../../components/spinning/spinning.component";
 import { useForm } from "react-hook-form";
 import { Modal, Button, Form } from "react-bootstrap";
-const EditClassRoomForm = ({ show, handleClose, onEditedClassRoom, classroom }) => {
+const EditClassRoomForm = ({
+  show,
+  handleClose,
+  onEditedClassRoom,
+  classroom,
+}) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
+
   const [onSubmiting, setOnSubmiting] = useState(false);
-  
-  const closeModal = () =>{
-    
-    handleClose()
-    reset()
-  }
+  const [newImage, setNewImage] = useState(null);
+  const [image, setImage] = useState(classroom?.banner ?? "");
+
+  const uploadImage = async (e) => {
+    const files = e.target.files;
+    const imageUpload = "imageupload";
+    const data = new FormData();
+    data.append("file", files[0]);
+    setImage(URL.createObjectURL(files[0]));
+    data.append("upload_preset", imageUpload);
+    setNewImage(data);
+  };
+
+  const closeModal = () => {
+    handleClose();
+    reset();
+  };
 
   const onSubmit = async (data) => {
     setOnSubmiting(true);
     try {
-     
-
       // gửi cho api
-      const res = await postApiMethod(`classrooms/${classroom?classroom.id:""}`, data);
+      if (newImage) {
+        await fetch(
+          `${process.env.REACT_APP_CLOUDINARY_API_LINK}/image/upload`,
+          {
+            method: "POST",
+            body: newImage,
+          }
+        )
+          .then((res) => res.json())
+          .then((d) => {
+            //console.log("data", data);
+
+            data.banner = d["secure_url"];
+
+            setNewImage(false);
+          })
+          .catch((error) => {
+            // console.log("error", error);
+          });
+      }
+      const res = await postApiMethod(
+        `classrooms/${classroom ? classroom.id : ""}`,
+        data
+      );
       onEditedClassRoom(res);
       handleClose();
 
@@ -50,7 +88,7 @@ const EditClassRoomForm = ({ show, handleClose, onEditedClassRoom, classroom }) 
               placeholder="Nhập tên lớp học (bắt buộc)"
               {...register("name", { required: true })}
               isInvalid={errors.name}
-              defaultValue={classroom?classroom.name:""}
+              defaultValue={classroom ? classroom.name : ""}
             />
             {errors.name && (
               <Form.Control.Feedback type="invalid">
@@ -65,7 +103,7 @@ const EditClassRoomForm = ({ show, handleClose, onEditedClassRoom, classroom }) 
               type="text"
               placeholder="Nhập môn học"
               {...register("subject")}
-              defaultValue={classroom?classroom.subject:""}
+              defaultValue={classroom ? classroom.subject : ""}
             />
           </Form.Group>
 
@@ -75,7 +113,7 @@ const EditClassRoomForm = ({ show, handleClose, onEditedClassRoom, classroom }) 
               type="text"
               placeholder="Nhập mô tả lớp học"
               {...register("description")}
-              defaultValue={classroom?classroom.description:""}
+              defaultValue={classroom ? classroom.description : ""}
             />
           </Form.Group>
 
@@ -85,8 +123,30 @@ const EditClassRoomForm = ({ show, handleClose, onEditedClassRoom, classroom }) 
               type="text"
               placeholder="Nhập phòng học"
               {...register("room")}
-              defaultValue={classroom?classroom.room:""}
+              defaultValue={classroom ? classroom.room : ""}
             />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Ảnh bìa</Form.Label>
+            <a href={image} alt="classroom banner cursor-pointer" target='_blank' rel="noreferrer">
+              <Form.Control
+                type="text"
+                placeholder="Nhập phòng học"
+                {...register("banner")}
+                defaultValue={image ?? ""}
+              />
+            </a>
+
+            <div className="py-2">
+              <input type="file" id="upload" hidden onChange={uploadImage} />
+              <label
+                htmlFor="upload"
+                className="cursor-pointer btn btn-outline-primary"
+              >
+                Tải ảnh lên
+              </label>
+            </div>
           </Form.Group>
         </Form>
       </Modal.Body>
