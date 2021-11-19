@@ -9,6 +9,7 @@ import TabPeople from "./tab-people";
 import TabMyInfo from "./tab-my-info";
 
 import TopNavigation from "../../components/top-nav/top-nav.component";
+import ClassroomNotFound from "./classroom-not-found";
 const getContentTab = (
   tab,
   idClass,
@@ -32,21 +33,18 @@ const getContentTab = (
 const ClassroomPage = ({ isFull = true, ...props }) => {
   const params = useParams();
   const [classroom, setClassroom] = useState();
+  const [error, setError] = useState(null)
   //console.log(params);
-  const navigate = useNavigate();
+  
   const getClassroom = async () => {
-    const res = await getApiMethod(
-      `classrooms/${params.id.toString()}/check-join-class`
-    );
-    if (!res.isJoined) {
-      //alert("Bạn đã tham gia vào lớp này!");
-      return navigate(`/`, {
-        replace: true,
-      });
-    }
-    const data = await getApiMethod("classrooms/" + params.id.toString());
+    try {
+      const data = await getApiMethod("classrooms/" + params.id.toString());
 
-    setClassroom(data);
+      setClassroom(data);
+    } catch (error) {
+      console.log('error',error);
+      setError(error)
+    }
   };
   const onEditedClassRoom = (newClassroom) => {
     newClassroom.user = classroom.user;
@@ -55,9 +53,9 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
   const onEditStudentId = (studentId) => {
     classroom.user.studentId = studentId;
     setClassroom(classroom);
-   // console.log(classroom);
+    // console.log(classroom);
   };
- 
+
   useEffect(() => getClassroom(), []);
   return classroom ? (
     <div>
@@ -77,9 +75,9 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
         )}
       </div>
     </div>
-  ) : (
-    <Spining />
-  );
+  ) : error?((
+   <ClassroomNotFound errorMessage={error.message}/>
+  )): <Spining />;
 };
 
 export default ClassroomPage;

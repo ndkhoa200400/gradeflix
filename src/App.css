@@ -121,3 +121,11 @@ nav .btn-add-classroom::after, .avatar-dropdown:after {
   max-width: 786px;
   margin: 0px auto;
 }
+
+.h-100vh {
+  height: 100vh;
+}
+.not-found-error{
+  width: fit-content;
+
+}
