@@ -7,6 +7,7 @@ import Spining from "../../components/spinning/spinning.component";
 import TabDetail from "./tab-detail";
 import TabPeople from "./tab-people";
 import TabMyInfo from "./tab-my-info";
+import TabParem from "./tab-parem";
 
 import TopNavigation from "../../components/top-nav/top-nav.component";
 import ClassroomNotFound from "./classroom-not-found";
@@ -24,7 +25,8 @@ const getContentTab = (
       );
     const redirectLink = `/classrooms/${idClass}/tab-detail`;
     return <Navigate to={redirectLink} />;
-  } else if (tab === "tab-people") return <TabPeople classroom={classroom} />;
+  } else if (tab === "tab-people") return <TabPeople classroom={classroom} />
+  else if (tab === "tab-parem") return <TabParem classroom={classroom} />;
   return (
     <TabDetail classroom={classroom} onEditedClassRoom={onEditedClassRoom} />
   );
