@@ -122,7 +122,7 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
         </Col>
 
         <Col sm={9}>
-          <Card bg="light">
+          <Card bg="light" className="my-3 my-sm-0">
             <Card.Header>
               <Card.Title>Thông tin lớp học</Card.Title>
             </Card.Header>

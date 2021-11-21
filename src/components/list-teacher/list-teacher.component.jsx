@@ -1,18 +1,24 @@
 import React, { useState } from "react";
 import CreateInviteForm from "../invite-form/invite-form.component";
 import Spining from "../spinning/spinning.component";
-import { Dropdown, Modal, Table,Button } from "react-bootstrap";
+import { Dropdown, Modal, Table, Button } from "react-bootstrap";
 
 import { postApiMethod } from "../../api/api-handler";
 
-const ModalConFirmKick = ({ show, handleClose,idClass, user, onKickMember }) => {
+const ModalConFirmKick = ({
+  show,
+  handleClose,
+  idClass,
+  user,
+  onKickMember,
+}) => {
   const [onSubmiting, setOnSubmiting] = useState(false);
-  
+
   const onClick = async () => {
     setOnSubmiting(true);
     try {
-     const data = await postApiMethod(
-       "classrooms/" + idClass + "/users/" + user.id + "/kick"
+      const data = await postApiMethod(
+        "classrooms/" + idClass + "/users/" + user.id + "/kick"
       );
       handleClose();
       onKickMember(user);
@@ -23,7 +29,9 @@ const ModalConFirmKick = ({ show, handleClose,idClass, user, onKickMember }) => 
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Mời {user?user.fullname:""} ra khỏi phòng?</Modal.Title>
+        <Modal.Title>
+          Mời {user ? user.fullname : ""} ra khỏi phòng?
+        </Modal.Title>
         {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
       </Modal.Header>
 
@@ -45,12 +53,12 @@ const ListTeacher = ({ list, classroom, onKickMember }) => {
   const [user, setUser] = useState();
   const handleClose = () => {
     setShowInvite(false);
-    setShowKickMember(false)
+    setShowKickMember(false);
   };
 
   const KickMember = (user) => {
     setUser(user);
-    setShowKickMember(true)
+    setShowKickMember(true);
   };
   return (
     <div className="teacher-info my-4">
@@ -62,17 +70,15 @@ const ListTeacher = ({ list, classroom, onKickMember }) => {
           <tr className="">
             <th>Tên</th>
             <th className="text-end">
-              {classroom.user.userRole === "STUDENT"?
-                null
-                :
+              {classroom.user.userRole === "STUDENT" ? null : (
                 <button
-                type="button"
-                class="btn btn-outline-dark"
-                onClick={() => setShowInvite(true)}
-              >
-                <i className="fas fa-plus fa-1x"></i>
-              </button>}
-              
+                  type="button"
+                  class="btn btn-outline-dark"
+                  onClick={() => setShowInvite(true)}
+                >
+                  <i className="fas fa-plus fa-1x"></i>
+                </button>
+              )}
             </th>
           </tr>
         </thead>
@@ -88,9 +94,8 @@ const ListTeacher = ({ list, classroom, onKickMember }) => {
                     className="me-2"
                     alt="member avatar"
                   ></img>
-                  {item.fullname} {item.userRole === "HOST" ? (
-                    <span>(Người tạo)</span>
-                  ) : null}
+                  {item.fullname}{" "}
+                  {item.userRole === "HOST" ? <span>(Người tạo)</span> : null}
                 </div>
               </td>
               <td>
@@ -130,7 +135,7 @@ const ListTeacher = ({ list, classroom, onKickMember }) => {
         show={showKickMember}
         handleClose={handleClose}
         user={user}
-        idClass = {idClass}
+        idClass={idClass}
         onKickMember={onKickMember}
       />
     </div>
