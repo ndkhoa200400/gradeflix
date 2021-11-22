@@ -16,7 +16,8 @@ const getContentTab = (
   idClass,
   classroom,
   onEditedClassRoom,
-  onEditStudentId
+  onEditStudentId,
+  onGradeEdit
 ) => {
   if (tab === "tab-my-info") {
     if (classroom && classroom.user.userRole === "STUDENT")
@@ -26,7 +27,7 @@ const getContentTab = (
     const redirectLink = `/classrooms/${idClass}/tab-detail`;
     return <Navigate to={redirectLink} />;
   } else if (tab === "tab-people") return <TabPeople classroom={classroom} />
-  else if (tab === "tab-parem") return <TabParem classroom={classroom} />;
+  else if (tab === "tab-parem") return <TabParem classroom={classroom} onGradeEdit = {onGradeEdit} />;
   return (
     <TabDetail classroom={classroom} onEditedClassRoom={onEditedClassRoom} />
   );
@@ -57,7 +58,10 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
     setClassroom(classroom);
     // console.log(classroom);
   };
-
+  const onGradeEdit = (gradeStructure)=>{
+    classroom.gradeStructure = gradeStructure;
+    setClassroom(classroom);
+  }
   useEffect(() => getClassroom(), []);
   return classroom ? (
     <div>
@@ -73,7 +77,8 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
           params.id,
           classroom,
           onEditedClassRoom,
-          onEditStudentId
+          onEditStudentId,
+          onGradeEdit
         )}
       </div>
     </div>
