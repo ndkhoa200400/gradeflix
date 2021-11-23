@@ -17,7 +17,7 @@ const ModalConFirmKick = ({
   const onClick = async () => {
     setOnSubmiting(true);
     try {
-      const data = await postApiMethod(
+      await postApiMethod(
         "classrooms/" + idClass + "/users/" + user.id + "/kick"
       );
       handleClose();

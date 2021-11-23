@@ -9,7 +9,6 @@ const ChangeIDForm = ({ show, handleClose, idClass, user, onEditStudentId }) => 
     register,
     handleSubmit,
     reset,
-    getValues,
     setError,
     formState: { errors },
   } = useForm();
@@ -38,7 +37,7 @@ const ChangeIDForm = ({ show, handleClose, idClass, user, onEditStudentId }) => 
 
       handleClose();
       user.studentId = data.studentId
-      
+
       onEditStudentId(user);
       reset();
     } catch (error) {

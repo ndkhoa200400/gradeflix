@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as AuthenService from "../../services/auth.service";
 const ClassroomCard = ({ classroom }) => {
   const maxLength = 80;

@@ -12,9 +12,9 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
     formState: { errors },
   } = useForm();
   const [onSubmiting, setOnSubmiting] = useState(false);
-  
+
   const closeModal = () =>{
-    
+
     handleClose()
     reset()
   }
@@ -28,12 +28,12 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
     }
     setOnSubmiting(true);
     try {
-     
+
 
       // gửi cho api
       const link = `classrooms/${classroom?classroom.id:""}/users/${classroom?classroom.user.id:""}`
-      //console.log(link + data)
-      const studentId = await postApiMethod(link, data);
+
+      await postApiMethod(link, data);
      // console.log(data.studentId)
       onEditStudentId(data.studentId);
       handleClose();
@@ -44,7 +44,7 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
       setError("studentId", {
           message: "Mã số sinh viên đã tồn tại"
       });
-     
+
     }
     setOnSubmiting(false);
   };
@@ -72,7 +72,7 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
                   )}
           </Form.Group>
 
-        
+
         </Form>
       </Modal.Body>
       <Modal.Footer>

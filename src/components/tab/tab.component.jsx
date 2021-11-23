@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Row, Container, Nav, Col, Navbar } from "react-bootstrap";
+import { Row, Container, Nav, Col } from "react-bootstrap";
 
 
 const Tab = ({ id, classroom }) => {
