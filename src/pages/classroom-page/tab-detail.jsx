@@ -22,8 +22,8 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 				<Col sm={3}>
 					{classroom && classroom.user.userRole === "STUDENT" ? (
 						<Card>
-							<Card.Header className="bg-primary">
-								<Card.Title className="text-white">Bài tập sắp đến hạn</Card.Title>
+							<Card.Header>
+								<Card.Title>Bài tập sắp đến hạn</Card.Title>
 							</Card.Header>
 							<Card.Body>
 								<Card.Text>Không có bài tập nào sắp đến hạn</Card.Text>
@@ -32,8 +32,8 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 					) : (
 						<div>
 							<Card style={{ marginBottom: "10px", position: "relative" }}>
-								<Card.Header className="bg-primary">
-									<Card.Title className="text-white"> Đường dẫn vào lớp</Card.Title>
+								<Card.Header>
+									<Card.Title> Đường dẫn vào lớp</Card.Title>
 								</Card.Header>
 								<Card.Body>
 									<div
@@ -76,8 +76,8 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 							</Card>
 
 							<Card>
-								<Card.Header className="bg-primary">
-									<Card.Title className="text-white">Cấu hình</Card.Title>
+								<Card.Header >
+									<Card.Title>Cấu hình</Card.Title>
 								</Card.Header>
 								<Card.Body>
 									<Button variant="outline-primary" onClick={openModal} className="w-100">
@@ -98,8 +98,8 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 
 				<Col sm={9}>
 					<Card className="my-3 my-sm-0">
-						<Card.Header className="bg-primary">
-							<Card.Title className="text-white">Thông tin lớp học</Card.Title>
+						<Card.Header>
+							<Card.Title>Thông tin lớp học</Card.Title>
 						</Card.Header>
 						<Card.Body>
 							<Card.Title>Tên lớp</Card.Title>
