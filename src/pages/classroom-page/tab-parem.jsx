@@ -20,7 +20,7 @@ const TabParem = ({ classroom, onGradeEdit }) => {
                 <Card.Title>Cấu hình</Card.Title>
               </Card.Header>
               <Card.Body className="text-center d-grid grap-2">
-                <Button variant="outline-success" className="mb-3" block onClick = {openForm}>
+                <Button variant="outline-success" className="mb-3" onClick = {openForm}>
                   Chỉnh sửa thang điểm
                 </Button>
 

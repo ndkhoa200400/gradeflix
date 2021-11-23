@@ -38,7 +38,7 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
   const [classroom, setClassroom] = useState();
   const [error, setError] = useState(null)
   //console.log(params);
-  
+
   const getClassroom = async () => {
     try {
       const data = await getApiMethod("classrooms/" + params.id.toString());
@@ -50,15 +50,19 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
     }
   };
   const onEditedClassRoom = (newClassroom) => {
+		console.log('edited classroom')
     newClassroom.user = classroom.user;
     setClassroom(newClassroom);
   };
+
   const onEditStudentId = (studentId) => {
+		console.log('edit student id')
     classroom.user.studentId = studentId;
     setClassroom(classroom);
     // console.log(classroom);
   };
   const onGradeEdit = (gradeStructure)=>{
+		console.log('edit grade')
     classroom.gradeStructure = gradeStructure;
     setClassroom(classroom);
   }
