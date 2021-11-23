@@ -6,7 +6,7 @@ const Tab = ({ id, classroom }) => {
   const urlTab1 = "/classrooms/" + id + "/tab-detail";
   const urlTab2 = "/classrooms/" + id + "/tab-people";
   const urlTab3 = "/classrooms/" + id + "/tab-my-info";
- 
+  const urlTab4 = "/classrooms/" + id + "/tab-parem";
   return (
     <Container>
       <Row style={{ padding: "10px" }}>
@@ -30,6 +30,16 @@ const Tab = ({ id, classroom }) => {
                 }
               >
                 Danh sách
+              </NavLink>
+            </Nav.Item>
+            <Nav.Item>
+              <NavLink
+                to={urlTab4}
+                className={({ isActive }) =>
+                  "nav-link" + (isActive ? " active" : "")
+                }
+              >
+                Bảng điểm
               </NavLink>
             </Nav.Item>
             {classroom && classroom.user.userRole === "STUDENT" ? (

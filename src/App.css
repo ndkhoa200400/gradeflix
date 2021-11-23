@@ -122,10 +122,26 @@ nav .btn-add-classroom::after, .avatar-dropdown:after {
   margin: 0px auto;
 }
 
+
 .h-100vh {
   height: 100vh;
 }
 .not-found-error{
   width: fit-content;
 
+}
+
+.parem-list {
+  max-width: 768px;
+  margin: 0px auto;
+}
+
+
+.right-item{
+  text-align: right;
+}
+
+
+.margin-parem {
+  margin-left: 5px; 
 }

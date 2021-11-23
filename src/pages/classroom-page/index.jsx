@@ -7,6 +7,7 @@ import Spining from "../../components/spinning/spinning.component";
 import TabDetail from "./tab-detail";
 import TabPeople from "./tab-people";
 import TabMyInfo from "./tab-my-info";
+import TabParem from "./tab-parem";
 
 import TopNavigation from "../../components/top-nav/top-nav.component";
 import ClassroomNotFound from "./classroom-not-found";
@@ -15,7 +16,8 @@ const getContentTab = (
   idClass,
   classroom,
   onEditedClassRoom,
-  onEditStudentId
+  onEditStudentId,
+  onGradeEdit
 ) => {
   if (tab === "tab-my-info") {
     if (classroom && classroom.user.userRole === "STUDENT")
@@ -24,7 +26,8 @@ const getContentTab = (
       );
     const redirectLink = `/classrooms/${idClass}/tab-detail`;
     return <Navigate to={redirectLink} />;
-  } else if (tab === "tab-people") return <TabPeople classroom={classroom} />;
+  } else if (tab === "tab-people") return <TabPeople classroom={classroom} />
+  else if (tab === "tab-parem") return <TabParem classroom={classroom} onGradeEdit = {onGradeEdit} />;
   return (
     <TabDetail classroom={classroom} onEditedClassRoom={onEditedClassRoom} />
   );
@@ -35,7 +38,7 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
   const [classroom, setClassroom] = useState();
   const [error, setError] = useState(null)
   //console.log(params);
-  
+
   const getClassroom = async () => {
     try {
       const data = await getApiMethod("classrooms/" + params.id.toString());
@@ -47,15 +50,22 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
     }
   };
   const onEditedClassRoom = (newClassroom) => {
+		console.log('edited classroom')
     newClassroom.user = classroom.user;
     setClassroom(newClassroom);
   };
+
   const onEditStudentId = (studentId) => {
+		console.log('edit student id')
     classroom.user.studentId = studentId;
     setClassroom(classroom);
     // console.log(classroom);
   };
-
+  const onGradeEdit = (gradeStructure)=>{
+		console.log('edit grade')
+    classroom.gradeStructure = gradeStructure;
+    setClassroom(classroom);
+  }
   useEffect(() => getClassroom(), []);
   return classroom ? (
     <div>
@@ -71,7 +81,8 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
           params.id,
           classroom,
           onEditedClassRoom,
-          onEditStudentId
+          onEditStudentId,
+          onGradeEdit
         )}
       </div>
     </div>
