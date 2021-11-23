@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Col, Row, Card, Button } from "react-bootstrap";
 import Spining from "../../components/spinning/spinning.component";
 import EditStudentIdModal from "./edit-student-id-modal";
+import ListParem from "../../components/list-parem/list-parem.component";
 const TabMyInfo = ({ classroom, onEditStudentId }) => {
   const [showEditStudentId, setEditStudentId] = useState(false);
   const handleClose = () => {
@@ -92,6 +93,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 </div>
               </Card.Body>
             </Card>
+            <ListParem classroom={classroom}></ListParem>
           </Col>
           <Col sm={9}>
             <Card bg="light">

@@ -32,7 +32,9 @@ const Tab = ({ id, classroom }) => {
                 Danh sách
               </NavLink>
             </Nav.Item>
-            <Nav.Item>
+            {classroom && classroom.user.userRole === "HOST" || classroom.user.userRole === "TEACHER" ? (
+              <Nav.Item>
+                <Nav.Item>
               <NavLink
                 to={urlTab4}
                 className={({ isActive }) =>
@@ -42,6 +44,8 @@ const Tab = ({ id, classroom }) => {
                 Bảng điểm
               </NavLink>
             </Nav.Item>
+              </Nav.Item>
+            ) : null}
             {classroom && classroom.user.userRole === "STUDENT" ? (
               <Nav.Item>
                 <NavLink
