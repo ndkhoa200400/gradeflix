@@ -32,7 +32,7 @@ const Tab = ({ id, classroom }) => {
                 Danh sách
               </NavLink>
             </Nav.Item>
-            {classroom && classroom.user.userRole === "HOST" || classroom.user.userRole === "TEACHER" ? (
+            {classroom && (classroom.user.userRole === "HOST" || classroom.user.userRole === "TEACHER") ? (
               <Nav.Item>
                 <Nav.Item>
               <NavLink

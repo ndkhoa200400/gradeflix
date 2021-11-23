@@ -7,7 +7,7 @@ const ParemItem = ({ parem }) => {
       <Card.Body>
         <Row className="align-items-center">
           <Col>{parem.name}</Col>
-          <Col className="text-end">{parem.percent}</Col>
+          <Col className="text-end">{parem.percent}%</Col>
         </Row>
       </Card.Body>
     </Card>
