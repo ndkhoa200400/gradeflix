@@ -1,0 +1,14 @@
+.search-field{
+    position: absolute;
+    top: 10px;
+    left: 30%;
+    width: 50%;
+
+    
+}
+.div-horizontal{
+    overflow: auto;
+    border: 0px;
+    white-space: nowrap;
+}
+  
