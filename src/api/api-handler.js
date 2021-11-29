@@ -34,7 +34,7 @@ export const getApiMethod = async (link, params = "") => {
   }
 };
 
-export const postApiMethod = async (link, data) => {
+export const postApiMethod = async (link, data,contentType = "application/json" ) => {
   try {
     const token = loadToken();
     const res = await axios(`${apiLink}${link}`, {
@@ -45,7 +45,7 @@ export const postApiMethod = async (link, data) => {
       headers: {
         "Access-Control-Allow-Origin": "*",
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        "Content-Type": contentType,
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
       data,
