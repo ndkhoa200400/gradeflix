@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Col, Row, Card, Button } from "react-bootstrap";
 import Spining from "../../components/spinning/spinning.component";
 import EditStudentIdModal from "./edit-student-id-modal";
+import StudentGrade from "../../components/student-grade/student-grade";
 import ListParem from "../../components/list-parem/list-parem.component";
 const TabMyInfo = ({ classroom, onEditStudentId }) => {
   const [showEditStudentId, setEditStudentId] = useState(false);
@@ -93,6 +94,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 </div>
               </Card.Body>
             </Card>
+						<ListParem classroom={classroom}/>
           </Col>
           <Col sm={9}>
             <Card >
@@ -101,7 +103,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
               </Card.Header>
               <Card.Body>
                 <Card.Text style={{ height: "200px" }}>
-                  Tính năng đang trong quá trình phát triển ...
+                  <StudentGrade classroom={classroom}/>
                 </Card.Text>
               </Card.Body>
             </Card>
