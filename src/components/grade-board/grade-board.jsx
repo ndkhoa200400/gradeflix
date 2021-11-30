@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import {  Card } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import { postApiMethod } from "../../api/api-handler";
 import './grade-board.css'
+
 const { SearchBar } = Search;
 
 const headerFormatter = (column, colIndex, { sortElement, filterElement })=> {
@@ -23,8 +25,27 @@ const sortCaret =  (order, column) => {
   }
 
 
-const GradeBoard = ()=> {
-    const [columns, setColumns] = useState([
+const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId})=> {
+    const gradeValidator = (newValue, row, column) => {
+        if (isNaN(newValue)) {
+            return {
+              valid: false,
+              message: "Hãy nhập điểm bằng số"
+            };
+          }
+        if (+newValue >= 0 && +newValue <= gradeStructure.total)
+            return {valid: true}
+        return {valid: false, message: `Phạm vi điểm 0 - ${gradeStructure.total}`}
+    }
+
+    const parems = gradeStructure.parems;
+    const defaultSorted = [
+        {
+          dataField: "name",
+          order: "desc"
+        }
+    ];
+    const columns = [
         {
           dataField: "studentId",
           text: "MSSV",
@@ -34,58 +55,93 @@ const GradeBoard = ()=> {
           sortCaret
         },
         {
-          dataField: "name",
+          dataField: "fullName",
           text: "Họ và tên",
           sort: true,
-          editable: true,
+          editable: false,
           headerFormatter,
           sortCaret,
-        }
-        
-      ]);
-      
-    const defaultSorted = [
+        },
         {
-          dataField: "name",
-          order: "desc"
+            dataField: "account",
+            text: "Tài khoản",
+            sort: true,
+            editable: false,
+            headerFormatter,
+            sortCaret,
+          }
+        
+    ]
+    parems.forEach(e=>{
+        columns.push({
+                    dataField: e.name,
+                    text: `${e.name} (${e.percent}%)`, 
+                    sort: true,
+                    editable: true,
+                    headerFormatter,
+                    sortCaret,
+                    validator: gradeValidator
+                    })
+    })
+    columns.push({
+        dataField: 'total',
+        text: 'Tổng kết', 
+        sort: true,
+        editable: false,
+        headerFormatter,
+        sortCaret,
+        })
+   
+    const data = []
+    students.forEach(e=>{
+        const newObj = {studentId: e.studentId, fullName: e.fullName, account: e.user?e.user.fullname:""}
+        var updated = false;
+        for(var i = 0; i < parems.length; i++){
+            if (e.grades){
+                for(var j = 0 ; j < e.grades.length; j++)
+                    if(e.grades[j].name === parems[i].name)
+                    {
+                        newObj[`${parems[i].name}`] = e.grades[j].grade;
+                        updated = true;
+                        break;
+                    }
+                if (!updated)
+                    newObj[`${parems[i].name}`] =  "";
+            }
+            else
+                newObj[`${parems[i].name}`] =  "";
         }
-    ];
-    const [students, setStudents] = useState([
-      { studentId: 1, name: "Jay", grade: 1 },
-      { studentId: 2, name: "orange", grade: 2 },
-      { studentId: 3, name: "banana", grade: 3 },
-      { studentId: 4, name: "peach", grade: 2 },
-      { studentId: 5, name: "carrot", grade: 1 },
-      { studentId: 6, name: "grapes", grade: 4 },
-      { studentId: 7, name: "mango", grade: 1 },
-      { studentId: 8, name: "potatoe", grade: 3 },
-      { studentId: 9, name: "onion", grade: 3 },
-      { studentId: 10, name: "onion", grade: 3 },
-      { studentId: 11, name: "onion", grade: 3 },
-      { studentId: 12, name: "onion", grade: 3 },
-      { studentId: 13, name: "onion", grade: 3 },
-      { studentId: 14, name: "onion", grade: 3 }
-    ]);
+            
+        newObj['total'] = e['total'] ? e['total'] : "";
+        data.push(newObj)
+    })
+    console.log(data)
     const beforeSaveCell = (oldValue, newValue, row, column, done) => {
+        console.log(oldValue, newValue, (oldValue === undefined && newValue === ""))
+        if (oldValue === newValue || (oldValue === undefined && newValue === ""))
+            return;
         const studentId = row.studentId;
         const field = column.dataField;
         console.log(studentId, field, newValue)
-        const newList = [...students];
-        for(var i = 0; i < newList.length; i++){
-            if (newList[i].studentId === studentId){
-                newList[i][field] = newValue;
-                break;
-            } 
-        };
-        setStudents(newList);
+        //call api
+        postApiMethod(`classrooms/${classroomId}/students/${studentId}/grades?gradeName=${field}`, {newGrade: newValue})
+        .then(res=>{
+            console.log(res);
+            onUpdateGrade(studentId, field, newValue);
+        })
+        .catch(e=>{
+            console.log(e);
+            onUpdateGrade(studentId, field, oldValue);
+        });
+        onUpdateGrade(studentId, field, newValue);
       };
 
     return (
       <ToolkitProvider
         bootstrap5
         defaultSorted={defaultSorted}
-        keyField="id"
-        data={students}
+        keyField="studentId"
+        data={data}
         columns={columns}
         search
         
@@ -104,7 +160,7 @@ const GradeBoard = ()=> {
                     bootstrap4
                     hover
                     noDataIndication="Không có sinh viên nào"
-                    striped
+                    
                     wrapperClasses="table-responsive"
                 // rowEvents={ rowEvents }
                 {...props.baseProps}

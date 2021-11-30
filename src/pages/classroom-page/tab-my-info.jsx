@@ -25,7 +25,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
@@ -35,7 +35,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
@@ -45,7 +45,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
@@ -55,7 +55,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
@@ -65,7 +65,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
