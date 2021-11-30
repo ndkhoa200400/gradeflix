@@ -1,5 +1,6 @@
+
 import React from "react";
-import {  Card } from "react-bootstrap";
+import {  Card, Button } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
@@ -8,24 +9,48 @@ import './grade-board.css'
 
 const { SearchBar } = Search;
 
-const headerFormatter = (column, colIndex, { sortElement, filterElement })=> {
-  return (
-    <div style={ { display: 'flex', flexDirection: 'row',  justifyContent:'center', cursor:'pointer'} }>
-      { filterElement }
-      { column.text }
-      { sortElement }
-    </div>
-  );
-}
-const sortCaret =  (order, column) => {
-    if (!order) return ( <span>&nbsp;<i class="fas fa-sort" style={{fontSize:'10px'}}></i></span>);
-    else if (order === 'asc') return ( <span>&nbsp;<i class="fas fa-sort-up" style={{fontSize:'10px'}} ></i></span>);
-    else if (order === 'desc') return ( <span>&nbsp;<i class="fas fa-sort-down" style={{fontSize:'10px'}}></i></span>);
-    return null;
-  }
 
 
-const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId})=> {
+
+const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openGradeForm, errorList})=> {
+  
+    const headerFormatter = (column, colIndex, { sortElement, filterElement })=> {
+        return (
+          <div style={ { display: 'flex', flexDirection: 'row',  justifyContent:'center', cursor:'pointer'} }>
+            { filterElement }
+            { column.text }
+            { sortElement }
+          </div>
+        );
+      }
+      const headerGradeFormatter = (column, colIndex, { sortElement, filterElement })=> {
+          return (
+              <div style={ { display: 'flex', flexDirection: 'row',  justifyContent:'center', cursor:'pointer'} }>
+                  <div style={ { display: 'flex', flexDirection: 'column',  justifyContent:'center', cursor:'pointer'} }>
+                      <div style={ { display: 'flex', flexDirection: 'row',  justifyContent:'center', cursor:'pointer'} }>
+                          { filterElement }
+                          { column.text }
+                          { sortElement }
+                      </div>
+                  </div>
+                  &nbsp;
+                  <Button variant="link" style={{padding:'0px'}} onClick = {()=>{
+                        const title = "Tải lên điểm cho cột điểm " + column.text;
+                        const endPoint = "student-grades?gradeName=" + column.dataField;
+                        openGradeForm(title, endPoint);
+                  }}>
+                      <i class="fa fa-upload" aria-hidden="true"></i>
+                  </Button>
+              </div>
+            
+          );
+        }
+    const sortCaret =  (order, column) => {
+          if (!order) return ( <span>&nbsp;<i class="fas fa-sort" style={{fontSize:'10px'}}></i></span>);
+          else if (order === 'asc') return ( <span>&nbsp;<i class="fas fa-sort-up" style={{fontSize:'10px'}} ></i></span>);
+          else if (order === 'desc') return ( <span>&nbsp;<i class="fas fa-sort-down" style={{fontSize:'10px'}}></i></span>);
+          return null;
+    }
     const gradeValidator = (newValue, row, column) => {
         if (isNaN(newValue)) {
             return {
@@ -38,7 +63,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId})=> {
         return {valid: false, message: `Phạm vi điểm 0 - ${gradeStructure.total}`}
     }
 
-    const parems = gradeStructure.parems;
+    const parems = gradeStructure ? gradeStructure.parems : [];
     const defaultSorted = [
         {
           dataField: "name",
@@ -52,7 +77,9 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId})=> {
           editable: false,
           sort: true,
           headerFormatter,
-          sortCaret
+          sortCaret,
+          
+        
         },
         {
           dataField: "fullName",
@@ -76,10 +103,8 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId})=> {
         columns.push({
                     dataField: e.name,
                     text: `${e.name} (${e.percent}%)`, 
-                    sort: true,
                     editable: true,
-                    headerFormatter,
-                    sortCaret,
+                    headerFormatter: headerGradeFormatter,
                     validator: gradeValidator
                     })
     })
@@ -115,27 +140,34 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId})=> {
         newObj['total'] = e['total'] ? e['total'] : "";
         data.push(newObj)
     })
-    console.log(data)
-    const beforeSaveCell = (oldValue, newValue, row, column, done) => {
+    
+    const beforeSaveCell = async (oldValue, newValue, row, column, done) => {
         console.log(oldValue, newValue, (oldValue === undefined && newValue === ""))
         if (oldValue === newValue || (oldValue === undefined && newValue === ""))
             return;
         const studentId = row.studentId;
         const field = column.dataField;
-        console.log(studentId, field, newValue)
         //call api
-        postApiMethod(`classrooms/${classroomId}/students/${studentId}/grades?gradeName=${field}`, {newGrade: newValue})
-        .then(res=>{
-            console.log(res);
-            onUpdateGrade(studentId, field, newValue);
-        })
-        .catch(e=>{
+        try{
+            const res = await postApiMethod(`classrooms/${classroomId}/students/${studentId}/grades?gradeName=${field}`, {newGrade: newValue});
+            onUpdateGrade(res);
+        }  
+        catch(e){
             console.log(e);
-            onUpdateGrade(studentId, field, oldValue);
-        });
-        onUpdateGrade(studentId, field, newValue);
+        };
       };
 
+    //Mark to customize later!!
+    const rowStyle = (row, rowIndex) => {
+        const style = {}
+        for(var i = 0; i < errorList.length; i++)
+            if (row.studentId === errorList[i]){
+                style.backgroundColor = '#FFCDD2';
+                break;
+            }
+        
+        return style;
+    };
     return (
       <ToolkitProvider
         bootstrap5
@@ -160,7 +192,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId})=> {
                     bootstrap4
                     hover
                     noDataIndication="Không có sinh viên nào"
-                    
+                    rowStyle={ rowStyle }
                     wrapperClasses="table-responsive"
                 // rowEvents={ rowEvents }
                 {...props.baseProps}
