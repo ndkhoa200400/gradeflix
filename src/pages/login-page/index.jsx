@@ -45,7 +45,6 @@ const LoginPage = () => {
 	} = useForm();
 	const navigate = useNavigate();
 
-	console.log(navigate);
 	const onSubmit = async (data) => {
 		setOnSubmiting(true);
 		try {

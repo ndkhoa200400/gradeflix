@@ -4,7 +4,7 @@ import Spining from "../../components/spinning/spinning.component";
 import EditStudentIdModal from "./edit-student-id-modal";
 import StudentGrade from "../../components/student-grade/student-grade";
 import ListParem from "../../components/list-parem/list-parem.component";
-const TabMyInfo = ({ classroom, onEditStudentId }) => {
+const TabMyInfo = ({ classroom, onEditStudentId,studentList }) => {
   const [showEditStudentId, setEditStudentId] = useState(false);
   const handleClose = () => {
     setEditStudentId(false);
@@ -103,7 +103,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
               </Card.Header>
               <Card.Body>
                 <Card.Text style={{ height: "200px" }}>
-                  <StudentGrade classroom={classroom}/>
+                  <StudentGrade classroom={classroom} studentList={studentList}/>
                 </Card.Text>
               </Card.Body>
             </Card>

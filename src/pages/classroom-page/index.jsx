@@ -15,6 +15,7 @@ const getContentTab = (
 	tab,
 	idClass,
 	classroom,
+	studentList,
 	onEditedClassRoom,
 	onEditStudentId,
 	onGradeEdit
@@ -22,7 +23,7 @@ const getContentTab = (
 	if (tab === "tab-my-info") {
 		if (classroom && classroom.user.userRole === "STUDENT")
 			return (
-				<TabMyInfo classroom={classroom} onEditStudentId={onEditStudentId} />
+				<TabMyInfo classroom={classroom} onEditStudentId={onEditStudentId} studentList={studentList} />
 			);
 		const redirectLink = `/classrooms/${idClass}/tab-detail`;
 		return <Navigate to={redirectLink} />;
@@ -37,6 +38,7 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 	const params = useParams();
 	const [classroom, setClassroom] = useState();
 	const [error, setError] = useState(null)
+	const [studentList, setStudentList] = useState();
 	//console.log(params);
 
 
@@ -49,6 +51,7 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 		classroom.user.studentId = studentId;
 		setClassroom(classroom);
 		// console.log(classroom);
+		return getGrades()
 	};
 	const onGradeEdit = (gradeStructure) => {
 		classroom.gradeStructure = gradeStructure;
@@ -69,6 +72,23 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 
 		return getClassroom()
 	}, [params]);
+
+	const getGrades = async () => {
+		if (classroom?.user?.studentId) {
+			const result = await getApiMethod(`/classrooms/${classroom.id}/students/${classroom.user.studentId}/grades`);
+			setStudentList(result);
+		}
+	};
+
+	useEffect(() => {
+		try {
+			return getGrades();
+		} catch (err) {
+			console.log(err);
+			setError(err)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [classroom]);
 	return classroom ? (
 		<div>
 			<TopNavigation title="Gradeflix" titleLink="/" />
@@ -82,6 +102,7 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 					params.tab,
 					params.id,
 					classroom,
+					studentList,
 					onEditedClassRoom,
 					onEditStudentId,
 					onGradeEdit

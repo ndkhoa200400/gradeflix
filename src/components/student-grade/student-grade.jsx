@@ -1,25 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
-import { getApiMethod } from "../../api/api-handler";
-const StudentGrade = ({ classroom }) => {
-	const [studentList, setStudentList] = useState();
+const StudentGrade = ({ classroom ,studentList}) => {
 	const [mappingGrades, setMappingGrades] = useState({});
-	useEffect(() => {
-		const getGrades = async () => {
-			if (classroom.user.studentId) {
-				const result = await getApiMethod(`/classrooms/${classroom.id}/students/${classroom.user.studentId}/grades`);
-				setStudentList(result);
-			}
-		};
-		try {
-			return getGrades();
-		} catch (err) {
-			console.log(err);
-		}
-	}, [classroom]);
+
 
 	useEffect(() => {
-		console.log("grades", studentList);
 		if (studentList) {
 			const mapping = {};
 			const studentGrade = studentList.grades
@@ -30,15 +15,22 @@ const StudentGrade = ({ classroom }) => {
 			}
 			setMappingGrades(mapping);
 		}
-	}, [studentList]);
+	}, [studentList, classroom]);
 
 	return studentList ? (
-		classroom.gradeStructure.parems.map((parem) => (
-			<Row>
-				<Col>{parem.name}</Col>
-				<Col>{mappingGrades[parem.name]}</Col>
+		<div className="student-grades p-2">
+				<Row className="px-2 text-center">
+				<Col className="border border-2 border-end-0 py-2 fw-bold" sm={8}>Cột điểm</Col>
+				<Col className="border border-2 py-2 fw-bold">Điểm</Col>
 			</Row>
-		))
+		{		classroom.gradeStructure.parems.map((parem) => (
+			<Row className="p-2">
+				<Col className="border border-2 border-end-0 p-3" sm={8}>{parem.name}</Col>
+				<Col className="border border-2 p-3">{mappingGrades[parem.name]}</Col>
+			</Row>
+			))}
+		</div>
+
 	) : (
 		<div>
 			<h3>Chưa cập nhật bảng điểm.</h3>
