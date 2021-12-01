@@ -2,12 +2,15 @@ import React, { useState } from "react";
 import { postApiMethod } from "../../api/api-handler";
 import Spining from "../../components/spinning/spinning.component";
 import { useForm } from "react-hook-form";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form,  } from "react-bootstrap";
 const UploadFileForm = ({
 	show,
 	handleClose,
 	endPoint,
 	classroom,
+	refeshGradeBoard,
+	title,
+	gradeForm
 }) => {
 	const {
 		register,
@@ -28,6 +31,7 @@ const UploadFileForm = ({
 
 	const closeModal = () => {
 		handleClose();
+		setFileName("");
 		reset();
 	};
 
@@ -42,19 +46,35 @@ const UploadFileForm = ({
 				data,
 				"multipart/form-data"
 			);
+			var msg = ""
+			if (res.errorList && gradeForm){
+				
+				msg = "Điểm không hợp lệ tại các mã số sinh viên: ";
+				for(var i = 0; i < res.errorList.length && i < 10; i++){
+					msg += res.errorList[i] + ", "
+				}
+				if (res.errorList.length > 10)
+					msg += "..."
+				else 
+					msg = msg.slice(0, msg.length-2);
+			}
+			refeshGradeBoard(msg, res.errorList);
 			handleClose();
-
+			
 			reset();
+			
 		} catch (error) {
-			//console.log( error);
-			alert("Đã xảy ra lỗi! Vui lòng thử lại");
+			
+			console.log( error);
+			//alert("Đã xảy ra lỗi! Vui lòng thử lại");
 		}
+		setFileName("");
 		setOnSubmiting(false);
 	};
 	return (
 		<Modal show={show} onHide={closeModal}>
 			<Modal.Header closeButton>
-				<Modal.Title>Cập nhật file</Modal.Title>
+				<Modal.Title>{title}</Modal.Title>
 				{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
 			</Modal.Header>
 			<Modal.Body>
@@ -65,7 +85,7 @@ const UploadFileForm = ({
 							<Form.Control
 								type="text"
 								placeholder="Chọn file"
-								defaultValue={fileName}
+								value={fileName}
 							/>
 						</a>
 
@@ -82,13 +102,14 @@ const UploadFileForm = ({
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant="outline-secondary" onClick={handleClose}>
+				<Button variant="outline-secondary" onClick={closeModal}>
 					Đóng
 				</Button>
 				<Button variant="outline-primary" onClick={handleSubmit(onSubmit)}>
 					Cập nhât
 				</Button>
 			</Modal.Footer>
+			
 		</Modal>
 	);
 };

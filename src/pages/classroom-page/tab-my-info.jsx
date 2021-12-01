@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Col, Row, Card, Button } from "react-bootstrap";
 import Spining from "../../components/spinning/spinning.component";
 import EditStudentIdModal from "./edit-student-id-modal";
-import ListParem from "../../components/list-parem/list-parem.component";
 const TabMyInfo = ({ classroom, onEditStudentId }) => {
   const [showEditStudentId, setEditStudentId] = useState(false);
   const handleClose = () => {
@@ -26,7 +25,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
@@ -36,7 +35,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
@@ -46,7 +45,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
@@ -56,7 +55,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
@@ -66,7 +65,7 @@ const TabMyInfo = ({ classroom, onEditStudentId }) => {
                 <Card.Text
                   style={{
                     display: "flex",
-                    lexDirection: "row",
+                    flexDirection: "row",
                     justifyContent: "space-between",
                   }}
                 >
