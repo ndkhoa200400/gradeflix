@@ -33,14 +33,14 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
       // gửi cho api
       const link = `classrooms/${classroom?classroom.id:""}/users/${classroom?classroom.user.id:""}`
 
-      await postApiMethod(link, data);
-     // console.log(data.studentId)
+      const res = await postApiMethod(link, data);
+    
       onEditStudentId(data.studentId);
       handleClose();
 
       reset();
     } catch (error) {
-      //console.log( error);
+      console.log( error);
       setError("studentId", {
           message: "Mã số sinh viên đã tồn tại"
       });

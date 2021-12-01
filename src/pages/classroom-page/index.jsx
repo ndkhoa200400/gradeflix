@@ -74,9 +74,15 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 	}, [params]);
 
 	const getGrades = async () => {
-		if (classroom?.user?.studentId) {
-			const result = await getApiMethod(`/classrooms/${classroom.id}/students/${classroom.user.studentId}/grades`);
-			setStudentList(result);
+		if (classroom?.user) {
+			try{
+				const result = await getApiMethod(`/classrooms/${classroom.id}/students/${classroom.user.studentId}/grades`);
+				setStudentList(result);
+			}
+			catch(e){
+				setStudentList();
+			}
+			
 		}
 	};
 
