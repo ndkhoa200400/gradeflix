@@ -14,7 +14,7 @@ const ListParem = ({ classroom }) => {
 			</Card.Header>
 
 			<Card.Body>
-				<h5>Tổng điểm lớp: {total}</h5>
+				<h5 className="mb-3">Tổng điểm lớp: {total}</h5>
 				{parem.map((item, idx) => (
 					<ParemItem parem={item} key={idx} />
 				))}
