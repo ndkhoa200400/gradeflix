@@ -35,7 +35,7 @@ const TabParem = ({ classroom, onGradeEdit }) => {
       setGradeForm(true);
     }
     const refeshGradeBoard = (msg, errList)=>{
-      if (msg !== ""){
+      if (errList && errList.length!==0){
         setError(msg);
         setErrorList(errList)
         setShowAlert(true)
@@ -45,7 +45,7 @@ const TabParem = ({ classroom, onGradeEdit }) => {
     const getGradeBoards = async () => {
       try {
         const res = await getApiMethod("classrooms/" + classroom.id + "/student-list");
-        //console.log(res);
+        console.log(res);
         setStudents(res)
       } catch (error) {
         console.log('error', error);

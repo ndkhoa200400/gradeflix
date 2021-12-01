@@ -1,5 +1,6 @@
 
 import React from "react";
+import {Link} from 'react-router-dom'
 import {  Card, Button } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
@@ -62,7 +63,21 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
             return {valid: true}
         return {valid: false, message: `Phạm vi điểm 0 - ${gradeStructure.total}`}
     }
-
+    const formatter = (cell, row)=>{
+      if (row.account !== '')
+        return (
+          <span>
+            <Link to="#">{cell}</Link>
+          </span>
+        );
+      
+      else
+        return (
+          <span>
+           {cell}
+          </span>
+        );
+      }
     const parems = gradeStructure ? gradeStructure.parems : [];
     const defaultSorted = [
         {
@@ -78,8 +93,8 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
           sort: true,
           headerFormatter,
           sortCaret,
+          formatter
           
-        
         },
         {
           dataField: "fullName",
@@ -88,6 +103,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
           editable: false,
           headerFormatter,
           sortCaret,
+          formatter
         },
         {
             dataField: "account",
@@ -96,6 +112,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
             editable: false,
             headerFormatter,
             sortCaret,
+            formatter
           }
         
     ]
@@ -115,6 +132,21 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
         editable: false,
         headerFormatter,
         sortCaret,
+        formatter: (cell, row)=>{
+          if (gradeStructure && +cell < +gradeStructure.total*0.5)
+            return (
+              <span style={{color: 'red'}}>
+                {cell}
+              </span>
+            );
+          
+          else
+            return (
+              <span>
+               {cell}
+              </span>
+            );
+          }
         })
    
     const data = []
