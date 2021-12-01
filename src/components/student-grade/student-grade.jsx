@@ -33,7 +33,7 @@ const StudentGrade = ({ classroom ,studentList}) => {
 
 	) : (
 		<div>
-			<h3>Chưa cập nhật bảng điểm.</h3>
+			<h3>Cập nhật đúng mã số sinh viên để xem điểm</h3>
 		</div>
 	);
 };
