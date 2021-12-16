@@ -73,7 +73,7 @@ const ListTeacher = ({ list, classroom, onKickMember }) => {
               {classroom.user.userRole === "STUDENT" ? null : (
                 <button
                   type="button"
-                  class="btn btn-outline-dark"
+                  className="btn btn-outline-dark"
                   onClick={() => setShowInvite(true)}
                 >
                   <i className="fas fa-plus fa-1x"></i>
@@ -83,8 +83,8 @@ const ListTeacher = ({ list, classroom, onKickMember }) => {
           </tr>
         </thead>
         <tbody>
-          {list.map((item) => (
-            <tr>
+          {list.map((item, idx) => (
+            <tr key={idx}>
               <td className="py-3 d-flex justify-content-between align-items-center">
                 <div className="user-info">
                   <img

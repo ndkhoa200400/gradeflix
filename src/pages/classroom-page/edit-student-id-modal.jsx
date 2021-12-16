@@ -33,8 +33,8 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
       // gửi cho api
       const link = `classrooms/${classroom?classroom.id:""}/users/${classroom?classroom.user.id:""}`
 
-      const res = await postApiMethod(link, data);
-    
+      await postApiMethod(link, data);
+
       onEditStudentId(data.studentId);
       handleClose();
 

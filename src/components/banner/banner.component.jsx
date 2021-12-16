@@ -67,7 +67,7 @@ const Banner = ({ classroom }) => {
 							style={{ position: "absolute", top: "20px", right: "20px" }}
 							onClick={openModal}
 						>
-							<i class="fas fa-sign-out-alt"></i>
+							<i className="fas fa-sign-out-alt"></i>
 						</Button>
 					)}
 				</div>

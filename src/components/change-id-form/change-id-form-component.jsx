@@ -42,7 +42,7 @@ const ChangeIDForm = ({ show, handleClose, idClass, user, onEditStudentId }) => 
       reset();
     } catch (error) {
       console.log("error", error);
-      alert("Đã xảy ra lỗi! Vui lòng thử lại");
+      alert(error.message);
     }
     setOnSubmiting(false);
   };

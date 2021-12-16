@@ -74,7 +74,7 @@ const ListStudent = ({ list, classroom, onKickMember, onEditStudentId }) => {
 								:
 								<button
 									type="button"
-									class="btn btn-outline-dark"
+									className="btn btn-outline-dark"
 									onClick={() => setShowInvite(true)}
 								>
 									<i className="fas fa-plus fa-1x"></i>
@@ -84,8 +84,8 @@ const ListStudent = ({ list, classroom, onKickMember, onEditStudentId }) => {
 					</tr>
 				</thead>
 				<tbody>
-					{list.map((item) => (
-						<tr>
+					{list.map((item, idx) => (
+						<tr key={idx}>
 							<td className="py-3 ">
 								<div className="user-info">
 									<img

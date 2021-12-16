@@ -13,10 +13,8 @@ const UploadFileForm = ({
 	gradeForm
 }) => {
 	const {
-		register,
 		handleSubmit,
 		reset,
-		formState: { errors },
 	} = useForm();
 
 	const [onSubmiting, setOnSubmiting] = useState(false);
@@ -48,23 +46,23 @@ const UploadFileForm = ({
 			);
 			var msg = ""
 			if (res.errorList && gradeForm){
-				
+
 				msg = "Điểm không hợp lệ tại các mã số sinh viên: ";
 				for(var i = 0; i < res.errorList.length && i < 10; i++){
 					msg += res.errorList[i] + ", "
 				}
 				if (res.errorList.length > 10)
 					msg += "..."
-				else 
+				else
 					msg = msg.slice(0, msg.length-2);
 			}
 			refeshGradeBoard(msg, res.errorList);
 			handleClose();
-			
+
 			reset();
-			
+
 		} catch (error) {
-			
+
 			console.log( error);
 			//alert("Đã xảy ra lỗi! Vui lòng thử lại");
 		}
@@ -81,13 +79,13 @@ const UploadFileForm = ({
 				<Form onSubmit={handleSubmit(onSubmit)}>
 					<Form.Group className="mb-3">
 						<Form.Label>File</Form.Label>
-						<a alt="classroom banner cursor-pointer" target='_blank' rel="noreferrer">
+						<div className="cursor-pointer" target='_blank' rel="noreferrer">
 							<Form.Control
 								type="text"
 								placeholder="Chọn file"
 								value={fileName}
 							/>
-						</a>
+						</div>
 
 						<div className="py-2">
 							<input type="file" id="upload" hidden onChange={uploadImage} />
@@ -106,10 +104,10 @@ const UploadFileForm = ({
 					Đóng
 				</Button>
 				<Button variant="outline-primary" onClick={handleSubmit(onSubmit)}>
-					Cập nhât
+					Cập nhật
 				</Button>
 			</Modal.Footer>
-			
+
 		</Modal>
 	);
 };

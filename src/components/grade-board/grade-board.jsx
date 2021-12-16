@@ -14,7 +14,7 @@ const { SearchBar } = Search;
 
 
 const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openGradeForm, errorList})=> {
-  
+
     const headerFormatter = (column, colIndex, { sortElement, filterElement })=> {
         return (
           <div style={ { display: 'flex', flexDirection: 'row',  justifyContent:'center', cursor:'pointer'} }>
@@ -40,16 +40,16 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
                         const endPoint = "student-grades?gradeName=" + column.dataField;
                         openGradeForm(title, endPoint);
                   }}>
-                      <i class="fa fa-upload" aria-hidden="true"></i>
+                      <i className="fa fa-upload" aria-hidden="true"></i>
                   </Button>
               </div>
-            
+
           );
         }
     const sortCaret =  (order, column) => {
-          if (!order) return ( <span>&nbsp;<i class="fas fa-sort" style={{fontSize:'10px'}}></i></span>);
-          else if (order === 'asc') return ( <span>&nbsp;<i class="fas fa-sort-up" style={{fontSize:'10px'}} ></i></span>);
-          else if (order === 'desc') return ( <span>&nbsp;<i class="fas fa-sort-down" style={{fontSize:'10px'}}></i></span>);
+          if (!order) return ( <span>&nbsp;<i className="fas fa-sort" style={{fontSize:'10px'}}></i></span>);
+          else if (order === 'asc') return ( <span>&nbsp;<i className="fas fa-sort-up" style={{fontSize:'10px'}} ></i></span>);
+          else if (order === 'desc') return ( <span>&nbsp;<i className="fas fa-sort-down" style={{fontSize:'10px'}}></i></span>);
           return null;
     }
     const gradeValidator = (newValue, row, column) => {
@@ -70,7 +70,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
             <Link to="#">{cell}</Link>
           </span>
         );
-      
+
       else
         return (
           <span>
@@ -94,7 +94,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
           headerFormatter,
           sortCaret,
           formatter
-          
+
         },
         {
           dataField: "fullName",
@@ -114,12 +114,12 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
             sortCaret,
             formatter
           }
-        
+
     ]
     parems.forEach(e=>{
         columns.push({
                     dataField: e.name,
-                    text: `${e.name} (${e.percent}%)`, 
+                    text: `${e.name} (${e.percent}%)`,
                     editable: true,
                     headerFormatter: headerGradeFormatter,
                     validator: gradeValidator
@@ -127,7 +127,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
     })
     columns.push({
         dataField: 'total',
-        text: 'Tổng kết', 
+        text: 'Tổng kết',
         sort: true,
         editable: false,
         headerFormatter,
@@ -139,7 +139,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
                 {cell}
               </span>
             );
-          
+
           else
             return (
               <span>
@@ -148,7 +148,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
             );
           }
         })
-   
+
     const data = []
     students.forEach(e=>{
         const newObj = {studentId: e.studentId, fullName: e.fullName, account: e.user?e.user.fullname:""}
@@ -168,11 +168,11 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
             else
                 newObj[`${parems[i].name}`] =  "";
         }
-            
+
         newObj['total'] = e['total'] ? e['total'] : "";
         data.push(newObj)
     })
-    
+
     const beforeSaveCell = async (oldValue, newValue, row, column, done) => {
         console.log(oldValue, newValue, (oldValue === undefined && newValue === ""))
         if (oldValue === newValue || (oldValue === undefined && newValue === ""))
@@ -183,7 +183,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
         try{
             const res = await postApiMethod(`classrooms/${classroomId}/students/${studentId}/grades?gradeName=${field}`, {newGrade: newValue});
             onUpdateGrade(res);
-        }  
+        }
         catch(e){
             console.log(e);
         };
@@ -197,7 +197,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
                 style.backgroundColor = '#FFCDD2';
                 break;
             }
-        
+
         return style;
     };
     return (
@@ -208,11 +208,11 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
         data={data}
         columns={columns}
         search
-        
+
       >
         {(props) => (
           <div>
-            <SearchBar 
+            <SearchBar
                 {...props.searchProps}
                 className="search-field"
                 placeholder="Tìm kiếm"
@@ -220,7 +220,7 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
             <hr />
             <Card className="text-center d-grid grap-2 div-horizontal">
                 <BootstrapTable
-                    
+
                     bootstrap4
                     hover
                     noDataIndication="Không có sinh viên nào"
@@ -232,15 +232,15 @@ const GradeBoard = ({gradeStructure, students, onUpdateGrade, classroomId, openG
                     mode: "click",
                     blurToSave: true,
                     beforeSaveCell
-                    
+
                 })}
                 />
           </Card>
-            
+
           </div>
         )}
       </ToolkitProvider>
     );
-  
+
 }
 export default GradeBoard;
