@@ -102,7 +102,7 @@ const TabMyInfo = ({ classroom, onEditStudentId, studentList }) => {
 								<Card.Title>Bảng điểm</Card.Title>
 							</Card.Header>
 							<Card.Body>
-								<Card.Text style={{ height: "200px" }}>
+								<Card.Text>
 									<StudentGrade classroom={classroom} studentList={studentList} />
 								</Card.Text>
 							</Card.Body>

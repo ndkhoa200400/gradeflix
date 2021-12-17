@@ -4,9 +4,9 @@ import { Alert, Card } from "react-bootstrap";
 import GradeCompositionsItem from "../grade-composition-item/grade-composition-item.component";
 const ListGradeCompositions = ({ classroom }) => {
 	const total = classroom.gradeStructure ? classroom.gradeStructure.total : "";
-	const gradeCompositions = classroom.gradeStructure ? classroom.gradeStructure.gradeCompositionss : "";
+	const gradeCompositions = classroom.gradeStructure ? classroom.gradeStructure.gradeCompositions ?? [] : [];
 	return classroom.gradeStructure ? (
-		<Card className="list-gradeCompositions gradeCompositions-list mb-3">
+		<Card className="list-gradeCompositions grade-compositions-list mb-3">
 			<Card.Header className="bg-primary">
 				<Card.Title className="text-white">Thang điểm</Card.Title>
 			</Card.Header>

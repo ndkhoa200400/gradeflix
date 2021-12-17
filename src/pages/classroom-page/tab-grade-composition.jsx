@@ -20,7 +20,7 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 	const [endPoint, setEndPoint] = useState("");
 	const [title, setTitle] = useState("");
 	const total = classroom.gradeStructure ? classroom.gradeStructure.total : "";
-	const gradeCompositionss = classroom.gradeStructure ? classroom.gradeStructure.gradeCompositionss : [];
+	const gradeCompositions = classroom.gradeStructure ? classroom.gradeStructure.gradeCompositions : [];
 	const [showAlert, setShowAlert] = useState(false);
 	const [error, setError] = useState("");
 	const [errorList, setErrorList] = useState([]);
@@ -84,7 +84,7 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 								{classroom.gradeStructure ? (
 									<div>
 										<h5>Tổng điểm lớp: {total}</h5>
-										{gradeCompositionss.map((item, idx) => (
+										{gradeCompositions.map((item, idx) => (
 											<Card.Text
 												key={idx}
 												style={{
@@ -150,7 +150,7 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 					</div>
 				) : null}
 			</Col>
-			<Col className="gradeCompositions-list-tab " sm={9}>
+			<Col className="grade-compositions-list-tab " sm={9}>
 				<Card style={{ position: "relative" }}>
 					<Card.Header>
 						<Card.Title>Bảng điểm</Card.Title>

@@ -84,7 +84,7 @@ const GradeBoard = ({ gradeStructure, students, onUpdateGrade, classroomId, open
 			);
 		else return <span>{cell}</span>;
 	};
-	const gradeCompositionss = gradeStructure ? gradeStructure.gradeCompositionss : [];
+	const gradeCompositions = gradeStructure ? gradeStructure.gradeCompositions : [];
 	const defaultSorted = [
 		{
 			dataField: "name",
@@ -120,7 +120,7 @@ const GradeBoard = ({ gradeStructure, students, onUpdateGrade, classroomId, open
 			formatter,
 		},
 	];
-	gradeCompositionss.forEach((e) => {
+	gradeCompositions.forEach((e) => {
 		columns.push({
 			dataField: e.name,
 			text: `${e.name} (${e.percent}%)`,
@@ -146,16 +146,16 @@ const GradeBoard = ({ gradeStructure, students, onUpdateGrade, classroomId, open
 	students.forEach((e) => {
 		const newObj = { studentId: e.studentId, fullName: e.fullName, account: e.user ? e.user.fullname : "" };
 		var updated = false;
-		for (var i = 0; i < gradeCompositionss.length; i++) {
+		for (var i = 0; i < gradeCompositions.length; i++) {
 			if (e.grades) {
 				for (var j = 0; j < e.grades.length; j++)
-					if (e.grades[j].name === gradeCompositionss[i].name) {
-						newObj[`${gradeCompositionss[i].name}`] = e.grades[j].grade;
+					if (e.grades[j].name === gradeCompositions[i].name) {
+						newObj[`${gradeCompositions[i].name}`] = e.grades[j].grade;
 						updated = true;
 						break;
 					}
-				if (!updated) newObj[`${gradeCompositionss[i].name}`] = "";
-			} else newObj[`${gradeCompositionss[i].name}`] = "";
+				if (!updated) newObj[`${gradeCompositions[i].name}`] = "";
+			} else newObj[`${gradeCompositions[i].name}`] = "";
 		}
 
 		newObj["total"] = e["total"] ? e["total"] : "";

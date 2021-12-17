@@ -9,7 +9,7 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 	const [err, setErr] = useState("")
 	const [onSubmiting, setOnSubmiting] = useState(false);
 	const [total, setTotal] = useState('');
-	const [gradeCompositionss, setgradeCompositions] = useState([{ name: "", percent: "" }]);
+	const [gradeCompositions, setgradeCompositions] = useState([{ name: "", percent: "" }]);
 	const [validated, setValidated] = useState(false);
 
 	const init = () => {
@@ -17,8 +17,8 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 			// deep copy object
 			const gradeStructure = JSON.parse(JSON.stringify(classroom.gradeStructure))
 
-			if (gradeStructure.gradeCompositionss && gradeStructure.gradeCompositionss.length > 0) {
-				setgradeCompositions(Array.from(gradeStructure.gradeCompositionss))
+			if (gradeStructure.gradeCompositions && gradeStructure.gradeCompositions.length > 0) {
+				setgradeCompositions(Array.from(gradeStructure.gradeCompositions))
 			}
 			if (gradeStructure.total) {
 				setTotal(gradeStructure.total)
@@ -36,13 +36,13 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 	}
 
 	const onPercentChange = (val, index) => {
-		const newgradeCompositions = gradeCompositionss.slice();
+		const newgradeCompositions = gradeCompositions.slice();
 		newgradeCompositions[index].percent = val.target.value;
 		setgradeCompositions(newgradeCompositions)
 		setErr("");
 	}
 	const onNameChange = (val, index) => {
-		const newgradeCompositions = gradeCompositionss.slice();
+		const newgradeCompositions = gradeCompositions.slice();
 		newgradeCompositions[index].name = val.target.value;
 		setgradeCompositions(newgradeCompositions);
 		setErr("");
@@ -51,17 +51,17 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 	const handleOnDragEnd = (result) => {
 		if (!result.destination) return;
 
-		const items = Array.from(gradeCompositionss);
+		const items = Array.from(gradeCompositions);
 		const [reorderedItem] = items.splice(result.source.index, 1);
 		items.splice(result.destination.index, 0, reorderedItem);
 
 		setgradeCompositions(items);
 	}
 	const onAddClick = () => {
-		setgradeCompositions([...gradeCompositionss, { name: "", percent: "" }]);
+		setgradeCompositions([...gradeCompositions, { name: "", percent: "" }]);
 	}
 	const onRemoveClick = (index) => {
-		const newgradeCompositions = gradeCompositionss.slice();
+		const newgradeCompositions = gradeCompositions.slice();
 		newgradeCompositions.splice(index, 1);
 		setgradeCompositions(newgradeCompositions);
 	}
@@ -75,8 +75,8 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 		}
 		else {
 			var sum = 0;
-			for (var i = 0; i < gradeCompositionss.length; i++)
-				sum += +gradeCompositionss[i].percent;
+			for (var i = 0; i < gradeCompositions.length; i++)
+				sum += +gradeCompositions[i].percent;
 			if (sum === 100)
 				onSubmit();
 			else {
@@ -90,7 +90,7 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 	const onSubmit = async () => {
 		setOnSubmiting(true);
 		try {
-			const data = { total, gradeCompositionss }
+			const data = { total, gradeCompositions }
 			console.log(data)
 			await postApiMethod(`classrooms/${classroom.id}/grade-structure`, data);
 			onGradeEdit(data);
@@ -114,7 +114,7 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 								<div
 									className="d-flex flex-row w-100 justify-content-end mb-3"
 								>
-									{gradeCompositionss.length > 1 ? <CloseButton onClick={() => onRemoveClick(index)} /> : null}
+									{gradeCompositions.length > 1 ? <CloseButton onClick={() => onRemoveClick(index)} /> : null}
 								</div>
 								<Form.Group as={Row} className="mb-3">
 									<Form.Label column sm="4">
@@ -203,10 +203,10 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 					</Card>
 
 					<DragDropContext onDragEnd={handleOnDragEnd}>
-						<Droppable droppableId="gradeCompositionss" >
+						<Droppable droppableId="gradeCompositions" >
 							{(provided) => (
 								<div  {...provided.droppableProps} ref={provided.innerRef}>
-									{gradeCompositionss.map(({ name, percent }, index) =>
+									{gradeCompositions.map(({ name, percent }, index) =>
 										rendergradeCompositions(name, percent, index)
 									)}
 									{provided.placeholder}
