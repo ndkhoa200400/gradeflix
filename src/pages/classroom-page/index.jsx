@@ -1,46 +1,34 @@
 import Banner from "../../components/banner/banner.component";
 import Tab from "../../components/tab/tab.component";
-import { useParams, Navigate, } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
 import Spining from "../../components/spinning/spinning.component";
 import TabDetail from "./tab-detail";
 import TabPeople from "./tab-people";
 import TabMyInfo from "./tab-my-info";
-import TabParem from "./tab-parem";
+import TabGradeCompositions from "./tab-grade-composition";
 
 import TopNavigation from "../../components/top-nav/top-nav.component";
 import ClassroomNotFound from "./classroom-not-found";
-const getContentTab = (
-	tab,
-	idClass,
-	classroom,
-	studentList,
-	onEditedClassRoom,
-	onEditStudentId,
-	onGradeEdit
-) => {
+const getContentTab = (tab, idClass, classroom, studentList, onEditedClassRoom, onEditStudentId, onGradeEdit) => {
 	if (tab === "tab-my-info") {
 		if (classroom && classroom.user.userRole === "STUDENT")
-			return (
-				<TabMyInfo classroom={classroom} onEditStudentId={onEditStudentId} studentList={studentList} />
-			);
+			return <TabMyInfo classroom={classroom} onEditStudentId={onEditStudentId} studentList={studentList} />;
 		const redirectLink = `/classrooms/${idClass}/tab-detail`;
 		return <Navigate to={redirectLink} />;
-	} else if (tab === "tab-people") return <TabPeople classroom={classroom} />
-	else if (tab === "tab-parem") return <TabParem classroom={classroom} onGradeEdit={onGradeEdit} />;
-	return (
-		<TabDetail classroom={classroom} onEditedClassRoom={onEditedClassRoom} />
-	);
+	} else if (tab === "tab-people") return <TabPeople classroom={classroom} />;
+	else if (tab === "tab-gradeCompositions")
+		return <TabGradeCompositions classroom={classroom} onGradeEdit={onGradeEdit} />;
+	return <TabDetail classroom={classroom} onEditedClassRoom={onEditedClassRoom} />;
 };
 
 const ClassroomPage = ({ isFull = true, ...props }) => {
 	const params = useParams();
 	const [classroom, setClassroom] = useState();
-	const [error, setError] = useState(null)
+	const [error, setError] = useState(null);
 	const [studentList, setStudentList] = useState();
 	//console.log(params);
-
 
 	const onEditedClassRoom = (newClassroom) => {
 		newClassroom.user = classroom.user;
@@ -51,12 +39,12 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 		classroom.user.studentId = studentId;
 		setClassroom(classroom);
 		// console.log(classroom);
-		return getGrades()
+		return getGrades();
 	};
 	const onGradeEdit = (gradeStructure) => {
 		classroom.gradeStructure = gradeStructure;
 		setClassroom(classroom);
-	}
+	};
 	useEffect(() => {
 		const getClassroom = async () => {
 			try {
@@ -64,25 +52,22 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 
 				setClassroom(data);
 			} catch (error) {
-				console.log('error', error);
-				setError(error)
+				console.log("error", error);
+				setError(error);
 			}
 		};
 
-
-		return getClassroom()
+		return getClassroom();
 	}, [params]);
 
 	const getGrades = async () => {
 		if (classroom?.user?.studentId) {
-			try{
+			try {
 				const result = await getApiMethod(`/classrooms/${classroom.id}/students/${classroom.user.studentId}/grades`);
 				setStudentList(result);
-			}
-			catch(e){
+			} catch (e) {
 				setStudentList();
 			}
-
 		}
 	};
 
@@ -91,7 +76,7 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 			return getGrades();
 		} catch (err) {
 			console.log(err);
-			setError(err)
+			setError(err);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [classroom]);
@@ -104,20 +89,14 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 				</div>
 
 				<Tab id={params.id} classroom={classroom} className="tab"></Tab>
-				{getContentTab(
-					params.tab,
-					params.id,
-					classroom,
-					studentList,
-					onEditedClassRoom,
-					onEditStudentId,
-					onGradeEdit
-				)}
+				{getContentTab(params.tab, params.id, classroom, studentList, onEditedClassRoom, onEditStudentId, onGradeEdit)}
 			</div>
 		</div>
-	) : error ? ((
+	) : error ? (
 		<ClassroomNotFound errorMessage={error.message} />
-	)) : <Spining />;
+	) : (
+		<Spining />
+	);
 };
 
 export default ClassroomPage;

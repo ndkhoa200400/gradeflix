@@ -9,7 +9,7 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 	const [err, setErr] = useState("")
 	const [onSubmiting, setOnSubmiting] = useState(false);
 	const [total, setTotal] = useState('');
-	const [parems, setParems] = useState([{ name: "", percent: "" }]);
+	const [gradeCompositionss, setgradeCompositions] = useState([{ name: "", percent: "" }]);
 	const [validated, setValidated] = useState(false);
 
 	const init = () => {
@@ -17,8 +17,8 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 			// deep copy object
 			const gradeStructure = JSON.parse(JSON.stringify(classroom.gradeStructure))
 
-			if (gradeStructure.parems && gradeStructure.parems.length > 0) {
-				setParems(Array.from(gradeStructure.parems))
+			if (gradeStructure.gradeCompositionss && gradeStructure.gradeCompositionss.length > 0) {
+				setgradeCompositions(Array.from(gradeStructure.gradeCompositionss))
 			}
 			if (gradeStructure.total) {
 				setTotal(gradeStructure.total)
@@ -36,34 +36,34 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 	}
 
 	const onPercentChange = (val, index) => {
-		const newParems = parems.slice();
-		newParems[index].percent = val.target.value;
-		setParems(newParems)
+		const newgradeCompositions = gradeCompositionss.slice();
+		newgradeCompositions[index].percent = val.target.value;
+		setgradeCompositions(newgradeCompositions)
 		setErr("");
 	}
 	const onNameChange = (val, index) => {
-		const newParems = parems.slice();
-		newParems[index].name = val.target.value;
-		setParems(newParems);
+		const newgradeCompositions = gradeCompositionss.slice();
+		newgradeCompositions[index].name = val.target.value;
+		setgradeCompositions(newgradeCompositions);
 		setErr("");
 	}
 
 	const handleOnDragEnd = (result) => {
 		if (!result.destination) return;
 
-		const items = Array.from(parems);
+		const items = Array.from(gradeCompositionss);
 		const [reorderedItem] = items.splice(result.source.index, 1);
 		items.splice(result.destination.index, 0, reorderedItem);
 
-		setParems(items);
+		setgradeCompositions(items);
 	}
 	const onAddClick = () => {
-		setParems([...parems, { name: "", percent: "" }]);
+		setgradeCompositions([...gradeCompositionss, { name: "", percent: "" }]);
 	}
 	const onRemoveClick = (index) => {
-		const newParems = parems.slice();
-		newParems.splice(index, 1);
-		setParems(newParems);
+		const newgradeCompositions = gradeCompositionss.slice();
+		newgradeCompositions.splice(index, 1);
+		setgradeCompositions(newgradeCompositions);
 	}
 
 	const handleSubmit = (event) => {
@@ -75,8 +75,8 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 		}
 		else {
 			var sum = 0;
-			for (var i = 0; i < parems.length; i++)
-				sum += +parems[i].percent;
+			for (var i = 0; i < gradeCompositionss.length; i++)
+				sum += +gradeCompositionss[i].percent;
 			if (sum === 100)
 				onSubmit();
 			else {
@@ -90,7 +90,7 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 	const onSubmit = async () => {
 		setOnSubmiting(true);
 		try {
-			const data = { total, parems }
+			const data = { total, gradeCompositionss }
 			console.log(data)
 			await postApiMethod(`classrooms/${classroom.id}/grade-structure`, data);
 			onGradeEdit(data);
@@ -104,7 +104,7 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 		setOnSubmiting(false);
 	};
 
-	const renderParems = (name, percent, index) => {
+	const rendergradeCompositions = (name, percent, index) => {
 		return (
 			<Draggable key={index.toString()} draggableId={index.toString()} index={index} >
 				{(provided) => (
@@ -114,7 +114,7 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 								<div
 									className="d-flex flex-row w-100 justify-content-end mb-3"
 								>
-									{parems.length > 1 ? <CloseButton onClick={() => onRemoveClick(index)} /> : null}
+									{gradeCompositionss.length > 1 ? <CloseButton onClick={() => onRemoveClick(index)} /> : null}
 								</div>
 								<Form.Group as={Row} className="mb-3">
 									<Form.Label column sm="4">
@@ -203,11 +203,11 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 					</Card>
 
 					<DragDropContext onDragEnd={handleOnDragEnd}>
-						<Droppable droppableId="parems" >
+						<Droppable droppableId="gradeCompositionss" >
 							{(provided) => (
 								<div  {...provided.droppableProps} ref={provided.innerRef}>
-									{parems.map(({ name, percent }, index) =>
-										renderParems(name, percent, index)
+									{gradeCompositionss.map(({ name, percent }, index) =>
+										rendergradeCompositions(name, percent, index)
 									)}
 									{provided.placeholder}
 								</div>

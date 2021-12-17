@@ -30,6 +30,7 @@ const Profile = () => {
 		setUser(user);
 		setValue("birthday", dayjs(user.birthday).format("YYYY-MM-DD"));
 		setValue("fullname", user.fullname);
+		setValue("studentId", user.studentId);
 	}, [setValue]);
 
 	const uploadImage = async (e) => {
@@ -100,7 +101,7 @@ const Profile = () => {
 					</div>
 					<Card className="col-lg-5 p-0">
 						<Card.Header>
-							<Card.Title >Thông tin cá nhân</Card.Title>
+							<Card.Title>Thông tin cá nhân</Card.Title>
 						</Card.Header>
 						<Card.Body>
 							<Form className="form-profile" onSubmit={handleSubmit(saveInfo)}>
@@ -126,6 +127,16 @@ const Profile = () => {
 
 										// onChange={(e)=>user.birthay=e.target.value}
 										{...register("birthday", { required: true })}
+									/>
+								</Form.Group>
+
+								<Form.Group className="mb-3" controlId="formStudentId">
+									<Form.Label>Mã số sinh viên</Form.Label>
+									<Form.Control
+										type="text"
+										placeholder="Nhập mã số sinh viên"
+										// onChange={(e)=>user.birthay=e.target.value}
+										{...register("studentId", { required: true })}
 									/>
 								</Form.Group>
 								<div className="d-flex">

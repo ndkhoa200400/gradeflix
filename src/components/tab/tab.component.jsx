@@ -6,7 +6,7 @@ const Tab = ({ id, classroom }) => {
   const urlTab1 = "/classrooms/" + id + "/tab-detail";
   const urlTab2 = "/classrooms/" + id + "/tab-people";
   const urlTab3 = "/classrooms/" + id + "/tab-my-info";
-  const urlTab4 = "/classrooms/" + id + "/tab-parem";
+  const urlTab4 = "/classrooms/" + id + "/tab-gradeCompositions";
   return (
     <Container>
       <Row style={{ padding: "10px" }}>

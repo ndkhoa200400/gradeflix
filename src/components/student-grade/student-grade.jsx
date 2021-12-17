@@ -8,10 +8,10 @@ const StudentGrade = ({ classroom ,studentList}) => {
 		if (studentList) {
 			const mapping = {};
 			const studentGrade = studentList.grades
-			for (const parem of classroom.gradeStructure.parems) {
-				const grade = studentGrade.find((g) => g.name === parem.name) ?? "";
+			for (const gradeCompositions of classroom.gradeStructure.gradeCompositionss) {
+				const grade = studentGrade.find((g) => g.name === gradeCompositions.name) ?? "";
 
-				mapping[parem.name] = grade.grade;
+				mapping[gradeCompositions.name] = grade.grade;
 			}
 			setMappingGrades(mapping);
 		}
@@ -23,10 +23,10 @@ const StudentGrade = ({ classroom ,studentList}) => {
 				<Col className="border border-2 border-end-0 py-2 fw-bold" sm={8}>Cột điểm</Col>
 				<Col className="border border-2 py-2 fw-bold">Điểm</Col>
 			</Row>
-		{		classroom.gradeStructure.parems.map((parem) => (
+		{		classroom.gradeStructure.gradeCompositionss.map((gradeCompositions) => (
 			<Row className="p-2">
-				<Col className="border border-2 border-end-0 p-3" sm={8}>{parem.name}</Col>
-				<Col className="border border-2 p-3">{mappingGrades[parem.name]}</Col>
+				<Col className="border border-2 border-end-0 p-3" sm={8}>{gradeCompositions.name}</Col>
+				<Col className="border border-2 p-3">{mappingGrades[gradeCompositions.name]}</Col>
 			</Row>
 			))}
 		</div>

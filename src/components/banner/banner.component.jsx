@@ -14,7 +14,7 @@ const ModalConFirmOutRoom = ({ show, handleClose, classroom }) => {
 			await postApiMethod(link);
 			navigate("/", { replace: true });
 			handleClose();
-		} catch (err) { }
+		} catch (err) {}
 
 		setOnSubmiting(false);
 	};
@@ -47,10 +47,7 @@ const Banner = ({ classroom }) => {
 	return (
 		<div>
 			<div>
-				<div
-					className="card bg-dark text-white"
-					style={{ position: "relative" }}
-				>
+				<div className="card bg-dark text-white " style={{ position: "relative" }}>
 					<img
 						className="card-img classroom-banner"
 						src={classroom.banner}
@@ -58,6 +55,7 @@ const Banner = ({ classroom }) => {
 						height="250"
 						alt="classroom banner"
 					></img>
+					<div className="classroom-banner-container w-100 h-100"></div>
 					<div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
 						<h3 className="card-title">{classroom.name}</h3>
 					</div>
@@ -72,11 +70,7 @@ const Banner = ({ classroom }) => {
 					)}
 				</div>
 			</div>
-			<ModalConFirmOutRoom
-				show={showModal}
-				handleClose={handleClose}
-				classroom={classroom}
-			/>
+			<ModalConFirmOutRoom show={showModal} handleClose={handleClose} classroom={classroom} />
 		</div>
 	);
 };

@@ -11,6 +11,7 @@ const loadToken = () =>{
 }
 const logOut = () =>{
     Cookies.remove('token')
+		localStorage.removeItem('user')
 }
 
 /**

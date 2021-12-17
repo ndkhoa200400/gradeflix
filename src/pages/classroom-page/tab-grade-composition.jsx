@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import GradeBoard from "../../components/grade-board/grade-board";
 import { getApiMethod } from "../../api/api-handler";
 import { createTemplateUploadStudentList, createTemplateUploadGradeAssignment } from "../../services/xlsx.service";
-const TabParem = ({ classroom, onGradeEdit }) => {
+const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 	const [showForm, setShowForm] = useState(false);
 	const [showUploadFileForm, setShowUploadFileForm] = useState(false);
 	const [students, setStudents] = useState([]);
@@ -20,7 +20,7 @@ const TabParem = ({ classroom, onGradeEdit }) => {
 	const [endPoint, setEndPoint] = useState("");
 	const [title, setTitle] = useState("");
 	const total = classroom.gradeStructure ? classroom.gradeStructure.total : "";
-	const parems = classroom.gradeStructure ? classroom.gradeStructure.parems : [];
+	const gradeCompositionss = classroom.gradeStructure ? classroom.gradeStructure.gradeCompositionss : [];
 	const [showAlert, setShowAlert] = useState(false);
 	const [error, setError] = useState("");
 	const [errorList, setErrorList] = useState([]);
@@ -84,7 +84,7 @@ const TabParem = ({ classroom, onGradeEdit }) => {
 								{classroom.gradeStructure ? (
 									<div>
 										<h5>Tổng điểm lớp: {total}</h5>
-										{parems.map((item, idx) => (
+										{gradeCompositionss.map((item, idx) => (
 											<Card.Text
 												key={idx}
 												style={{
@@ -150,7 +150,7 @@ const TabParem = ({ classroom, onGradeEdit }) => {
 					</div>
 				) : null}
 			</Col>
-			<Col className="parem-list-tab " sm={9}>
+			<Col className="gradeCompositions-list-tab " sm={9}>
 				<Card style={{ position: "relative" }}>
 					<Card.Header>
 						<Card.Title>Bảng điểm</Card.Title>
@@ -190,4 +190,4 @@ const TabParem = ({ classroom, onGradeEdit }) => {
 		</Row>
 	);
 };
-export default TabParem;
+export default TabGradeCompositions;
