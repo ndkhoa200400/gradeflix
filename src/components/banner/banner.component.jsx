@@ -10,7 +10,7 @@ const ModalConFirmOutRoom = ({ show, handleClose, classroom }) => {
 	const onClick = async () => {
 		setOnSubmiting(true);
 		try {
-			const link = `classrooms/${classroom ? classroom.id : ""}/users/leave`;
+			const link = `classrooms/${classroom ? classroom.id : ""}/leave`;
 			await postApiMethod(link);
 			navigate("/", { replace: true });
 			handleClose();

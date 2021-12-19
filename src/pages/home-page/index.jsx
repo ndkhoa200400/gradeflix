@@ -15,10 +15,15 @@ const HomePage = () => {
   const handleOnClassCreate = (newClass) => {
     setClassrooms([...classrooms, newClass]);
   };
+
+
+	const handleOnClassJoin = (newClass) => {
+    setClassrooms([...classrooms, newClass]);
+  };
   useEffect(() => getClassrooms(), []);
   return (
     <div>
-      <TopNavigationHome onClassCreated={handleOnClassCreate} />
+      <TopNavigationHome onClassCreated={handleOnClassCreate} onClassJoined={handleOnClassJoin} />
       {classrooms ? (
         <div className="container-fluid h-full">
           <ClassroomList classrooms={classrooms} />
