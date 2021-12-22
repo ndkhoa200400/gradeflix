@@ -3,13 +3,16 @@ import { Image } from "react-bootstrap";
 import { Dropdown } from "react-bootstrap";
 import * as AuthenService from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
+import { useSocket } from "../../custome-hook";
 const Avatar = () => {
   const navigate = useNavigate();
+	const socket = useSocket()
   const user = AuthenService.getUserInfo();
   const avatar = user.avatar ?? "/default-avatar.png";
 
   const logout = () => {
     AuthenService.logOut();
+		socket.logOut()
     navigate("/login", { replace: true });
   };
   return (
