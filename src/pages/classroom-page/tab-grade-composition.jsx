@@ -52,7 +52,7 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 	};
 	useEffect(() => {
 		return getGradeBoards();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onUpdateGrade = (newGrade) => {

@@ -18,7 +18,7 @@ const getContentTab = (tab, idClass, classroom, studentList, onEditedClassRoom, 
 		const redirectLink = `/classrooms/${idClass}/tab-detail`;
 		return <Navigate to={redirectLink} />;
 	} else if (tab === "tab-people") return <TabPeople classroom={classroom} />;
-	else if (tab === "tab-gradeCompositions")
+	else if (tab === "tab-grade")
 		return <TabGradeCompositions classroom={classroom} onGradeEdit={onGradeEdit} />;
 	return <TabDetail classroom={classroom} onEditedClassRoom={onEditedClassRoom} />;
 };
@@ -66,7 +66,7 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 				const result = await getApiMethod(`/classrooms/${classroom.id}/students/${classroom.user.studentId}/grades`);
 				setStudentList(result);
 			} catch (e) {
-				setStudentList();
+				setStudentList(null);
 			}
 		}
 	};
