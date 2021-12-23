@@ -10,49 +10,54 @@ export function useQuery() {
 }
 
 export const SocketIOContext = createContext({
-	addNewUser: async () => { },
+	addNewUser: async () => {},
 	user: null,
-	logOut: async () => {}
-})
+	logOut: async () => {},
+	socket: null,
+});
 
 export function useSocket() {
-
-	return useContext(SocketIOContext)
+	return useContext(SocketIOContext);
 }
 
 export function SocketIOProvider({ children }) {
 	const [socket, setSocket] = useState(null);
 	const [user, setUser] = useState(null);
 
-
 	useEffect(() => {
-		setSocket(io(socketServer, {
-			withCredentials: true,
-			transports: ['websocket', 'polling', 'flashsocket']
-		}));
+		setSocket(
+			io(socketServer, {
+				withCredentials: true,
+				transports: ["websocket", "polling", "flashsocket"],
+			})
+		);
 	}, []);
 
 	const addNewUser = async (newUser) => {
 		if (!user) {
-			socket?.emit('newUser', newUser.id)
-			return setUser(newUser)
+			return setUser(newUser);
 		}
+	};
 
-	}
-
+	useEffect(() => {
+		if (user && socket) {
+			socket?.emit("newUser", user.id);
+		}
+	}, [socket, user]);
 
 	const logOut = async () => {
 		if (user) {
-			setUser(null)
-			socket?.emit('logOut')
+			setUser(null);
+			socket?.emit("logOut");
 		}
-	}
+	};
 
 	const value = {
 		addNewUser,
-		user,logOut
-	}
+		user,
+		logOut,
+		socket,
+	};
 
-
-	return <SocketIOContext.Provider value={value}>{children}</SocketIOContext.Provider>
+	return <SocketIOContext.Provider value={value}>{children}</SocketIOContext.Provider>;
 }

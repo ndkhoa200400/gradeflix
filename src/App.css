@@ -153,11 +153,32 @@ nav .btn-add-classroom::after,
 	color: white !important;
 	margin: 0 !important;
 }
+::-webkit-scrollbar {
+	width: 0.5rem;
+	transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1) scale(10.6827) translateZ(-9.68267px)
+	translateZ(-2px);
+	background: white;
 
-.notification {
-	padding: 1rem;
+}
+/* Track */
+::-webkit-scrollbar-track {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+
 }
 
+/* Handle */
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: rgb(206, 208, 212);
+}
+.notification-list {
+	overflow-y: scroll;
+	max-height: 80vh;
+}
+
+
 .notification:hover {
-	background-color: #cccc;
+	background-color: #DADDE1;
 }

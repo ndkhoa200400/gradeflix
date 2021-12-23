@@ -1,31 +1,56 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getApiMethod } from "../../api/api-handler";
+import dayjs from "dayjs";
 
+const NotificationItem = ({ notification, updateNotification }) => {
+	const markRead = async () => {
+		try {
+			const newNotification = await getApiMethod(`notifications/${notification.id}/mark-read`);
+			updateNotification(newNotification);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
-const NotificationItem = ({ notification }) => {
+	const now = dayjs();
+
+	const dayDifference =
+		now.diff(dayjs(notification.createdAt), "year") > 1
+			? `${now.diff(dayjs(notification.createdAt), "year")} năm trước`
+			: now.diff(dayjs(notification.createdAt), "minute") < 1
+			? `Vừa xong`
+			: now.diff(dayjs(notification.createdAt), "minute") < 60
+			? `${now.diff(dayjs(notification.createdAt), "minute")} phút trước`
+			: now.diff(dayjs(notification.createdAt), "hour") < 24
+			? `${now.diff(dayjs(notification.createdAt), "hour")} giờ trước`
+			: now.diff(dayjs(notification.createdAt), "week") < 4
+			? `${now.diff(dayjs(notification.createdAt), "week")} tuần trước`
+			: `${now.diff(dayjs(notification.createdAt), "month")} tháng trước`;
 
 	return (
-		<Link
+		<div
+			className={`notification row m-0 p-2 py-3 align-items-center  ${notification.isRead ? "text-muted" : " fw-bold"}`}
+		>
+			<Link className="col-10  text-dark" onClick={markRead} to={notification.link}>
+				<div className="notification-content">{notification.content}</div>
+				{!notification.isRead ? (
+					<span className="fs-6 text  text-primary"> {dayDifference}</span>
+				) : (
+					<span className="fs-6 text"> {dayDifference}</span>
+				)}
+			</Link>
 
-			to={notification.link}>
-			<div className={`notification d-flex flex-column text-dark ${notification.isRead ? 'text-muted' : ' fw-bold'}`}>
-				<div className="notification-content">
-					{notification.content}
+			{!notification.isRead ? (
+				<div className="col align-items-center d-flex justify-content-center" onClick={markRead}>
+					<div
+						className=" rounded rounded-circle bg-primary cursor-pointer"
+						style={{ height: "12px", width: "12px" }}
+					></div>
 				</div>
-				<div className="d-flex justify-content-between align-items-center">
-					{notification.createdAt}
-					{!notification.isRead ? (
-						<div className="rounded rounded-circle bg-primary" style={{ height: '12px', width: '12px' }}>
-						</div>
-					) : null}
-				</div>
+			) : null}
+		</div>
+	);
+};
 
-
-
-			</div>
-		</Link>
-
-	)
-}
-
-export default NotificationItem
+export default NotificationItem;

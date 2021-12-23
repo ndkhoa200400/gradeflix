@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Dropdown, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Avatar from "../avatar-user/avatar-user.component";
 import CreateClassRoomForm from "../create-classroom-form/create-classroom-form.component";
@@ -26,16 +26,15 @@ const TopNavigationHome = ({ onClassCreated, onClassJoined }) => {
 				</Link>
 
 				<section className="utility d-flex justify-content-around">
-					<Dropdown className="mx-2">
+					<Dropdown align="end" className="mx-2">
 						<OverlayTrigger placement="left" delay={{ show: 250, hide: 50 }} overlay={renderTooltip}>
 							<Dropdown.Toggle
 								variant="secondary"
 								className="btn btn-add-classroom rounded rounded-circle"
 								data-bs-toggle="dropdown"
 								id="addClassroomBtn"
-
 							>
-								<i className="fas fa-plus" ></i>
+								<i className="fas fa-plus"></i>
 							</Dropdown.Toggle>
 						</OverlayTrigger>
 						<Dropdown.Menu>
@@ -47,7 +46,7 @@ const TopNavigationHome = ({ onClassCreated, onClassJoined }) => {
 							</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>
-					<NotificationList/>
+					<NotificationList />
 
 					{/* <div className="dropdown d-flex align-items-center justify-content-center mx-2">
 						<div className=" " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
