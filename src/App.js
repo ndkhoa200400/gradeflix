@@ -8,54 +8,59 @@ import Profile from "./pages/profile-user/profile-user.page";
 import Invitation from "./pages/invitation/invitation.page";
 // React router
 import {
-  BrowserRouter as Router,
-  Route,
-  Routes as Switch,
+	BrowserRouter as Router,
+	Route,
+	Routes as Switch,
 } from "react-router-dom";
+import { SocketIOProvider } from "./custome-hook";
+
 function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route
-            path="/classrooms/:id/:tab"
-            element={
-              <PrivateRoute>
-                <ClassroomPage />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <HomePage />
-              </PrivateRoute>
-            }
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
 
-          <Route
-            path="/me"
-            element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            }
-          />
+	return (
+		<div className="App">
+			<SocketIOProvider>
+				<Router>
+					<Switch>
+						<Route
+							path="/classrooms/:id/:tab"
+							element={
+								<PrivateRoute>
+									<ClassroomPage />
+								</PrivateRoute>
+							}
+						/>
+						<Route
+							path="/"
+							element={
+								<PrivateRoute>
+									<HomePage />
+								</PrivateRoute>
+							}
+						/>
+						<Route path="/login" element={<LoginPage />} />
+						<Route path="/signup" element={<SignupPage />} />
 
-          <Route
-            path="/invitation"
-            element={
-              <PrivateRoute>
-                <Invitation />
-              </PrivateRoute>
-            }
-          />
-        </Switch>
-      </Router>
-    </div>
-  );
+						<Route
+							path="/me"
+							element={
+								<PrivateRoute>
+									<Profile />
+								</PrivateRoute>
+							}
+						/>
+
+						<Route
+							path="/invitation"
+							element={
+								<PrivateRoute>
+									<Invitation />
+								</PrivateRoute>
+							}
+						/>
+					</Switch>
+				</Router>
+			</SocketIOProvider>
+		</div>
+	);
 }
 export default App;

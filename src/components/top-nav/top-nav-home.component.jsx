@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Avatar from "../avatar-user/avatar-user.component";
 import CreateClassRoomForm from "../create-classroom-form/create-classroom-form.component";
 import JoinClassRoomForm from "../join-classroom-form/join-classroom-form.component";
+import NotificationList from "../notification/notification-list.component";
 const TopNavigationHome = ({ onClassCreated, onClassJoined }) => {
 	const [showCreateClass, setShowCreateClass] = useState(false);
 	const [showJoiningClass, setShowJoiningClass] = useState(false);
@@ -24,26 +25,40 @@ const TopNavigationHome = ({ onClassCreated, onClassJoined }) => {
 					<span>Gradeflix</span>
 				</Link>
 
-				<Dropdown>
-					<OverlayTrigger placement="left" delay={{ show: 250, hide: 50 }} overlay={renderTooltip}>
-						<Dropdown.Toggle
-							variant="light"
-							className="btn btn-light btn-add-classroom"
-							data-bs-toggle="dropdown"
-							id="addClassroomBtn"
-						>
-							<i className="fas fa-plus fa-2x"></i>
-						</Dropdown.Toggle>
-					</OverlayTrigger>
-					<Dropdown.Menu>
-						<Dropdown.Item type="button" onClick={() => setShowCreateClass(true)}>
-							Thêm lớp học
-						</Dropdown.Item>
-						<Dropdown.Item type="button" onClick={() => setShowJoiningClass(true)}>
-							Tham gia lớp học
-						</Dropdown.Item>
-					</Dropdown.Menu>
-				</Dropdown>
+				<section className="utility d-flex justify-content-around">
+					<Dropdown align="end" className="mx-2">
+						<OverlayTrigger placement="left" delay={{ show: 250, hide: 50 }} overlay={renderTooltip}>
+							<Dropdown.Toggle
+								variant="secondary"
+								className="btn btn-add-classroom rounded rounded-circle"
+								data-bs-toggle="dropdown"
+								id="addClassroomBtn"
+							>
+								<i className="fas fa-plus"></i>
+							</Dropdown.Toggle>
+						</OverlayTrigger>
+						<Dropdown.Menu>
+							<Dropdown.Item type="button" onClick={() => setShowCreateClass(true)}>
+								Thêm lớp học
+							</Dropdown.Item>
+							<Dropdown.Item type="button" onClick={() => setShowJoiningClass(true)}>
+								Tham gia lớp học
+							</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown>
+					<NotificationList />
+
+					{/* <div className="dropdown d-flex align-items-center justify-content-center mx-2">
+						<div className=" " type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+							<i className="far fa-bell fa-2x"></i>
+						</div>
+						<ul className="dropdown-menu" >
+							<Dropdown.Item type="button" onClick={() => setShowJoiningClass(true)}>
+								Tham gia lớp học
+							</Dropdown.Item>
+						</ul>
+					</div> */}
+				</section>
 			</div>
 			<Avatar />
 			<CreateClassRoomForm show={showCreateClass} handleClose={handleClose} onClassCreated={onClassCreated} />
