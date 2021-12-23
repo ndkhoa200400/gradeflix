@@ -179,6 +179,7 @@ nav .btn-add-classroom::after,
 }
 
 
-.notification:hover {
-	background-color: #DADDE1;
+
+.notification-item:active{
+	background-color:#D3D3D3;
 }

@@ -17,7 +17,7 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 	};
 
 	return (
-		<div className="tab-detail py-3">
+		<div className="tab-detail pb-3">
 			<Row>
 				<Col sm={3}>
 					{classroom && classroom.user.userRole === "STUDENT" ? (

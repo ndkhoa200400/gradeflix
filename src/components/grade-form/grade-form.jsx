@@ -2,52 +2,55 @@ import React, { useState, useEffect } from "react";
 import { postApiMethod } from "../../api/api-handler";
 import Spining from "../spinning/spinning.component";
 import { Modal, Button, Form, Col, Row, Card, CloseButton, InputGroup } from "react-bootstrap";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
-
-	const [err, setErr] = useState("")
+	const [err, setErr] = useState("");
 	const [onSubmiting, setOnSubmiting] = useState(false);
-	const [total, setTotal] = useState('');
-	const [gradeCompositions, setgradeCompositions] = useState([{ name: "", percent: "" }]);
+	const [total, setTotal] = useState("");
+	const [gradeCompositions, setGradeCompositions] = useState([{ name: "", percent: "", isFinal: false }]);
 	const [validated, setValidated] = useState(false);
 
 	const init = () => {
 		if (classroom.gradeStructure) {
 			// deep copy object
-			const gradeStructure = JSON.parse(JSON.stringify(classroom.gradeStructure))
+			const gradeStructure = JSON.parse(JSON.stringify(classroom.gradeStructure));
 
 			if (gradeStructure.gradeCompositions && gradeStructure.gradeCompositions.length > 0) {
-				setgradeCompositions(Array.from(gradeStructure.gradeCompositions))
+				setGradeCompositions(Array.from(gradeStructure.gradeCompositions));
 			}
 			if (gradeStructure.total) {
-				setTotal(gradeStructure.total)
+				setTotal(gradeStructure.total);
 			}
 		}
-		setValidated(false)
-	}
+		setValidated(false);
+	};
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(() => init(), [show]);
 
-
 	const closeModal = () => {
-		handleClose()
-	}
+		handleClose();
+	};
 
 	const onPercentChange = (val, index) => {
 		const newgradeCompositions = gradeCompositions.slice();
 		newgradeCompositions[index].percent = val.target.value;
-		setgradeCompositions(newgradeCompositions)
+		setGradeCompositions(newgradeCompositions);
 		setErr("");
-	}
+	};
 	const onNameChange = (val, index) => {
 		const newgradeCompositions = gradeCompositions.slice();
 		newgradeCompositions[index].name = val.target.value;
-		setgradeCompositions(newgradeCompositions);
+		setGradeCompositions(newgradeCompositions);
 		setErr("");
-	}
-
+	};
+	const onFinalStatusChange = (val, index) => {
+		const newgradeCompositions = gradeCompositions.slice();
+		newgradeCompositions[index].isFinal = val.target.checked;
+		setGradeCompositions(newgradeCompositions);
+		setErr("");
+	};
 	const handleOnDragEnd = (result) => {
 		if (!result.destination) return;
 
@@ -55,32 +58,28 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 		const [reorderedItem] = items.splice(result.source.index, 1);
 		items.splice(result.destination.index, 0, reorderedItem);
 
-		setgradeCompositions(items);
-	}
+		setGradeCompositions(items);
+	};
 	const onAddClick = () => {
-		setgradeCompositions([...gradeCompositions, { name: "", percent: "" }]);
-	}
+		setGradeCompositions([...gradeCompositions, { name: "", percent: "" }]);
+	};
 	const onRemoveClick = (index) => {
 		const newgradeCompositions = gradeCompositions.slice();
 		newgradeCompositions.splice(index, 1);
-		setgradeCompositions(newgradeCompositions);
-	}
+		setGradeCompositions(newgradeCompositions);
+	};
 
 	const handleSubmit = (event) => {
 		const form = event.currentTarget;
-		if (form.checkValidity() === false || !(total && (+total) > 0)) {
+		if (form.checkValidity() === false || !(total && +total > 0)) {
 			event.preventDefault();
 			event.stopPropagation();
-
-		}
-		else {
+		} else {
 			var sum = 0;
-			for (var i = 0; i < gradeCompositions.length; i++)
-				sum += +gradeCompositions[i].percent;
-			if (sum === 100)
-				onSubmit();
+			for (var i = 0; i < gradeCompositions.length; i++) sum += +gradeCompositions[i].percent;
+			if (sum === 100) onSubmit();
 			else {
-				setErr("Tổng phần trăm các điểm thành phần phải đúng 100%")
+				setErr("Tổng phần trăm các điểm thành phần phải đúng 100%");
 			}
 		}
 		setValidated(true);
@@ -90,30 +89,26 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 	const onSubmit = async () => {
 		setOnSubmiting(true);
 		try {
-			const data = { total, gradeCompositions }
-			console.log(data)
+			const data = { total, gradeCompositions };
 			await postApiMethod(`classrooms/${classroom.id}/grade-structure`, data);
 			onGradeEdit(data);
 			handleClose();
 			init();
-
 		} catch (error) {
 			console.log("error on submitting", error);
-			setErr(error.message)
+			setErr(error.message);
 		}
 		setOnSubmiting(false);
 	};
 
-	const rendergradeCompositions = (name, percent, index) => {
+	const renderGradeComposition = (name, percent, isFinal, index) => {
 		return (
-			<Draggable key={index.toString()} draggableId={index.toString()} index={index} >
+			<Draggable key={index.toString()} draggableId={index.toString()} index={index}>
 				{(provided) => (
 					<div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
 						<Card>
-							<Card.Body >
-								<div
-									className="d-flex flex-row w-100 justify-content-end mb-3"
-								>
+							<Card.Body>
+								<div className="d-flex flex-row w-100 justify-content-end mb-3">
 									{gradeCompositions.length > 1 ? <CloseButton onClick={() => onRemoveClick(index)} /> : null}
 								</div>
 								<Form.Group as={Row} className="mb-3">
@@ -126,12 +121,10 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 											type="text"
 											placeholder="Tên"
 											value={name}
-											onChange={(val) => onNameChange(val, index)} />
-										<Form.Control.Feedback type="invalid">
-											Không được bỏ trống
-										</Form.Control.Feedback>
+											onChange={(val) => onNameChange(val, index)}
+										/>
+										<Form.Control.Feedback type="invalid">Không được bỏ trống</Form.Control.Feedback>
 									</Col>
-
 								</Form.Group>
 								<Form.Group as={Row} className="mb-3">
 									<Form.Label column sm="4">
@@ -139,83 +132,88 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 									</Form.Label>
 									<Col sm="8">
 										<InputGroup>
-
 											<Form.Control
 												required
 												type="number"
 												placeholder="Phần trăm"
 												value={percent}
-												onChange={(val) => onPercentChange(val, index)} />
-											<Form.Control.Feedback type="invalid">
-												Không được bỏ trống
-											</Form.Control.Feedback>
+												onChange={(val) => onPercentChange(val, index)}
+											/>
+											<Form.Control.Feedback type="invalid">Không được bỏ trống</Form.Control.Feedback>
 											<InputGroup.Text>%</InputGroup.Text>
 										</InputGroup>
 									</Col>
-
+								</Form.Group>
+								<Form.Group as={Row} className="mb-3">
+									<Col sm="12">
+										<Form.Check
+											checked={isFinal}
+											column
+											sm="12"
+											id={`checked-${index}`}
+											type={"checkbox"}
+											label={`Công bố điểm`}
+											onChange={(val)=> onFinalStatusChange(val, index)}
+										/>
+									</Col>
 								</Form.Group>
 							</Card.Body>
 						</Card>
 						<br />
 					</div>
-
 				)}
 			</Draggable>
 		);
-	}
+	};
 	return (
 		<Modal show={show} onHide={closeModal}>
-			<Form validated={validated} onSubmit={handleSubmit} >
+			<Form validated={validated} onSubmit={handleSubmit}>
 				<Modal.Header closeButton>
 					<Modal.Title>Thang điểm</Modal.Title>
 					{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
 				</Modal.Header>
 				<Modal.Body>
-					<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-						<div style={{ color: 'red' }}>{err}</div>
+					<div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>
+						<div style={{ color: "red" }}>{err}</div>
 					</div>
 					<Card style={{ border: "0px" }}>
 						<Card.Body>
-							<Form.Group as={Row} className="mb-3" >
+							<Form.Group as={Row} className="mb-3">
 								<Form.Label column sm="4">
 									Tổng điểm
 								</Form.Label>
 								<Col sm="6">
 									<Form.Control
 										required
-										isInvalid={!(total && (+total) > 0)}
+										isInvalid={!(total && +total > 0)}
 										type="number"
 										placeholder="Điểm"
 										value={total}
-										onChange={(e) => setTotal(e.target.value)} />
-									<Form.Control.Feedback type="invalid">
-										Hãy điền vào một số lớn hơn 0
-									</Form.Control.Feedback>
+										onChange={(e) => setTotal(e.target.value)}
+									/>
+									<Form.Control.Feedback type="invalid">Hãy điền vào một số lớn hơn 0</Form.Control.Feedback>
 								</Col>
 								<Col sm="2">
-									<Button variant="outline-success" style={{ width: '100%' }} onClick={onAddClick}>
+									<Button variant="outline-success" style={{ width: "100%" }} onClick={onAddClick}>
 										<i className="fas fa-plus"></i>
 									</Button>
 								</Col>
 							</Form.Group>
 						</Card.Body>
-
 					</Card>
 
 					<DragDropContext onDragEnd={handleOnDragEnd}>
-						<Droppable droppableId="gradeCompositions" >
+						<Droppable droppableId="gradeCompositions">
 							{(provided) => (
-								<div  {...provided.droppableProps} ref={provided.innerRef}>
-									{gradeCompositions.map(({ name, percent }, index) =>
-										rendergradeCompositions(name, percent, index)
+								<div {...provided.droppableProps} ref={provided.innerRef}>
+									{gradeCompositions.map(({ name, percent, isFinal }, index) =>
+										renderGradeComposition(name, percent, isFinal, index)
 									)}
 									{provided.placeholder}
 								</div>
 							)}
 						</Droppable>
 					</DragDropContext>
-
-
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="outline-secondary" type="button" onClick={closeModal}>

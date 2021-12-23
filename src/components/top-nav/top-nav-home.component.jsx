@@ -25,7 +25,7 @@ const TopNavigationHome = ({ onClassCreated, onClassJoined }) => {
 					<span>Gradeflix</span>
 				</Link>
 
-				<section className="utility d-flex justify-content-around">
+				<section className="utility d-flex justify-content-around align-items-center">
 					<Dropdown align="end" className="mx-2">
 						<OverlayTrigger placement="left" delay={{ show: 250, hide: 50 }} overlay={renderTooltip}>
 							<Dropdown.Toggle
@@ -58,9 +58,9 @@ const TopNavigationHome = ({ onClassCreated, onClassJoined }) => {
 							</Dropdown.Item>
 						</ul>
 					</div> */}
+					<Avatar />
 				</section>
 			</div>
-			<Avatar />
 			<CreateClassRoomForm show={showCreateClass} handleClose={handleClose} onClassCreated={onClassCreated} />
 			<JoinClassRoomForm show={showJoiningClass} handleClose={handleClose} onClassJoined={onClassJoined} />
 		</nav>

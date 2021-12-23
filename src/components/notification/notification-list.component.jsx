@@ -19,6 +19,15 @@ const NotificationList = () => {
 		}
 	}, [socket.socket]);
 
+	const markAllRead = async () => {
+		try {
+			const newNotifications = await getApiMethod("notifications/mark-all-read");
+			setNotificationList(newNotifications);
+		} catch (error) {
+			console.log("error", error);
+		}
+	};
+
 	const updateNotifications = (newNotification) => {
 		const newNotificationList = [...notificationList];
 
@@ -53,7 +62,7 @@ const NotificationList = () => {
 	}, [notificationList]);
 	return (
 		<div className="">
-			<Dropdown align="end" className="mx-2" onToggle={() => setUnreadNotificationCount("0")}>
+			<Dropdown align="end" className="mx-3" onToggle={() => setUnreadNotificationCount("0")}>
 				<Dropdown.Toggle
 					variant="secondary"
 					className="btn btn-add-classroom rounded rounded-circle overflow-hidden "
@@ -66,8 +75,13 @@ const NotificationList = () => {
 						</span>
 					) : null}
 				</Dropdown.Toggle>
-				<Dropdown.Menu style={{ width: "350px" }} className=" notification-list">
-					<h3 className="px-3 pt-2">Thông báo</h3>
+				<Dropdown.Menu variant="secondary" style={{ width: "350px" }} className=" notification-list">
+					<div className=" px-3 py-2 notification-header d-flex justify-content-between align-items-center">
+						<div className=" fs-2">Thông báo</div>
+						<div className="text-primary cursor-pointer" onClick={markAllRead}>
+							Đọc hết
+						</div>
+					</div>
 
 					{notificationList && notificationList.length ? (
 						notificationList.map((notification, idx) => (

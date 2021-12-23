@@ -17,9 +17,9 @@ const TabMyInfo = ({ classroom, onEditStudentId, studentList }) => {
 			{!classroom ? (
 				<Spining />
 			) : (
-				<Row>
-					<Col sm={3}>
-						<Card style={{ marginBottom: "10px" }}>
+				<Row className="pb-3">
+					<Col lg={3}>
+						<Card  className="mb-3">
 							<Card.Header>
 								<Card.Title>Thông tin cá nhân</Card.Title>
 							</Card.Header>
@@ -96,7 +96,7 @@ const TabMyInfo = ({ classroom, onEditStudentId, studentList }) => {
 						</Card>
 						<ListGradeCompositions classroom={classroom} />
 					</Col>
-					<Col sm={9}>
+					<Col lg={9}>
 						<Card>
 							<Card.Header>
 								<Card.Title>Bảng điểm</Card.Title>

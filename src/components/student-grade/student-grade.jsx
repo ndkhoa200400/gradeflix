@@ -7,16 +7,25 @@ const StudentGrade = ({ classroom, studentList }) => {
 		if (studentList) {
 			const mapping = {};
 			const studentGrade = studentList.grades ?? [];
-			for (const gradeCompositions of classroom.gradeStructure.gradeCompositions) {
-				const grade = studentGrade.find((g) => g.name === gradeCompositions.name) ?? "";
-
-				mapping[gradeCompositions.name] = grade.grade;
-			}
+			if (classroom?.gradeStructure)
+				for (const gradeCompositions of classroom?.gradeStructure?.gradeCompositions) {
+					const grade = studentGrade.find((g) => g.name === gradeCompositions.name);
+					if (gradeCompositions.isFinal && grade?.grade) mapping[gradeCompositions.name] = grade.grade;
+					else {
+						mapping[gradeCompositions.name] = "Chưa công bố";
+					}
+				}
 			setMappingGrades(mapping);
 		}
 	}, [studentList, classroom]);
-
-	return studentList ? (
+	if (!classroom || !classroom.gradeStructure) {
+		return (
+			<div>
+				<h3>Lớp chưa có thang điểm</h3>
+			</div>
+		);
+	}
+	return studentList && classroom?.gradeStructure?.gradeCompositions ? (
 		<div className="student-grades p-2">
 			<Row className="px-2 text-center">
 				<Col className="border border-2 border-end-0 py-2 fw-bold" sm={8}>
@@ -24,8 +33,8 @@ const StudentGrade = ({ classroom, studentList }) => {
 				</Col>
 				<Col className="border border-2 py-2 fw-bold">Điểm</Col>
 			</Row>
-			{classroom.gradeStructure.gradeCompositions.map((gradeCompositions) => (
-				<Row className="p-2">
+			{classroom.gradeStructure.gradeCompositions.map((gradeCompositions, idx) => (
+				<Row className="p-2" key={idx}>
 					<Col className="border border-2 border-end-0 p-3" sm={8}>
 						{gradeCompositions.name}
 					</Col>

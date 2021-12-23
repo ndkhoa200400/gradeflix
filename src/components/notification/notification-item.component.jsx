@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { getApiMethod } from "../../api/api-handler";
 import dayjs from "dayjs";
+import { Dropdown } from "react-bootstrap";
 
 const NotificationItem = ({ notification, updateNotification }) => {
 	const markRead = async () => {
@@ -29,8 +30,8 @@ const NotificationItem = ({ notification, updateNotification }) => {
 			: `${now.diff(dayjs(notification.createdAt), "month")} tháng trước`;
 
 	return (
-		<div
-			className={`notification row m-0 p-2 py-3 align-items-center  ${notification.isRead ? "text-muted" : " fw-bold"}`}
+		<Dropdown.Item
+			className={`d-flex notification-item row m-0 p-2 py-3 align-items-center  ${notification.isRead ? "text-muted" : " fw-bold"}`}
 		>
 			<Link className="col-10  text-dark" onClick={markRead} to={notification.link}>
 				<div className="notification-content">{notification.content}</div>
@@ -49,7 +50,7 @@ const NotificationItem = ({ notification, updateNotification }) => {
 					></div>
 				</div>
 			) : null}
-		</div>
+		</Dropdown.Item>
 	);
 };
 
