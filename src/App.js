@@ -13,6 +13,7 @@ import {
 	Routes as Switch,
 } from "react-router-dom";
 import { SocketIOProvider } from "./custome-hook";
+import AdminPage from "./pages/admin-page/admin-page";
 
 function App() {
 
@@ -39,7 +40,7 @@ function App() {
 						/>
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/signup" element={<SignupPage />} />
-
+						<Route path="/admin/*" element={<AdminPage />} />
 						<Route
 							path="/me"
 							element={
