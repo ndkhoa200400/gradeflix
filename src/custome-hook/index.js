@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
-const socketServer = process.env.REACT_APP_SOCKET_LINK;
+const socketServer = process.env.REACT_APP_API_LINK;
 
 export function useQuery() {
 	const { search } = useLocation();
