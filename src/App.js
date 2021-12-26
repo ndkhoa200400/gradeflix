@@ -40,7 +40,7 @@ function App() {
 						/>
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/signup" element={<SignupPage />} />
-						<Route path="/admin/*" element={<AdminPage />} />
+						<Route path="/admin/:tab" element={<AdminPage />} />
 						<Route
 							path="/me"
 							element={

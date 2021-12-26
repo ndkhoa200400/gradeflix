@@ -81,8 +81,9 @@ a, a:hover, a:focus {
 
 #sidebar ul li a {
     padding: 15px 30px;
-    font-size: 1.2em;
+    font-size: 1.1em;
     display: block;
+    font-family: 'Poppins', sans-serif;
 }
 #sidebar ul li a:hover:not(.nav-item-active) {
     color: rgb(255, 255, 255);
@@ -147,7 +148,6 @@ a.article, a.article:hover {
 #content {
     width: calc(100% - 250px);
     padding: 40px;
-    min-height: 100vh;
     transition: all 0.3s;
     position: absolute;
     top: 0;
