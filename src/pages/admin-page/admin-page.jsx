@@ -77,7 +77,7 @@ const AdminPage = () =>{
                             </Button>
                         </div>
                         <h2>{title}</h2>
-                        <AdminAvatar  logout = {()=>{}}/>
+                        <AdminAvatar/>
                         
                     </div>
                 </nav>

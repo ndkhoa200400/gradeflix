@@ -1,4 +1,5 @@
-const Pagination = ({totalPage, currentPage, numberDisplayedButton})=>{
+import { Pagination } from "react-bootstrap"
+const CustomPagination = ({totalPage, currentPage, numberDisplayedButton})=>{
     return(
         <Pagination>
             <Pagination.First />
@@ -19,3 +20,4 @@ const Pagination = ({totalPage, currentPage, numberDisplayedButton})=>{
         </Pagination>
     )
 }
+export default CustomPagination;

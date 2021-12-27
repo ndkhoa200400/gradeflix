@@ -1,13 +1,14 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, Button, Form, Row } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
 import { postApiMethod } from "../../api/api-handler";
-const { SearchBar } = Search;
-const AdminAccounts = ({ gradeStructure, students, onUpdateGrade, classroomId, openGradeForm, errorList }) =>{
+import CustomPagination from "./custom-pagination";
+import { getApiMethod } from "../../api/api-handler";
+const AdminAccounts = () =>{
 	const studentIdValidator = (newValue, row, column) => {
 		if (isNaN(newValue)) {
 			return {
@@ -16,17 +17,37 @@ const AdminAccounts = ({ gradeStructure, students, onUpdateGrade, classroomId, o
 			};
 		}
 		if (+newValue >= 0 && +newValue <= 10) return { valid: true };
-		return { valid: false, message: `Phạm vi điểm 0 - ${gradeStructure.total}` };
+		return { valid: false, message: `Phạm vi điểm 0 - 10` };
 	};
-	
+	const headerFormatter = (column, colIndex, { sortElement, filterElement }) => {
+		return (
+			<div style={{ display: "flex", flexDirection: "row", justifyContent: "center", cursor: "pointer" }}>
+				<div style={{ display: "flex", flexDirection: "column", justifyContent: "center", cursor: "move" }}>
+					<div style={{ display: "flex", flexDirection: "row", justifyContent: "center", cursor: "move" }}>
+						{filterElement}
+						{column.text}
+						{sortElement}
+					</div>
+				</div>
+				&nbsp;
+				<div
+					variant="link"
+					style={{ padding: "0px" }}
+					
+				>
+					<i className="fa fa-edit" aria-hidden="true"></i>
+				</div>
+			</div>
+		);
+	};
 	const columns = [
 		{
-			dataField: "account",
-			text: "Tài khoản",
+			dataField: "email",
+			text: "Email",
 			editable: false,
 		},
 		{
-			dataField: "fullName",
+			dataField: "fullname",
 			text: "Họ và tên",
 			editable: false,
 		},		
@@ -35,10 +56,11 @@ const AdminAccounts = ({ gradeStructure, students, onUpdateGrade, classroomId, o
             dataField: "studentId",
 			text: "MSSV",
 			editable: true,
+            headerFormatter,
             validator: studentIdValidator,
         },
         {
-            dataField: "status",
+            dataField: "active",
 			text: "Trạng thái",
 			editable: false,
         },
@@ -50,17 +72,7 @@ const AdminAccounts = ({ gradeStructure, students, onUpdateGrade, classroomId, o
 	];
 	
 
-	const data = [
-        {account: "12", fullName: "as", studentId: "as12", status: "Bị khóa", action: Lock({id: "1", isLocked: true})},
-        {account: "11232", fullName: "as", studentId: "as12", status: "Hoạt động", action: Lock({id: "1", isLocked: false})},
-        {account: "12sdv", fullName: "as", studentId: "as12", status: "Hoạt động",action:Lock({id: "1", isLocked: false})},
-        {account: "1sdv2", fullName: "as", studentId: "as12", status: "Hoạt động",action:Lock({id: "1", isLocked: false})},
-        {account: "1fd2", fullName: "as", studentId: "as12", status: "Hoạt động",action:Lock({id: "1", isLocked: false})},
-        {account: "1122", fullName: "as", studentId: "as12", status: "Hoạt động",action:Lock({id: "1", isLocked: false})},
-        {account: "1212", fullName: "as", studentId: "as12", status: "Hoạt động",action:Lock({id: "1", isLocked: false})},
-        {account: "12vss", fullName: "as", studentId: "as12", status: "Hoạt động",action:Lock({id: "1", isLocked: false})},
-        {account: "12v", fullName: "as", studentId: "as12", status: "Hoạt động",action:Lock({id: "1", isLocked: false})},
-    ];
+	
 
 	const beforeSaveCell = async (oldValue, newValue, row, column, done) => {
 		console.log(oldValue, newValue, oldValue === undefined && newValue === "");
@@ -69,21 +81,54 @@ const AdminAccounts = ({ gradeStructure, students, onUpdateGrade, classroomId, o
 		const field = column.dataField;
 		//call api
 		try {
-			const res = await postApiMethod(`classrooms/${classroomId}/students/${studentId}/grades?gradeName=${field}`, {
+			const res = await postApiMethod(``, {
 				newGrade: newValue,
 			});
-			onUpdateGrade(res);
+			
 		} catch (e) {
 			console.log(e);
 		}
 	};
+    const [users, setUsers] = useState([])
+    const getAllUser = async ()=>{
+        try{
+            const res = await getApiMethod('admin/users');
+            console.log(res)
+            const newUsers = []
+            for(var i = 0; i < res.items.length; i++){
+                const user = res.items[i];
+                if(user.role !== "ADMIN"){
+                    newUsers.push({
+                        ...user, 
+                        active: Status({isLocked: !user.active}), 
+                        action:Lock({id: user.id, isLocked: !user.active})
+                    })
+                }
+                
+                
+            }
+            setUsers(newUsers);
+                console.log(newUsers)
+            }
+        catch(e){
+            console.log(e);
+        }
 
+    }
+    useEffect(() => {
+		getAllUser();
+        
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+   
 	//Mark to customize later!!
 	const rowStyle = (row, rowIndex) => {
 		const style = {};
-		if (rowIndex === 0) {
+		if (users[rowIndex].active === false) {
             style.backgroundColor = "#FFCDD2";
+            
         }
+
 
 		return style;
 	};
@@ -94,10 +139,10 @@ const AdminAccounts = ({ gradeStructure, students, onUpdateGrade, classroomId, o
 		},
 	];
     return (
-        <ToolkitProvider defaultSorted = {defaultSorted} bootstrap5 keyField="account" data={data} columns={columns} search>
+        <ToolkitProvider defaultSorted = {defaultSorted} bootstrap5 keyField="account" data={users} columns={columns} search>
 			{(props) => (
 				<div>
-					
+					<CustomPagination/>
                     <hr />
                     
 					<Card className="text-center d-grid grap-2 div-horizontal">
@@ -121,10 +166,27 @@ const AdminAccounts = ({ gradeStructure, students, onUpdateGrade, classroomId, o
 		</ToolkitProvider>
     )
 }
+const Status = ({isLocked})=>{
+    return(
+        <div style = {{color: isLocked?'red' : 'green'}} >
+            {isLocked?"Bị khóa":"Hoạt động"}
+        </div>
+    )
+}
 const Lock = ({id, isLocked})=>{
     return(
-        <Button>
-            {isLocked?"unlock":"lock"}
+        <Button variant={isLocked?"outline-success":"outline-danger"} style = {{width: '100px'}} >
+            {isLocked?
+                <>
+                    <i className = "fas fa-unlock"></i>  Mở khóa
+                </>
+                
+            : 
+                <>
+                    <i className = "fas fa-lock"></i>  Khóa
+                </>
+                
+            }
         </Button>
     )
 }

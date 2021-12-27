@@ -1,5 +1,15 @@
 import { Dropdown, Image } from "react-bootstrap";
-const AdminAvatar = ({logout}) =>{
+import { useNavigate } from "react-router-dom";
+import * as AuthenService from "../../services/auth.service";
+import { useSocket } from "../../custome-hook";
+const AdminAvatar = () =>{
+    const navigate = useNavigate();
+	const socket = useSocket()
+    const logout = () => {
+        AuthenService.logOut();
+            socket.logOut()
+        navigate("/login", { replace: true });
+    };
     return (
         <Dropdown>
             <Dropdown.Toggle
