@@ -13,6 +13,7 @@ import {
 	Routes as Switch,
 } from "react-router-dom";
 import { SocketIOProvider } from "./custome-hook";
+import ResetPasswordPage from "./pages/reset-password/reset-password.page";
 
 function App() {
 
@@ -55,6 +56,13 @@ function App() {
 								<PrivateRoute>
 									<Invitation />
 								</PrivateRoute>
+							}
+						/>
+
+						<Route
+							path="/reset-password"
+							element={
+								<ResetPasswordPage />
 							}
 						/>
 					</Switch>
