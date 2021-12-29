@@ -4,10 +4,11 @@ import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card } from "react-bootstrap";
 import * as AuthenService from "../../services/auth.service";
 import { postApiMethod } from "../../api/api-handler";
-import { useNavigate, Link, Navigate } from "react-router-dom";
-import { useState } from 'react';
-import { useQuery } from '../../custome-hook';
-
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useQuery } from "../../custome-hook";
+import ErrorAlert from "../../components/alert/error-alert.component";
+import InfoAlert from "../../components/alert/info-alert.component";
 
 const ResetPasswordPage = () => {
 	const {

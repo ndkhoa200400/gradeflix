@@ -7,16 +7,12 @@ import PrivateRoute from "./components/private-router";
 import Profile from "./pages/profile-user/profile-user.page";
 import Invitation from "./pages/invitation/invitation.page";
 // React router
-import {
-	BrowserRouter as Router,
-	Route,
-	Routes as Switch,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes as Switch } from "react-router-dom";
 import { SocketIOProvider } from "./custome-hook";
 import ResetPasswordPage from "./pages/reset-password/reset-password.page";
+import Activation from "./pages/activate-page/activate.page";
 
 function App() {
-
 	return (
 		<div className="App">
 			<SocketIOProvider>
@@ -60,11 +56,15 @@ function App() {
 						/>
 
 						<Route
-							path="/reset-password"
+							path="/activate"
 							element={
-								<ResetPasswordPage />
+								<PrivateRoute>
+									<Activation />
+								</PrivateRoute>
 							}
 						/>
+
+						<Route path="/reset-password" element={<ResetPasswordPage />} />
 					</Switch>
 				</Router>
 			</SocketIOProvider>
