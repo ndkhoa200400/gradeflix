@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from "react";
 import Spining from "../../components/spinning/spinning.component";
 import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card } from "react-bootstrap";
@@ -17,27 +17,55 @@ const ResetPasswordPage = () => {
 		setError,
 		formState: { errors },
 	} = useForm();
+	const [showError, setShowError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
+	const [showInfo, setShowInfo] = useState(false);
+	const [infoMessage, setInfoMessage] = useState("");
 	const [onSubmiting, setOnSubmiting] = useState(false);
-	const query = useQuery()
-
-
+	const query = useQuery();
+	const navigate = useNavigate();
 	const onSubmit = async (data) => {
 		setOnSubmiting(true);
+
+		if (data.password !== data.confirmedPassword) {
+			setError(
+				"password",
+				{},
+				{
+					shouldFocus: true,
+				}
+			);
+			setError("confirmedPassword", {
+				message: "Mật khẩu không khớp.",
+			});
+
+			return setOnSubmiting(false);
+		}
+		const token = query.get("token");
+		const email = query.get("email");
+		try {
+			const user = await postApiMethod(`users/reset-password?token=${token}`, {
+				newPassword: data.password,
+				email,
+			});
+			setInfoMessage("Đổi mật khẩu thành công");
+			setShowInfo(true);
+			AuthenService.saveToken(user.token);
+			delete user.token;
+			AuthenService.saveUserInfo(user);
+		} catch (error) {
+			setShowError(true);
+			setErrorMessage(error.message);
+		}
+
 		setOnSubmiting(false);
 	};
 
-	useEffect(() => {
-		if (query)
-		{
-			const code = query.get('code')
-			console.log(code)
-		}
-	}, [query])
-
-	const auth = AuthenService.isLoggedIn();
-	return auth ? (
-		<Navigate to="/" />
-	) : (
+	const onNavigate = () => {
+		setShowInfo(false);
+		navigate("/");
+	};
+	return (
 		<Container>
 			<Card className="login">
 				<Card.Header className="text-center bg-transparent p-3  px-lg-5 ">
@@ -47,7 +75,9 @@ const ResetPasswordPage = () => {
 					</div>
 
 					<h4>Đặt lại mật khẩu</h4>
-					<p className="text-start text-muted">Nhập email của bạn, sau đó đường dẫn để đặt lại mật khẩu  {<br></br>} sẽ được gửi đến email của bạn.</p>
+					<p className="text-start text-muted">
+						Nhập email của bạn, sau đó đường dẫn để đặt lại mật khẩu {<br></br>} sẽ được gửi đến email của bạn.
+					</p>
 					<div
 						style={{
 							display: "flex",
@@ -59,30 +89,33 @@ const ResetPasswordPage = () => {
 					</div>
 				</Card.Header>
 				<Card.Body>
-					<Form
-						noValidate
-						onSubmit={handleSubmit(onSubmit)}
-						className="px-3 py-2"
-					>
+					<Form noValidate onSubmit={handleSubmit(onSubmit)} className="px-3 py-2">
 						<Form.Group className="mb-3">
-							<Form.Label>Email</Form.Label>
+							<Form.Label>Mật khẩu mới</Form.Label>
 							<Form.Control
-								type="email"
-								placeholder="Email"
-								{...register("email", {
-									required: "Email không được bỏ trống",
-									pattern: {
-										value:
-											/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-										message: "Email không đúng định dạng",
-									},
+								type="password"
+								placeholder="Mật khẩu mới"
+								{...register("password", {
+									required: "Mật khẩu không được bỏ trống",
 								})}
-								isInvalid={errors.email}
+								isInvalid={errors.password}
 							/>
-							{errors.email?.message && (
-								<Form.Control.Feedback type="invalid">
-									{errors.email?.message}
-								</Form.Control.Feedback>
+							{errors.password?.message && (
+								<Form.Control.Feedback type="invalid">{errors.password.message}</Form.Control.Feedback>
+							)}
+						</Form.Group>
+						<Form.Group className="mb-3">
+							<Form.Label>Xác nhận mật khẩu</Form.Label>
+							<Form.Control
+								type="password"
+								placeholder="Xác nhận mật khẩu"
+								{...register("confirmedPassword", {
+									required: "Xác nhậc mật khẩu không được bỏ trống",
+								})}
+								isInvalid={errors.confirmedPassword}
+							/>
+							{errors.confirmedPassword?.message && (
+								<Form.Control.Feedback type="invalid">{errors.confirmedPassword?.message}</Form.Control.Feedback>
 							)}
 						</Form.Group>
 						<Button variant="primary" type="submit" className="w-100 my-2">
@@ -97,8 +130,10 @@ const ResetPasswordPage = () => {
 					</Form>
 				</Card.Body>
 			</Card>
+			<ErrorAlert show={showError} setHide={() => setShowError(false)} message={errorMessage} />
+			<InfoAlert show={showInfo} setHide={onNavigate} message={infoMessage} />
 		</Container>
 	);
-}
+};
 
-export default ResetPasswordPage
+export default ResetPasswordPage;
