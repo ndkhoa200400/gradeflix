@@ -8,11 +8,13 @@ import GoogleLogin from "react-google-login";
 import * as AuthenService from "../../services/auth.service";
 import Spining from "../../components/spinning/spinning.component";
 import { loadPreUrl, savePreUrl } from "../../services/location.service";
+import ResetPasswordForm from "./reset-password-form";
 const client_id = process.env.REACT_APP_CLIENT_GOOGLE;
 ///users/login
 const LoginPage = () => {
 	const preUrl = loadPreUrl() ? loadPreUrl() : "/";
 	const [onSubmiting, setOnSubmiting] = useState(false);
+	const [resetFormShow, setResetFormShow] = useState(false)
 	const responseGoogle = async (response) => {
 		//console.log(response);
 		setOnSubmiting(true);
@@ -74,8 +76,8 @@ const LoginPage = () => {
 	return auth ? (
 		<Navigate to="/" />
 	) : (
-		<Container>
-			<Card className="login">
+		<Container  className="login">
+			<Card>
 				<Card.Header className="text-center bg-transparent p-3  px-lg-5 ">
 					<div className="p-2 d-flex justify-content-center align-items-center">
 						<img src="/logo.png" alt="" width={24} height={24} />
@@ -138,10 +140,13 @@ const LoginPage = () => {
 							)}
 						</Form.Group>
 
-						<Button variant="primary" type="submit" className="w-100 mt-2 mb-3">
+						<Button variant="primary" type="submit" className="w-100 my-2">
 							Đăng nhập
 						</Button>
-						<div className="w-100 text-center mb-4 h-25">
+							<div onClick={()=>setResetFormShow(true)} className="w-100 d-block text-end text-muted cursor-pointer">
+							Quên mật khẩu
+						</div>
+						<div className="w-100 text-center my-4 h-25">
 							<GoogleLogin
 								clientId={client_id}
 								buttonText="Đăng nhập với Google"
@@ -157,6 +162,7 @@ const LoginPage = () => {
 					</Form>
 				</Card.Body>
 			</Card>
+			<ResetPasswordForm show={resetFormShow} handleClose ={()=>setResetFormShow(false)}/>
 		</Container>
 	);
 };

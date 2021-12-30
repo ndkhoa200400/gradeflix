@@ -11,13 +11,13 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 		setEditCreateClass(true);
 	};
 	const invLink = `${window.location.host}/invitation?classroomId=${classroom.id}&role=STUDENT`;
-	const copyCodeToClipboard = () => {
-		navigator.clipboard.writeText(invLink);
+	const copyCodeToClipboard = (code) => {
+		navigator.clipboard.writeText(code);
 		setShow(true);
 	};
 
 	return (
-		<div className="tab-detail pb-3">
+		<div className="tab-detail pb-3 ">
 			<Row>
 				<Col sm={3}>
 					{classroom && classroom.user.userRole === "STUDENT" ? (
@@ -30,7 +30,7 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 							</Card.Body>
 						</Card>
 					) : (
-						<div>
+						<div className="position-relative">
 							<Card style={{ marginBottom: "10px", position: "relative" }}>
 								<Card.Header>
 									<Card.Title> Đường dẫn vào lớp</Card.Title>
@@ -47,34 +47,33 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 									</div>
 									<br />
 
-									<Button variant="outline-primary" onClick={copyCodeToClipboard} className="btn-block w-100">
+									<Button variant="outline-primary" onClick={() => copyCodeToClipboard(invLink)} className="btn-block w-100">
 										Sao chép
 									</Button>
 								</Card.Body>
-								<div
-									style={{
-										display: "flex",
-										flexDirection: "row",
-										justifyContent: "center",
-									}}
-								>
-									<Toast
-										style={{
-											position: "absolute",
-											top: "50%",
-											width: "120px",
-											right: "30%",
-										}}
-										onClose={() => setShow(false)}
-										show={show}
-										delay={1000}
-										autohide
-									>
-										<Toast.Body>Đã sao chép!</Toast.Body>
-									</Toast>
-								</div>
 							</Card>
+							<Card style={{ marginBottom: "10px", position: "relative" }}>
+								<Card.Header>
+									<Card.Title>Mã lớp</Card.Title>
+								</Card.Header>
+								<Card.Body>
+									<div
+										style={{
+											display: "flex",
+											lexDirection: "row",
+											justifyContent: "center",
+										}}
+									>
+										<Card.Text style={{ flexWrap: "nowrap", overflowX: "auto" }}>{classroom.code}</Card.Text>
+									</div>
+									<br />
 
+									<Button variant="outline-primary" onClick={() => copyCodeToClipboard(classroom.code)} className="btn-block w-100">
+										Sao chép
+									</Button>
+								</Card.Body>
+
+							</Card>
 							<Card>
 								<Card.Header >
 									<Card.Title>Cấu hình</Card.Title>
@@ -92,6 +91,7 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 									/>
 								</Card.Body>
 							</Card>
+
 						</div>
 					)}
 				</Col>
@@ -114,6 +114,23 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 					</Card>
 				</Col>
 			</Row>
+			<Toast
+				style={{
+					position: "fixed",
+					bottom: "20%",
+					width: "120px",
+					left: "50%",
+					transform: 'translateX(-50%)',
+					textAlign: 'center'
+				}}
+				onClose={() => setShow(false)}
+				show={show}
+				delay={1000}
+				autohide
+			>
+				<Toast.Body>Đã sao chép!</Toast.Body>
+			</Toast>
+
 		</div>
 	);
 };

@@ -96,10 +96,10 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 												<div>{item.name}</div>
 												<div>{item.percent}%</div>
 											</Card.Text>
-										))}{" "}
+										))}
 									</div>
 								) : (
-									<Alert className="my-5" variant={"info"}>
+									<Alert className="my-2" variant={"info"}>
 										<Alert.Heading>Chưa có thang điểm!</Alert.Heading>
 										<p>Hãy thêm thang điểm</p>
 									</Alert>

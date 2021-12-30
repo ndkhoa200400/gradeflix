@@ -97,6 +97,21 @@ const EditClassRoomForm = ({
             )}
           </Form.Group>
 
+					<Form.Group className="mb-3">
+            <Form.Label>Mã lớp</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Nhập mã lớp"
+              {...register("code")}
+              defaultValue={classroom ? classroom.code : ""}
+            />
+						{errors.code && (
+              <Form.Control.Feedback type="invalid">
+                Bắt buộc
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
+
           <Form.Group className="mb-3">
             <Form.Label>Môn học</Form.Label>
             <Form.Control
