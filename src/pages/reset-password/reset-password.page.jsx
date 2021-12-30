@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card } from "react-bootstrap";
 import * as AuthenService from "../../services/auth.service";
 import { postApiMethod } from "../../api/api-handler";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useQuery } from "../../custome-hook";
 import ErrorAlert from "../../components/alert/error-alert.component";

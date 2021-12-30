@@ -18,9 +18,9 @@ import { SocketIOProvider } from "./custome-hook";
 import AdminPage from "./pages/admin-page/admin-page";
 import AdminPrivateRoute from "./components/private-router/admin-private-router";
 import ResetPasswordPage from "./pages/reset-password/reset-password.page";
+import Activation from "./pages/activate-page/activate.page";
 
 function App() {
-
 	return (
 		<div className="App">
 			<SocketIOProvider>
@@ -74,11 +74,15 @@ function App() {
 						/>
 
 						<Route
-							path="/reset-password"
+							path="/activate"
 							element={
-								<ResetPasswordPage />
+								<PrivateRoute>
+									<Activation />
+								</PrivateRoute>
 							}
 						/>
+
+						<Route path="/reset-password" element={<ResetPasswordPage />} />
 					</Switch>
 				</Router>
 			</SocketIOProvider>
