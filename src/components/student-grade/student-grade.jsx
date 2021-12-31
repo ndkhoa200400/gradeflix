@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
+import StudentGradeCompoistionItem from "./student-grade-composition-item";
 const StudentGrade = ({ classroom, studentList }) => {
 	const [mappingGrades, setMappingGrades] = useState({});
-
 	useEffect(() => {
 		if (studentList) {
 			const mapping = {};
@@ -33,13 +33,13 @@ const StudentGrade = ({ classroom, studentList }) => {
 				</Col>
 				<Col className="border border-2 py-2 fw-bold">Điểm</Col>
 			</Row>
-			{classroom.gradeStructure.gradeCompositions.map((gradeCompositions, idx) => (
-				<Row className="p-2" key={idx}>
-					<Col className="border border-2 border-end-0 p-3" sm={8}>
-						{gradeCompositions.name}
-					</Col>
-					<Col className="border border-2 p-3">{mappingGrades[gradeCompositions.name]}</Col>
-				</Row>
+			{classroom.gradeStructure.gradeCompositions.map((gradeComposition, idx) => (
+				<StudentGradeCompoistionItem
+					key={idx}
+					gradeComposition={gradeComposition}
+					grade={mappingGrades[gradeComposition.name]}
+					classroom={classroom}
+				/>
 			))}
 		</div>
 	) : (
