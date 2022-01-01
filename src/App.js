@@ -17,6 +17,7 @@ import {
 import { SocketIOProvider } from "./custome-hook";
 import AdminPage from "./pages/admin-page/admin-page";
 import AdminPrivateRoute from "./components/private-router/admin-private-router";
+import ResetPasswordPage from "./pages/reset-password/reset-password.page";
 
 function App() {
 
@@ -41,7 +42,7 @@ function App() {
 								</PrivateRoute>
 							}
 						/>
-						<Route 	path="/classrooms/:id" 
+						<Route 	path="/classrooms/:id"
 								element={
 									<TabProxy/>
 								}
@@ -69,6 +70,13 @@ function App() {
 								<PrivateRoute>
 									<Invitation />
 								</PrivateRoute>
+							}
+						/>
+
+						<Route
+							path="/reset-password"
+							element={
+								<ResetPasswordPage />
 							}
 						/>
 					</Switch>
