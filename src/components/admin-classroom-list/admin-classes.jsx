@@ -3,10 +3,13 @@ import { ListGroup ,Dropdown, Button,  } from "react-bootstrap";
 import {useState, useEffect} from 'react'
 import ClassQuickView from "./class-quick-view";
 import { getApiMethod } from "../../api/api-handler";
+import ModalLockClassroom from "./admin-confirm-lock-classroom";
+import { set } from "react-hook-form";
 const AdminClasses = () =>{
     const [modalShow, setModalShow] = useState(false);
     const onViewClick = (classroom)=>{
         setModalShow(true)
+        setCurrentClassroom(classroom)
     }
     const [classrooms, setClassrooms] = useState([])
     const getAllClasses = async ()=>{
@@ -31,29 +34,52 @@ const AdminClasses = () =>{
         catch(e){
             console.log(e)
         }
-        
-       
-
     }
     useEffect(() => {
 		getAllClasses();
         
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+    const [show, setShow] = useState(false);
+    const [currentClassroom, setCurrentClassroom] = useState({});
+    const openModal = (classroom)=>{
+        setShow(true);
+        setCurrentClassroom(classroom)
+    }
+    const handleClose = ()=>{
+        setShow(false);
+    }
+    const [spinning, setSpinning] = useState(true)
+    const onClick = (id, isLocked)=>{
+
+    }
     return (
         <>
             <hr />
             <ListGroup as="ol" numbered>
                 {
                     classrooms.map((classroom) => (
-                        <Item key={classroom.id} isLocked = {true} onViewClick = {()=> onViewClick(classroom)}/>
+                        <Item 
+                            key={classroom.id} 
+                            classroom = {classroom} 
+                            onViewClick = {()=> onViewClick(classroom)}
+                            openModal = {openModal}/>
                       ))
                 }
             </ListGroup>
             <ClassQuickView
                 show={modalShow}
                 handleClose={() => setModalShow(false)}
+                openModal = {openModal}
+                classroom = {currentClassroom}
             />
+            <ModalLockClassroom
+                show = {show}
+                handleClose = {handleClose}
+               currentClassroom = {currentClassroom}
+               onClick = {onClick}
+               spinning = {spinning}
+                />
         </>
         
     )
@@ -66,7 +92,26 @@ const style = {
     zIndex: 9,
     fontSize: "100px"
 }
-const Item = ({isLocked, onViewClick}) =>{
+const Item = ({onViewClick, classroom, openModal}) =>{
+    var host = null
+    var numTeacher = 0;
+    var numStudent = 0;
+    var isLocked = !classroom.active;
+    var hostId = classroom.hostId;
+    const users = classroom.users
+    for(var i = 0; i < users.length; i++){
+        if (users[i].userRole === "TEACHER"){
+            numTeacher++;
+            
+        }
+        else if (users[i].userRole === "HOST"){
+            numTeacher++;
+            host = users[i];
+        }
+            
+        else   
+            numStudent++;
+    }
     return (
         
             <ListGroup.Item
@@ -77,9 +122,9 @@ const Item = ({isLocked, onViewClick}) =>{
             {isLocked?<i className = 'fas fa-lock' style = {style} ></i>:null}
      
             <div className="ms-2 me-auto "  onClick = {onViewClick} style = {{width: "100%", textAlign: 'start'}}>
-                <div className="fw-bold" >Ten lop</div>
-                Người tạo: Thầy A <br/>
-                Thành viên: 5 Giáo viên, 5 Học viên<br/>
+                <div className="fw-bold" >{classroom.name}</div>
+                Người tạo: {host?host.name:""} <br/>
+                Thành viên: {numTeacher} Giáo viên, {numStudent} Học viên<br/>
                 Trạng thái: {isLocked?"Bị khóa":"Hoạt động"}
             </div>
             <div>
@@ -101,7 +146,9 @@ const Item = ({isLocked, onViewClick}) =>{
                                         </Dropdown.Item>
                                         <Dropdown.Item
                                             type="button"
-                                            onClick={() => {}}
+                                            onClick={() => {
+                                                openModal(classroom);
+                                            }}
                                         >
                                             {isLocked?"Mở khóa": "Khóa"}
                                         </Dropdown.Item>

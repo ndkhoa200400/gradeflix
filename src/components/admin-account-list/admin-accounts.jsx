@@ -1,13 +1,13 @@
 
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Card, Button, Form, Row } from "react-bootstrap";
+import { Card, Button, Modal } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
+import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { postApiMethod } from "../../api/api-handler";
 import CustomPagination from "./custom-pagination";
 import { getApiMethod } from "../../api/api-handler";
+import ModalLockUser from "./admin-confirm-lock-user";
 const AdminAccounts = () =>{
 	const studentIdValidator = (newValue, row, column) => {
 		if (isNaN(newValue)) {
@@ -89,6 +89,39 @@ const AdminAccounts = () =>{
 			console.log(e);
 		}
 	};
+	const onClick = async(id, isLocked)=>{
+		console.log(isLocked);
+		setSpinning(true);
+		try{
+			const res = await postApiMethod(`admin/users/`+id, {});	
+			console.log(res);
+			const newUsers = [...users]
+            for(var i = 0; i < newUsers.length; i++){
+                if(newUsers[i].id === id){
+                    newUsers[i].active = !newUsers[i].active;
+                }
+            }
+            setUsers(newUsers);
+			handleClose();
+		}
+		catch(e){
+			console.log(e);
+		}
+		
+		setSpinning(false);
+	}
+	const [show, setShow] = useState(false);
+	const handleClose = () =>{
+		setShow(false);
+		console.log("close");
+	}
+	const openModal = (user)=>{
+		setShow(true);
+		setCurrentUser(user);
+		console.log("open");
+	}
+	const [currentUser, setCurrentUser] = useState({});
+	const [spinning, setSpinning] = useState(false);
     const [users, setUsers] = useState([])
     const getAllUser = async ()=>{
         try{
@@ -101,7 +134,11 @@ const AdminAccounts = () =>{
                     newUsers.push({
                         ...user, 
                         active: Status({isLocked: !user.active}), 
-                        action:Lock({id: user.id, isLocked: !user.active})
+                        action:Lock({
+								user,
+								isLocked: !user.active,
+								openModal
+								})
                     })
                 }
                 
@@ -138,32 +175,42 @@ const AdminAccounts = () =>{
 			order: "desc",
 		},
 	];
+	
     return (
-        <ToolkitProvider defaultSorted = {defaultSorted} bootstrap5 keyField="account" data={users} columns={columns} search>
-			{(props) => (
-				<div>
-					<CustomPagination/>
-                    <hr />
-                    
-					<Card className="text-center d-grid grap-2 div-horizontal">
-						<BootstrapTable
-							bootstrap4
-							hover
-							noDataIndication="Không có sinh viên nào"
-							rowStyle={rowStyle}
-							wrapperClasses="table-responsive"
-							// rowEvents={ rowEvents }
-							{...props.baseProps}
-							cellEdit={cellEditFactory({
-								mode: "click",
-								blurToSave: true,
-								beforeSaveCell,
-							})}
-						/>
-					</Card>
-				</div>
-			)}
-		</ToolkitProvider>
+        
+		<>
+			<ToolkitProvider defaultSorted = {defaultSorted} bootstrap5 keyField="account" data={users} columns={columns} search>
+				{(props) => (
+					<div>
+						<CustomPagination/>
+						<hr />
+						
+						<Card className="text-center d-grid grap-2 div-horizontal">
+							<BootstrapTable
+								bootstrap4
+								hover
+								noDataIndication="Không có sinh viên nào"
+								rowStyle={rowStyle}
+								wrapperClasses="table-responsive"
+								// rowEvents={ rowEvents }
+								{...props.baseProps}
+								cellEdit={cellEditFactory({
+									mode: "click",
+									blurToSave: true,
+									beforeSaveCell,
+								})}
+							/>
+						</Card>
+					</div>
+				)}
+					
+			</ToolkitProvider>
+			<ModalLockUser show = {show}
+						 handleClose = {handleClose}
+						currentUser = {currentUser}
+						onClick = {onClick}
+						spinning = {spinning}/>
+		</>
     )
 }
 const Status = ({isLocked})=>{
@@ -173,21 +220,26 @@ const Status = ({isLocked})=>{
         </div>
     )
 }
-const Lock = ({id, isLocked})=>{
+const Lock = ({isLocked, openModal, user})=>{
+	
     return(
-        <Button variant={isLocked?"outline-success":"outline-danger"} style = {{width: '100px'}} >
-            {isLocked?
-                <>
-                    <i className = "fas fa-unlock"></i>  Mở khóa
-                </>
-                
-            : 
-                <>
-                    <i className = "fas fa-lock"></i>  Khóa
-                </>
-                
-            }
-        </Button>
+		<>
+			<Button variant={isLocked?"outline-success":"outline-danger"} style = {{width: '100px'}} onClick = {()=>openModal(user)} >
+				{isLocked?
+					<>
+						<i className = "fas fa-unlock"></i>  Mở khóa
+					</>
+					
+				: 
+					<>
+						<i className = "fas fa-lock"></i>  Khóa
+					</>
+					
+				}
+			</Button>
+				
+		</>
+        
     )
 }
 

@@ -4,7 +4,7 @@ import { Button, Row, Form } from 'react-bootstrap';
 import "./style.css"
 import { useState } from 'react';
 import AdminAccounts from '../../components/admin-account-list/admin-accounts';
-import AdminClasses from '../../components/admin-account-list/admin-classes';
+import AdminClasses from '../../components/admin-classroom-list/admin-classes';
 import AdminAvatar from '../../components/admin-account-list/admin-avatar';
 const AdminPage = () =>{
     const params = useParams();
