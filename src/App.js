@@ -19,6 +19,7 @@ import AdminPage from "./pages/admin-page/admin-page";
 import AdminPrivateRoute from "./components/private-router/admin-private-router";
 import ResetPasswordPage from "./pages/reset-password/reset-password.page";
 import Activation from "./pages/activate-page/activate.page";
+import ReviewPage from "./pages/reviewgrade-page/reviewgrade.page";
 
 function App() {
 	return (
@@ -47,6 +48,7 @@ function App() {
 									<TabProxy/>
 								}
 						 />
+						 <Route path="/classrooms/:id/grade-review/:reviewid" element={<ReviewPage />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/signup" element={<SignupPage />} />
 						<Route path="/admin" element={<Navigate to="/admin/accounts" />} />
