@@ -2,7 +2,6 @@ import { Modal, Button, Card, Row, Col, Alert } from "react-bootstrap";
 import QuickViewListMember from "./quick-view-list-member";
 const ClassQuickView = ({show, handleClose, openModal, isLocked, classroom})=>{
     const icon = isLocked?"fas fa-unlock":"fas fa-lock";
-    const text = isLocked?"Mở khóa":"Khóa";
     var host = null
     var teachers = [];
     var students = [];
@@ -106,7 +105,7 @@ const ClassQuickView = ({show, handleClose, openModal, isLocked, classroom})=>{
             <Button variant={isLocked?"success":"danger"}onClick={() => {
                                                 openModal(classroom);
                                             }}>
-                <i className = {icon}></i> {text}
+                <i className = {icon}></i> {isLocked?"Mở khóa":"Khóa"}
             </Button>
             </Modal.Footer>
         </Modal>

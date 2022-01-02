@@ -2,7 +2,7 @@ import "../../pages/admin-page/style.css"
 import { ListGroup ,Dropdown, Button,  } from "react-bootstrap";
 import {useState, useEffect} from 'react'
 import ClassQuickView from "./class-quick-view";
-import { getApiMethod } from "../../api/api-handler";
+import { getApiMethod, postApiMethod } from "../../api/api-handler";
 import ModalLockClassroom from "./admin-confirm-lock-classroom";
 import { set } from "react-hook-form";
 const AdminClasses = () =>{
@@ -16,19 +16,6 @@ const AdminClasses = () =>{
         try{
             const res = await getApiMethod('admin/classrooms');
             console.log(res)
-            const newClassrooms = []
-            // for(var i = 0; i < res.items.length; i++){
-            //     const classroom = res.items[i];
-            //     if(user.role !== "ADMIN"){
-            //         newClassrooms.push({
-            //             ...classroom, 
-            //             //active: Status({isLocked: !user.active}), 
-            //             //action:Lock({id: user.id, isLocked: !user.active})
-            //         })
-            //     }
-                
-                
-            // }
             setClassrooms(res.items)
         }
         catch(e){
@@ -49,9 +36,27 @@ const AdminClasses = () =>{
     const handleClose = ()=>{
         setShow(false);
     }
-    const [spinning, setSpinning] = useState(true)
-    const onClick = (id, isLocked)=>{
-
+    const [spinning, setSpinning] = useState(false)
+    const onClick = async (id, isLocked)=>{
+        console.log(isLocked);
+		setSpinning(true);
+		try{
+			const res = await postApiMethod(`admin/classrooms/`+id, {active: isLocked});	
+			console.log(res);
+			const newClassrooms = [...classrooms]
+            for(var i = 0; i < newClassrooms.length; i++){
+                if(newClassrooms[i].id === id){
+                    newClassrooms[i].active = !newClassrooms[i].active;
+                }
+            }
+            setClassrooms(newClassrooms);
+			handleClose();
+		}
+		catch(e){
+			console.log(e);
+		}
+		
+		setSpinning(false);
     }
     return (
         <>
@@ -87,10 +92,10 @@ const AdminClasses = () =>{
 const style = {
     color: 'red',
     position: 'absolute',
-    top: 10,
-    left: 0,
+    top: -20,
+    left: -20,
     zIndex: 9,
-    fontSize: "100px"
+    fontSize: "50px"
 }
 const Item = ({onViewClick, classroom, openModal}) =>{
     var host = null

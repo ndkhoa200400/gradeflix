@@ -88,6 +88,7 @@ const AdminPage = () =>{
                         </Form.Group>
                     </Row>
                 </Form>
+                
             </div>
            
             <div id = "content"  class ={active?"active":"" + "content-nav"} style = {{top: "100px",}}>

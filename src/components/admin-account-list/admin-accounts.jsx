@@ -1,23 +1,18 @@
 
 import React, { useEffect, useState } from "react";
-import { Card, Button, Modal } from "react-bootstrap";
+import { Card, Button, Modal, Toast } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { postApiMethod } from "../../api/api-handler";
-import CustomPagination from "./custom-pagination";
+import CustomPagination from "../pagination/custom-pagination";
 import { getApiMethod } from "../../api/api-handler";
 import ModalLockUser from "./admin-confirm-lock-user";
 const AdminAccounts = () =>{
 	const studentIdValidator = (newValue, row, column) => {
-		if (isNaN(newValue)) {
-			return {
-				valid: false,
-				message: "Hãy nhập điểm bằng số",
-			};
-		}
-		if (+newValue >= 0 && +newValue <= 10) return { valid: true };
-		return { valid: false, message: `Phạm vi điểm 0 - 10` };
+		return { valid: true, message: `Phạm vi điểm 0 - 10` };
+		
+		
 	};
 	const headerFormatter = (column, colIndex, { sortElement, filterElement }) => {
 		return (
@@ -60,7 +55,7 @@ const AdminAccounts = () =>{
             validator: studentIdValidator,
         },
         {
-            dataField: "active",
+            dataField: "status",
 			text: "Trạng thái",
 			editable: false,
         },
@@ -74,31 +69,52 @@ const AdminAccounts = () =>{
 
 	
 
-	const beforeSaveCell = async (oldValue, newValue, row, column, done) => {
-		console.log(oldValue, newValue, oldValue === undefined && newValue === "");
-		if (oldValue === newValue || (oldValue === undefined && newValue === "")) return;
-		const studentId = row.studentId;
-		const field = column.dataField;
+	const beforeSaveCell =  async(oldValue, newValue, row, column, done) => {
+		console.log(users);
+		if (newValue === oldValue) return;
+		const id = row.id;
 		//call api
 		try {
-			const res = await postApiMethod(``, {
-				newGrade: newValue,
-			});
+			const newUsers = [...users]
+            for(var i = 0; i < newUsers.length; i++){
+                if(newUsers[i].id === id){
+					const user = newUsers[i];
+					user.studentId = newValue;
+					newUsers[i] = user;
+					
+                }
+            }
+            setUsers(newUsers);
+			const res = await postApiMethod(`admin/users/`+id, {studentId: newValue});
 			
 		} catch (e) {
 			console.log(e);
+			setShowToast(true)
+			const newUsers = [...users]
+            for(var i = 0; i < newUsers.length; i++){
+                if(newUsers[i].id === id){
+					const user = newUsers[i];
+					user.studentId = oldValue;
+					newUsers[i] = user;
+					
+                }
+            }
+            setUsers(newUsers);
 		}
+		
 	};
 	const onClick = async(id, isLocked)=>{
-		console.log(isLocked);
 		setSpinning(true);
 		try{
-			const res = await postApiMethod(`admin/users/`+id, {});	
+			const res = await postApiMethod(`admin/users/`+id, {active: isLocked});	
 			console.log(res);
 			const newUsers = [...users]
             for(var i = 0; i < newUsers.length; i++){
                 if(newUsers[i].id === id){
-                    newUsers[i].active = !newUsers[i].active;
+					const user = newUsers[i];
+					user.active = !user.active;
+					newUsers[i] = user;
+					
                 }
             }
             setUsers(newUsers);
@@ -126,43 +142,45 @@ const AdminAccounts = () =>{
     const getAllUser = async ()=>{
         try{
             const res = await getApiMethod('admin/users');
-            console.log(res)
-            const newUsers = []
-            for(var i = 0; i < res.items.length; i++){
-                const user = res.items[i];
-                if(user.role !== "ADMIN"){
-                    newUsers.push({
-                        ...user, 
-                        active: Status({isLocked: !user.active}), 
-                        action:Lock({
-								user,
-								isLocked: !user.active,
-								openModal
-								})
-                    })
-                }
-                
-                
-            }
-            setUsers(newUsers);
-                console.log(newUsers)
+			const arr = [];
+			for(var i = 0; i < res.items.length; i++){
+				const user = res.items[i];
+				if(user.role !== "ADMIN"){
+					arr.push(user)
+				}
+			}
+            setUsers(arr)
+			console.log(arr);
             }
         catch(e){
             console.log(e);
         }
 
     }
+	const userData = []
+	for(var i = 0; i < users.length; i++){
+		const user = users[i];
+		userData.push({
+			...user, 
+			status: Status({isLocked: !user.active}), 
+			active: user.active,
+			action:Lock({
+					user,
+					isLocked: !user.active,
+					openModal
+					})
+		})
+	}
     useEffect(() => {
 		getAllUser();
-        
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
    
 	//Mark to customize later!!
 	const rowStyle = (row, rowIndex) => {
 		const style = {};
+
 		if (users[rowIndex].active === false) {
-            style.backgroundColor = "#FFCDD2";
+            style.backgroundColor = "#FFCDC2";
             
         }
 
@@ -175,14 +193,19 @@ const AdminAccounts = () =>{
 			order: "desc",
 		},
 	];
-	
+	const totalPages = 25;
+	const [currentPage, setCurrentPage] = useState(1);
+	const pageClicked = (page)=>{
+		setCurrentPage(page);
+	}
+	const [showToast, setShowToast] = useState(false);
     return (
         
-		<>
-			<ToolkitProvider defaultSorted = {defaultSorted} bootstrap5 keyField="account" data={users} columns={columns} search>
+		<div style = {{position: 'relative'}}>
+			<ToolkitProvider defaultSorted = {defaultSorted} bootstrap5 keyField="account" data={userData} columns={columns} search>
 				{(props) => (
 					<div>
-						<CustomPagination/>
+						<CustomPagination pageClicked = {pageClicked} totPages ={totalPages} currentPage = {currentPage}/>
 						<hr />
 						
 						<Card className="text-center d-grid grap-2 div-horizontal">
@@ -209,13 +232,20 @@ const AdminAccounts = () =>{
 						 handleClose = {handleClose}
 						currentUser = {currentUser}
 						onClick = {onClick}
-						spinning = {spinning}/>
-		</>
+						spinning = {spinning}
+			/>
+			<Toast bg="warning" onClose={() => setShowToast(false)} show={showToast} delay={5000} autohide style = {{position: 'fixed' ,top: 20, zIndex: 100, left: '50%'}}>
+				<Toast.Header>
+					<strong className="me-auto">Thông báo</strong>
+				</Toast.Header>
+				<Toast.Body>Mã số sinh viên này đã được sử dụng!</Toast.Body>
+			</Toast>
+		</div>
     )
 }
 const Status = ({isLocked})=>{
     return(
-        <div style = {{color: isLocked?'red' : 'green'}} >
+        <div style = {{color: isLocked?'red' : 'green', fontWeight:'bold'}} >
             {isLocked?"Bị khóa":"Hoạt động"}
         </div>
     )
