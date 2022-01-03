@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import SideBar from "../../components/sidebar/sidebar";
 import ReviewContent from "../../components/review-content/review.content";
+import TopNavigationHome from "../../components/top-nav/top-nav-home.component";
 import "./style.css"
 const ReviewPage = () => {
     const params = useParams();
     return (
         <div>
+            <TopNavigationHome/>
             <div class="container">
                 <div class="row flex-nowrap">
                     <div class="col-auto ">

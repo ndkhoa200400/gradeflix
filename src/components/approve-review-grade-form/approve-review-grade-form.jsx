@@ -4,7 +4,7 @@ import Spining from "../spinning/spinning.component";
 import { useForm } from "react-hook-form";
 import { Modal, Button, Form } from "react-bootstrap";
 
-const ApproveReviewGradeForm = ({ show, id, studentid, reviewid, name, handleClose }) => {
+const ApproveReviewGradeForm = ({ show, id, studentid, reviewid, name, handleClose, gradeReview}) => {
     const {
         register,
         handleSubmit,
@@ -27,11 +27,10 @@ const ApproveReviewGradeForm = ({ show, id, studentid, reviewid, name, handleClo
             data.studentId = studentid;
             //console.log(data)
             // gửi cho api
-            console.log(data);
             await postApiMethod("classrooms/" + id + "/grade-reviews/" + +reviewid, data);
 
             handleClose();
-
+            gradeReview();
             reset();
         } catch (error) {
             alert("Đã xảy ra lỗi! Vui lòng thử lại");
