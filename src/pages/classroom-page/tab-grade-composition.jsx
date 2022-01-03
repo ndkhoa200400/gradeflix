@@ -5,14 +5,17 @@ import { useState, useEffect } from "react";
 import GradeBoard from "../../components/grade-board/grade-board";
 import { getApiMethod } from "../../api/api-handler";
 import { createTemplateUploadStudentList, createTemplateUploadGradeAssignment } from "../../services/xlsx.service";
+import GradeCompositionFinalization from "../../components/grade-composition-finalization/grade-composition-finalization";
 const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 	const [showForm, setShowForm] = useState(false);
+	const [showFinalizeForm, setShowFinalizeForm] = useState(false);
 	const [showUploadFileForm, setShowUploadFileForm] = useState(false);
 	const [students, setStudents] = useState([]);
 	const [gradeForm, setGradeForm] = useState(false);
 	const handleClose = () => {
 		setShowForm(false);
 		setShowUploadFileForm(false);
+		setShowFinalizeForm(false);
 	};
 	const openForm = () => {
 		setShowForm(true);
@@ -108,6 +111,14 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 								<Button variant="outline-primary" style={{ marginTop: "20px" }} onClick={openForm}>
 									Chỉnh sửa thang điểm
 								</Button>
+
+								<Button
+									variant="outline-primary"
+									style={{ marginTop: "20px" }}
+									onClick={() => setShowFinalizeForm(true)}
+								>
+									Công bố cột điểm
+								</Button>
 							</Card.Body>
 						</Card>
 						<Card>
@@ -178,6 +189,12 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 				</Card>
 			</Col>
 			<GradeForm show={showForm} handleClose={handleClose} onGradeEdit={midleOnGradeEdit} classroom={classroom} />
+			<GradeCompositionFinalization
+				show={showFinalizeForm}
+				handleClose={handleClose}
+				onGradeEdit={midleOnGradeEdit}
+				classroom={classroom}
+			/>
 			<UploadFileForm
 				show={showUploadFileForm}
 				handleClose={handleClose}

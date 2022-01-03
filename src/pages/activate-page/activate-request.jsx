@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Button, Card, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { getApiMethod, postApiMethod } from "../../api/api-handler";
-import * as AuthenService from "../../services/auth.service";
+import { getApiMethod } from "../../api/api-handler";
 
 import ErrorAlert from "../../components/alert/error-alert.component";
 import InfoAlert from "../../components/alert/info-alert.component";
 import TopNavigation from "../../components/top-nav/top-nav.component";
-import { useQuery } from "../../custome-hook";
 
 const ActivationRequest = () => {
 	const navigate = useNavigate();
