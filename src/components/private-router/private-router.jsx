@@ -10,7 +10,7 @@ function PrivateRoute({ children }) {
 
 	const auth = AuthService.isLoggedIn();
 	const user = AuthService.getUserInfo();
-	console.log(user)
+	console.log(user);
 	useEffect(() => {
 		if (auth) {
 			//const user = AuthService.getUserInfo();
@@ -18,14 +18,15 @@ function PrivateRoute({ children }) {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [auth]);
-	savePreUrl(location.pathname);
+	savePreUrl(`${location.pathname}${location.search}`);
 	var result = null;
-	if (!auth){
+	if (!auth) {
 		return <Navigate to="/login" />;
 	}
-	if (user.role === "ADMIN")
-		return <Navigate to="/admin/accounts" />;
-	
+	if (user.role === "ADMIN") return <Navigate to="/admin/accounts" />;
+	if (!user.activated && location.pathname !== "/activation-request" && location.pathname !== "/activate") {
+		return <Navigate to="/activation-request" />;
+	}
 	return children;
 }
 
