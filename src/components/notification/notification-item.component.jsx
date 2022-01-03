@@ -25,16 +25,21 @@ const NotificationItem = ({ notification, updateNotification }) => {
 			? `${now.diff(dayjs(notification.createdAt), "minute")} phút trước`
 			: now.diff(dayjs(notification.createdAt), "hour") < 24
 			? `${now.diff(dayjs(notification.createdAt), "hour")} giờ trước`
+			: now.diff(dayjs(notification.createdAt), "day") < 7
+			? `${now.diff(dayjs(notification.createdAt), "day")} ngày trước`
 			: now.diff(dayjs(notification.createdAt), "week") < 4
 			? `${now.diff(dayjs(notification.createdAt), "week")} tuần trước`
 			: `${now.diff(dayjs(notification.createdAt), "month")} tháng trước`;
+	console.log("==== ~ NotificationItem ~ dayDifference", dayDifference);
 
 	return (
 		<Dropdown.Item
-			className={`d-flex notification-item row m-0 p-2 py-3 align-items-center  ${notification.isRead ? "text-muted" : " fw-bold"}`}
+			className={`d-flex notification-item row m-0 p-2 py-3 align-items-center  ${
+				notification.isRead ? "text-muted" : " fw-bold"
+			}`}
 		>
 			<Link className="col-10  text-dark" onClick={markRead} to={notification.link}>
-				<div className="notification-content">{notification.content}</div>
+				<div className="notification-content text-wrap">{notification.content}</div>
 				{!notification.isRead ? (
 					<span className="fs-6 text  text-primary"> {dayDifference}</span>
 				) : (
