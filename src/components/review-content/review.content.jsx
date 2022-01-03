@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getApiMethod, postApiMethod } from "../../api/api-handler";
 import * as AuthService from "../../services/auth.service";
 import Spining from "../../components/spinning/spinning.component";
-import TopNavigation from "../../components/top-nav/top-nav.component";
-import { useQuery } from "../../custome-hook";
-import SideBar from "../../components/sidebar/sidebar";
 import ApproveReviewGradeForm from "../approve-review-grade-form/approve-review-grade-form";
 
 
-const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, gradeReview,grade}) => {
+const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, gradeReview, grade }) => {
     const [onSubmiting, setOnSubmiting] = useState(false);
     const navigate = useNavigate();
 
@@ -18,10 +15,10 @@ const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, 
         setOnSubmiting(true);
         try {
             // Lấy ảnh ngẫu nhiên làm banner
-            const data = {"name": name, "studentId" : studentid, "grade" : grade}
+            const data = { "name": name, "studentId": studentid, "grade": grade }
             data.name = name;
             data.studentId = studentid;
-           
+
             await postApiMethod("classrooms/" + id + "/grade-reviews/" + +reviewid, data);
 
             handleClose();
@@ -51,9 +48,10 @@ const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, 
 };
 
 
-const ReviewContent = ({ id, gradeid }) => {
+const ReviewContent = ({ id, gradeid, classroom }) => {
     const [showEditClass, setEditCreateClass] = useState(false);
     const [showConfirmReject, setshowConfirmReject] = useState(false);
+    const params = useParams();
     const handleClose = () => {
         setEditCreateClass(false);
         setshowConfirmReject(false);
@@ -76,6 +74,7 @@ const ReviewContent = ({ id, gradeid }) => {
             console.log(res);
             setReview(res);
             const resComment = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeid + "/comments");
+            console.log(resComment);
             setComments(resComment);
         } catch (error) {
             console.log("error", error);
@@ -101,13 +100,15 @@ const ReviewContent = ({ id, gradeid }) => {
     };
 
     useEffect(() => {
+        setComments([]);
+        setReview();
         getGradeReview();
-    }, []);
+    }, gradeid);
 
 
 
-    return review && comments ? (
-        <div class="col py-3">
+    return review && comments && gradeid != "" ? (
+        <div class="col py-3 ">
             <div>
                 <div>
                     <div class="d-flex justify-content-center row">
@@ -185,8 +186,12 @@ const ReviewContent = ({ id, gradeid }) => {
                                                 >Comment</button>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-success btn-lg" onClick={() => setEditCreateClass(true)}>Approve</button>
-                                        <button type="button" class="btn btn-outline-danger btn-lg" onClick={() => setshowConfirmReject(true)} >Reject</button>
+                                        {
+                                            (classroom.user.userRole === "TEACHER" || classroom.user.userRole === "HOST") ? <div>
+                                                <button type="button" class="btn btn-success btn-lg" onClick={() => setEditCreateClass(true)}>Chấp nhận</button>
+                                                <button type="button" class="btn btn-outline-danger btn-lg" onClick={() => setshowConfirmReject(true)} >Từ chối</button>
+                                            </div> : null
+                                        }
                                     </div>
                                 }
                             </div>
@@ -211,7 +216,7 @@ const ReviewContent = ({ id, gradeid }) => {
                     reviewid={gradeid}
                     name={review.currentGrade.name}
                     gradeReview={getGradeReview}
-                    grade = {review.currentGrade.grade}
+                    grade={review.currentGrade.grade}
                 />
             </div>
         </div>

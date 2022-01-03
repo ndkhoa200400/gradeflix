@@ -15,39 +15,7 @@
     background: #0a22aa;
 }
 
-#sidebar .sidebar-header {
-    padding: 0px;
-    background: #0a22aa;
-}
 
-#sidebar ul.components {
-    border-top: 1px solid #47748b;
-    padding: 0px 0;
-}
-
-#sidebar ul p {
-    color: #fff;
-    padding: 0px;
-}
-
-#sidebar ul li a {
-    padding: 15px 30px;
-    font-size: 1.1em;
-    display: block;
-    font-family: 'Poppins', sans-serif;
-}
-#sidebar ul li a:hover:not(.nav-item-active) {
-    color: rgb(255, 255, 255);
-    background: #475bca;
-}
-.nav-item-active{
-    color: rgb(255, 255, 255);
-    background: #0a22aa;
-}
-#sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #fff;
-    background: #0a22aa;
-}
 fieldset.no-bootstrap {
     min-width: 200px !important;
     padding: 0px !important;
@@ -87,3 +55,10 @@ fieldset.no-bootstrap {
     height: 15px;
     overflow-y: auto
   }
+
+.hidden { display:none; }
+
+.scrollclass {
+    height:700px;
+    overflow-y: scroll;
+}

@@ -7,6 +7,7 @@ const Tab = ({ id, classroom }) => {
   const urlTab2 = "/classrooms/" + id + "/tab-people";
   const urlTab3 = "/classrooms/" + id + "/tab-my-info";
   const urlTab4 = "/classrooms/" + id + "/tab-grade";
+  const urlTab5 = "/classrooms/" + id + "/tab-review-grade";
   return (
     <Container>
       <Row style={{ padding: "10px" }}>
@@ -58,6 +59,16 @@ const Tab = ({ id, classroom }) => {
                 </NavLink>
               </Nav.Item>
             ) : null}
+            <Nav.Item>
+              <NavLink
+                to={urlTab5}
+                className={({ isActive }) =>
+                  "nav-link" + (isActive ? " active" : "")
+                }
+              >
+                Phúc Khảo
+              </NavLink>
+            </Nav.Item>
           </Nav>
         </Col>
       </Row>

@@ -8,7 +8,7 @@ import TabDetail from "./tab-detail";
 import TabPeople from "./tab-people";
 import TabMyInfo from "./tab-my-info";
 import TabGradeCompositions from "./tab-grade-composition";
-
+import TabGradeReview from "./tab-grade-review";
 import TopNavigation from "../../components/top-nav/top-nav.component";
 import ClassroomNotFound from "./classroom-not-found";
 const getContentTab = (tab, idClass, classroom, studentList, onEditedClassRoom, onEditStudentId, onGradeEdit) => {
@@ -20,6 +20,8 @@ const getContentTab = (tab, idClass, classroom, studentList, onEditedClassRoom, 
 	} else if (tab === "tab-people") return <TabPeople classroom={classroom} />;
 	else if (tab === "tab-grade")
 		return <TabGradeCompositions classroom={classroom} onGradeEdit={onGradeEdit} />;
+	else if (tab === "tab-review-grade")
+		return <TabGradeReview classroom={classroom} />;
 	return <TabDetail classroom={classroom} onEditedClassRoom={onEditedClassRoom} />;
 };
 
