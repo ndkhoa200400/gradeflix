@@ -48,7 +48,6 @@ function App() {
 									<TabProxy/>
 								}
 						 />
-						 <Route path="/classrooms/:id/grade-review/:reviewid" element={<ReviewPage />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/signup" element={<SignupPage />} />
 						<Route path="/admin" element={<Navigate to="/admin/accounts" />} />
