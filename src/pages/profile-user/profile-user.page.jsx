@@ -60,21 +60,24 @@ const Profile = () => {
 		setOnSubmiting(true);
 		try {
 			if (newImage) {
-				await fetch(`${process.env.REACT_APP_CLOUDINARY_API_LINK}/image/upload`, {
+				const res = await fetch(`${process.env.REACT_APP_CLOUDINARY_API_LINK}/image/upload`, {
 					method: "POST",
 					body: newImage,
-				})
-					.then((res) => res.json())
-					.then((data) => {
-						//console.log("data", data);
+				});
+				const data = await res.json();
+				// .then((res) => res.json())
+				// .then((data) => {
+				// 	//console.log("data", data);
 
-						userBody.avatar = data["secure_url"];
+				// 	userBody.avatar = data["secure_url"];
 
-						setNewImage(false);
-					})
-					.catch((error) => {
-						// console.log("error", error);
-					});
+				// 	setNewImage(false);
+				// })
+				// .catch((error) => {
+				// 	console.log("error posting image", error);
+				// });
+				userBody.avatar = data["secure_url"];
+				setNewImage(false);
 			}
 			const res = await postApiMethod("users/me", userBody);
 
@@ -136,7 +139,7 @@ const Profile = () => {
 										type="text"
 										placeholder="Nhập mã số sinh viên"
 										// onChange={(e)=>user.birthay=e.target.value}
-										{...register("studentId", { required: true })}
+										{...register("studentId")}
 									/>
 								</Form.Group>
 								<div className="d-flex">

@@ -27,7 +27,6 @@ const Avatar = () => {
           width={40}
           height={40}
           roundedCircle
-          className="img-fluid"
         />
       </Dropdown.Toggle>
 

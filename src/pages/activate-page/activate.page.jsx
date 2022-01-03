@@ -24,7 +24,7 @@ const Activation = () => {
 			try {
 				const token = query.get("token");
 				const email = query.get("email");
-				if (!token || email) {
+				if (!token || !email) {
 					setErrorMessage("Đường dẫn không hợp lệ. Vui lòng thử lại sau.");
 					return setShowError(true);
 				}
