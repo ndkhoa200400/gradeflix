@@ -4,6 +4,8 @@ import { Dropdown } from "react-bootstrap";
 import * as AuthenService from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../../custome-hook";
+import { savePreUrl } from "../../services/location.service";
+
 const Avatar = () => {
   const navigate = useNavigate();
 	const socket = useSocket()
@@ -13,7 +15,8 @@ const Avatar = () => {
   const logout = () => {
     AuthenService.logOut();
 		socket.logOut()
-    navigate("/login", { replace: true });
+		savePreUrl('/')
+    navigate("/login");
   };
   return (
     <Dropdown>
