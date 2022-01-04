@@ -23,23 +23,24 @@ const getState = (state) => {
   }
 }
 
+const getColor = (state) => {
+  switch (state) {
+    case "PENDING":
+      return "text-danger";
+    case "PROCESSING":
+      return "text-primary";
+    case "FINAL":
+      return "text-success";
+    default:
+      return "";
+  }
+}
+
 
 const SideBar = ({ id, gradeid, setReview }) => {
-  const now = dayjs();
-  const dayDifference = (item) => {
-    return now.diff(dayjs(item.createdAt), "year") > 1
-      ? `${now.diff(dayjs(item.createdAt), "year")} năm trước`
-      : now.diff(dayjs(item.createdAt), "minute") < 1
-        ? `Vừa xong`
-        : now.diff(dayjs(item.createdAt), "minute") < 60
-          ? `${now.diff(dayjs(item.createdAt), "minute")} phút trước`
-          : now.diff(dayjs(item.createdAt), "hour") < 24
-            ? `${now.diff(dayjs(item.createdAt), "hour")} giờ trước`
-            : now.diff(dayjs(item.createdAt), "day") < 7
-              ? `${now.diff(dayjs(item.createdAt), "day")} ngày trước`
-              : now.diff(dayjs(item.createdAt), "week") < 4
-                ? `${now.diff(dayjs(item.createdAt), "week")} tuần trước`
-                : `${now.diff(dayjs(item.createdAt), "month")} tháng trước`;
+  const getDate = (item) => {
+    var date = new Date(item.createdAt);
+    return dayjs(date).format("hh:mm    DD/MM/YYYY");
   }
 
   const [reviews, setReviews] = useState([]);
@@ -56,12 +57,12 @@ const SideBar = ({ id, gradeid, setReview }) => {
   useEffect(() => {
     getGradeBoards();
 
-  }, []);
+  }, [gradeid]);
 
 
   return (
     reviews.map(item => (
-      <a onClick={() => setReview(item)} class={"list-group-item list-group-item-action flex-column align-items-start" + (item.id.toString() === gradeid.toString() ? " active" : "") } >
+      <a onClick={() => setReview(item)} class={"list-group-item list-group-item-action flex-column align-items-start" + (item.id.toString() === gradeid.toString() ? " active" : "")} >
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1" >Phúc Khảo {item.currentGrade.name}</h5>
         </div>
@@ -76,8 +77,9 @@ const SideBar = ({ id, gradeid, setReview }) => {
           {item.user.fullname}{" "}
         </div>
         <div class="row">
-          <div class="text-start">{dayDifference(item)}</div>
-          <p class="text-end t">{getState(item.status)}</p>
+          <i class="text-start">{getDate(item)}</i>
+          <p class={"text-end " + getColor(item.status)}>
+            {getState(item.status)}</p>
         </div>
 
       </a>

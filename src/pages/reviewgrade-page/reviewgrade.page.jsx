@@ -7,7 +7,7 @@ import "./style.css"
 import ClassroomCard from "../../components/classroom-card/classroom-card.component";
 const ReviewPage = (classroom) => {
     const params = useParams();
-    const [reviewId, setReviewId] = useState("1");
+    const [reviewId, setReviewId] = useState("");
     const setID = (item) => {
         setReviewId(item.id.toString()) 
         console.log(item.id)

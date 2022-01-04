@@ -56,7 +56,7 @@ const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
         setEditCreateClass(false);
         setshowConfirmReject(false);
     };
-    
+
     const [show, setShow] = useState(false);
     const openModal = () => {
         setEditCreateClass(true);
@@ -100,29 +100,31 @@ const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
     };
 
     useEffect(() => {
-        setComments([]);
-        setReview();
-        getGradeReview();
+        if (gradeId != "") {
+            setComments([]);
+            setReview();
+            getGradeReview();
+        }
     }, [gradeId]);
 
     const now = dayjs();
     const dayDifference = (item) => {
-		return now.diff(dayjs(item.createdAt), "year") > 1
-			? `${now.diff(dayjs(item.createdAt), "year")} năm trước`
-			: now.diff(dayjs(item.createdAt), "minute") < 1
-			? `Vừa xong`
-			: now.diff(dayjs(item.createdAt), "minute") < 60
-			? `${now.diff(dayjs(item.createdAt), "minute")} phút trước`
-			: now.diff(dayjs(item.createdAt), "hour") < 24
-			? `${now.diff(dayjs(item.createdAt), "hour")} giờ trước`
-			: now.diff(dayjs(item.createdAt), "day") < 7
-			? `${now.diff(dayjs(item.createdAt), "day")} ngày trước`
-			: now.diff(dayjs(item.createdAt), "week") < 4
-			? `${now.diff(dayjs(item.createdAt), "week")} tuần trước`
-			: `${now.diff(dayjs(item.createdAt), "month")} tháng trước`;
+        return now.diff(dayjs(item.createdAt), "year") > 1
+            ? `${now.diff(dayjs(item.createdAt), "year")} năm trước`
+            : now.diff(dayjs(item.createdAt), "minute") < 1
+                ? `Vừa xong`
+                : now.diff(dayjs(item.createdAt), "minute") < 60
+                    ? `${now.diff(dayjs(item.createdAt), "minute")} phút trước`
+                    : now.diff(dayjs(item.createdAt), "hour") < 24
+                        ? `${now.diff(dayjs(item.createdAt), "hour")} giờ trước`
+                        : now.diff(dayjs(item.createdAt), "day") < 7
+                            ? `${now.diff(dayjs(item.createdAt), "day")} ngày trước`
+                            : now.diff(dayjs(item.createdAt), "week") < 4
+                                ? `${now.diff(dayjs(item.createdAt), "week")} tuần trước`
+                                : `${now.diff(dayjs(item.createdAt), "month")} tháng trước`;
     }
 
-    return review && comments && gradeId != "" ? (
+    return gradeId === "" ? null : (review && comments ? (
         <div class="col py-3 font-size-review-grade-content ">
             <div>
                 <div>
@@ -175,7 +177,7 @@ const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
                                                         className="me-2"
                                                         alt="member avatar"
                                                     ></img>
-                                                    <b>{comment.user.fullname}{" "}</b> <small class = "padding-left-daydiff">{"   " + dayDifference(comment)}</small>
+                                                    <b>{comment.user.fullname}{" "}</b> <small class="padding-left-daydiff">{"   " + dayDifference(comment)}</small>
                                                 </div>
                                             </td>
                                             <div class="comment-text-sm"><span>{comment.comment}</span></div>
@@ -239,7 +241,7 @@ const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
         <div>
             <Spining isFull={false} className="mx-auto my-5"></Spining>
         </div>
-    );
+    ));
 };
 
 export default ReviewContent;
