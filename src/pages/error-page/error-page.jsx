@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Card, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-const ClassroomNotFound = ({ errorMessage }) => {
+const ErrorPage = ({ errorMessage }) => {
   const navigate = useNavigate();
   return (
     <Container className="h-100vh d-flex justify-content-center align-items-center">
-      <Card className="not-found-error p-4 ">
+      <Card className="error-card p-4 ">
         <Card.Body>
           <h3>{errorMessage}</h3>
           <p>Vui lòng thử lại sau</p>
@@ -21,4 +21,4 @@ const ClassroomNotFound = ({ errorMessage }) => {
   );
 };
 
-export default ClassroomNotFound;
+export default ErrorPage;

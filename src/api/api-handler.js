@@ -3,15 +3,18 @@ import axios from "axios";
 import { loadToken } from "../services/auth.service";
 const apiLink = process.env.REACT_APP_API_LINK;
 // try-catch in caller Function to detect Error
-export const getApiMethod = async (link, params = "") => {
+export const getApiMethod = async (link, params = {}) => {
   try {
     const token = loadToken();
-    const res = await axios(`${apiLink}${link}?${params}`, {
+    const res = await axios(`${apiLink}${link}?`, {
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+			params:{
+				...params
+			}
       // 'Content-Type': 'application/x-www-form-urlencoded',
     });
     return res.data;

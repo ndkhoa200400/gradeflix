@@ -8,7 +8,10 @@ const HomePage = () => {
   const [classrooms, setClassrooms] = useState();
 
   const getClassrooms = async () => {
-    const params = `filter={"include":["host"]}`;
+    // const params = `filter={"include":["host"]}`;
+		const params = {filter: {
+			include: ['host']
+		}}
     const data = await getApiMethod("classrooms", params);
     setClassrooms(data);
   };

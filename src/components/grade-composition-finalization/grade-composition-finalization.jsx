@@ -5,7 +5,6 @@ import InfoAlert from "../alert/info-alert.component";
 import ErrorAlert from "../alert/error-alert.component";
 
 const GradeCompositionFinalization = ({ show, handleClose, onGradeEdit, classroom }) => {
-	const [onSubmiting, setOnSubmiting] = useState(false);
 	const [total, setTotal] = useState("");
 	const [gradeCompositions, setGradeCompositions] = useState([{ name: "", percent: "", isFinal: false }]);
 	const [errorMessage, setErrorMessage] = useState("");
@@ -39,17 +38,15 @@ const GradeCompositionFinalization = ({ show, handleClose, onGradeEdit, classroo
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
-		setOnSubmiting(true);
 		try {
 			const data = { total, gradeCompositions };
 			await postApiMethod(`classrooms/${classroom.id}/grade-structure`, data);
 			onGradeEdit(data);
 			init();
-			setInfoMessage("Cập nhật thành công.")
+			setInfoMessage("Cập nhật thành công.");
 		} catch (error) {
-			setErrorMessage(error.message)
+			setErrorMessage(error.message);
 		}
-		setOnSubmiting(false);
 	};
 
 	const renderGradeComposition = (name, isFinal, index) => {
