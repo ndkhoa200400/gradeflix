@@ -40,7 +40,7 @@ const getColor = (state) => {
 const SideBar = ({ id, gradeid, setReview }) => {
   const getDate = (item) => {
     var date = new Date(item.createdAt);
-    return dayjs(date).format("hh:mm    DD/MM/YYYY");
+    return dayjs(date).format("HH:mm    DD/MM/YYYY");
   }
 
   const [reviews, setReviews] = useState([]);
