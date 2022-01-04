@@ -7,8 +7,8 @@ import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import { postApiMethod } from "../../api/api-handler";
 import CustomPagination from "../pagination/custom-pagination";
 import { getApiMethod } from "../../api/api-handler";
-import ModalLockUser from '../admin-account-list/admin-confirm-lock-user'
 import * as AuthService from '../../services/auth.service'
+import AccountQuickView from "../admin-account-list/account-quick-view";
 const AdminAccountAdmins = ({recently, keyword, currentPage, pageSize, onLoading}) =>{
     const myaccount = AuthService.getUserInfo();
 
@@ -98,7 +98,7 @@ const AdminAccountAdmins = ({recently, keyword, currentPage, pageSize, onLoading
             const arr = []
             for(var i = 0; i < res.items.length; i++){
 				const user = res.items[i];
-				if(user.id !== myaccount.id){
+				if(user.id === myaccount.id){
 					arr.push(user)
 				}
 			}
@@ -188,20 +188,13 @@ const AdminAccountAdmins = ({recently, keyword, currentPage, pageSize, onLoading
 				)}
 					
 			</ToolkitProvider>
-			<ModalLockUser show = {show}
-						 handleClose = {handleClose}
-						currentUser = {currentUser}
-						onClick = {onClick}
-						spinning = {spinning}
-			/>
-       
-			{/* <AccountQuickView
+			 <AccountQuickView
 				show={modalShow}
                 handleClose={() => setModalShow(false)}
                 openModal = {openModal}
                 user = {currentUser}
-				onStudentIdChange = {onStudentIdChange}
-			/> */}
+				
+			/> 
 		</div>
     )
 }
@@ -222,20 +215,6 @@ const Lock = ({isLocked, openModal, user, onViewClick})=>{
 				</>
 			</Button>
 
-			<Button variant={isLocked?"success":"danger"} style = {{width: '50px'}} onClick = {()=>openModal(user)} >
-				{isLocked?
-					<>
-						<i className = "fas fa-unlock"></i>
-					</>
-					
-				: 
-					<>
-						<i className = "fas fa-lock"></i> 
-					</>
-					
-				}
-			</Button>
-				
 		</>
         
     )

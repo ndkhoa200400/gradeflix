@@ -144,13 +144,13 @@ const Item = ({onViewClick, classroom, openModal}) =>{
                 Trạng thái: <span style = {{fontWeight:'bold',color:isLocked?'red':'green'}}>{isLocked?"Bị khóa":"Đang hoạt động"}</span>
             </div>
        
-            <Button variant="outline-primary" style = {{width: '100px', marginRight: 10}} onClick = {()=>onViewClick(classroom)} >
+            <Button variant="outline-primary" style = {{width: '50px', marginRight: 10}} onClick = {()=>onViewClick(classroom)} >
 				<>
 					<i className = "fas fa-eye"></i>
 				</>
 			</Button>
 
-			<Button variant={isLocked?"success":"danger"} style = {{width: '100px'}} onClick = {()=>openModal(classroom)} >
+			<Button variant={isLocked?"success":"danger"} style = {{width: '50px'}} onClick = {()=>openModal(classroom)} >
 				{isLocked?
 					<>
 						<i className = "fas fa-unlock"></i> 

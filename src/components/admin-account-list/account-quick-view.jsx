@@ -24,7 +24,13 @@ const AccountQuickView = ({show, handleClose, openModal, user, onStudentIdChange
         }
         setSpinning(false);
     }
-    
+    const formatDate = (date)=>{
+		const dateObj = new Date(date);
+		const month = dateObj.getMonth()+1;
+		const day = String(dateObj.getDate()).padStart(2, '0');
+		const year = dateObj.getFullYear();
+		return `${day}/${month}/${year}`
+	}
     return (
         <Modal  show={show} 
                 onHide={handleClose}
@@ -85,27 +91,38 @@ const AccountQuickView = ({show, handleClose, openModal, user, onStudentIdChange
 										value={user.birthday} disabled={true}
 									/>
 								</Form.Group>
-
-								<Form.Group className="mb-3" controlId="formStudentId">
-									<Form.Label>Mã số sinh viên</Form.Label>
+                                <Form.Group className="mb-3" controlId="formBirthday">
+									<Form.Label>Ngày mở tài khoản</Form.Label>
 									<Form.Control
 										type="text"
-										placeholder="Nhập mã số sinh viên"
-										value={studentId}
-                                        onChange = { (event) => { setStudentId(event.target.value); setErr("");}  }
+										value={formatDate(user.createdAt)} disabled={true}
 									/>
 								</Form.Group>
-                                <div style = {{color: 'red', marginBottom: 20}}>{err}</div>
-								<div className="d-flex" style={{justifyContent:'flex-end'}}>
-                                    {spinning ? <Spining isFull={false} className="mx-2" /> : null}
-									<Button variant="primary" onClick={()=>onSubmiting()} className="px-4 py-2" disabled = {user.studentId === studentId}>
-										Lưu
-									</Button>
-									
-								</div>
+                                {user.role !== "ADMIN"?
+                                    <div>
+                                    <Form.Group className="mb-3" controlId="formStudentId">
+                                        <Form.Label>Mã số sinh viên</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Nhập mã số sinh viên"
+                                            value={studentId}
+                                            onChange = { (event) => { setStudentId(event.target.value); setErr("");}  }
+                                        />
+                                    </Form.Group>
+                                    <div style = {{color: 'red', marginBottom: 20}}>{err}</div>
+                                    <div className="d-flex" style={{justifyContent:'flex-end'}}>
+                                        {spinning ? <Spining isFull={false} className="mx-2" /> : null}
+                                        <Button style = {{width:100}} variant="primary" onClick={()=>onSubmiting()} className="px-4 py-2" disabled = {user.studentId === studentId}>
+                                            Lưu
+                                        </Button>
+                                        
+                                    </div>
+                                    </div>
+                                :null
+                                }
+								
 							</Form>
 
-							<hr></hr>
 						</Card.Body>
                         </Card>
                         
