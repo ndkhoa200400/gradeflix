@@ -62,3 +62,12 @@ fieldset.no-bootstrap {
     height:700px;
     overflow-y: scroll;
 }
+
+.padding-left-daydiff{
+    padding-left: 10px;
+    font-size: 15px;
+}
+
+.font-size-review-grade-content {
+    font-size: 18px;
+}

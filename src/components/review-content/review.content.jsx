@@ -5,7 +5,7 @@ import { getApiMethod, postApiMethod } from "../../api/api-handler";
 import * as AuthService from "../../services/auth.service";
 import Spining from "../../components/spinning/spinning.component";
 import ApproveReviewGradeForm from "../approve-review-grade-form/approve-review-grade-form";
-
+import dayjs from "dayjs";
 
 const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, gradeReview, grade }) => {
     const [onSubmiting, setOnSubmiting] = useState(false);
@@ -56,7 +56,7 @@ const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
         setEditCreateClass(false);
         setshowConfirmReject(false);
     };
-
+    
     const [show, setShow] = useState(false);
     const openModal = () => {
         setEditCreateClass(true);
@@ -105,18 +105,33 @@ const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
         getGradeReview();
     }, [gradeId]);
 
-
+    const now = dayjs();
+    const dayDifference = (item) => {
+		return now.diff(dayjs(item.createdAt), "year") > 1
+			? `${now.diff(dayjs(item.createdAt), "year")} năm trước`
+			: now.diff(dayjs(item.createdAt), "minute") < 1
+			? `Vừa xong`
+			: now.diff(dayjs(item.createdAt), "minute") < 60
+			? `${now.diff(dayjs(item.createdAt), "minute")} phút trước`
+			: now.diff(dayjs(item.createdAt), "hour") < 24
+			? `${now.diff(dayjs(item.createdAt), "hour")} giờ trước`
+			: now.diff(dayjs(item.createdAt), "day") < 7
+			? `${now.diff(dayjs(item.createdAt), "day")} ngày trước`
+			: now.diff(dayjs(item.createdAt), "week") < 4
+			? `${now.diff(dayjs(item.createdAt), "week")} tuần trước`
+			: `${now.diff(dayjs(item.createdAt), "month")} tháng trước`;
+    }
 
     return review && comments && gradeId != "" ? (
-        <div class="col py-3 ">
+        <div class="col py-3 font-size-review-grade-content ">
             <div>
                 <div>
                     <div class="d-flex justify-content-center row">
                         <div class="flex-column ">
                             <div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
-                                <div class="d-flex flex-column ml-3">
+                                <div class="d-flex flex-column ml-3 font-size-review-grade-content">
                                     <div class="d-flex flex-row post-title">
-                                        <div className="user-info">
+                                        <h5 className="user-info">
                                             <img
                                                 src={review.user.avatar ?? "/default-avatar.png"}
                                                 width={24}
@@ -125,25 +140,25 @@ const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
                                                 alt="member avatar"
                                             ></img>
                                             <b> {review.user.fullname}{" "}</b>
-                                        </div>
+                                        </h5>
                                     </div>
                                     <div class="d-flex flex-row post-title">
                                         <h5>Phúc khảo: {review.currentGrade.name}</h5><span class="ml-2"></span>
 
                                     </div>
                                     <div class="d-flex flex-row post-title">
-                                        <h6>Điểm hiện tại: {review.currentGrade.grade}</h6><span class="ml-2"></span>
+                                        <h5>Điểm hiện tại: {review.currentGrade.grade}</h5><span class="ml-2"></span>
 
                                     </div>
                                     <div class="d-flex flex-row post-title">
-                                        <h6>Điểm mong muốn: {review.expectedGrade.grade}</h6><span class="ml-2"></span>
+                                        <h5>Điểm mong muốn: {review.expectedGrade.grade}</h5><span class="ml-2"></span>
 
                                     </div>
                                     <div class="d-flex flex-row post-title">
-                                        <h6>Mô tả:</h6><span class="ml-2"></span>
+                                        <h5>Mô tả:</h5><span class="ml-2"></span>
 
                                     </div>
-                                    <div class="comment-text-sm"><span>{review.explanation}</span></div>
+                                    <div ><span>{review.explanation}</span></div>
                                 </div>
                             </div>
                             <div class="coment-bottom bg-white p-2 px-4">
@@ -160,7 +175,7 @@ const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
                                                         className="me-2"
                                                         alt="member avatar"
                                                     ></img>
-                                                    <b>{comment.user.fullname}{" "}</b>
+                                                    <b>{comment.user.fullname}{" "}</b> <small class = "padding-left-daydiff">{"   " + dayDifference(comment)}</small>
                                                 </div>
                                             </td>
                                             <div class="comment-text-sm"><span>{comment.comment}</span></div>
