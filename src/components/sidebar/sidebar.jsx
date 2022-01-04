@@ -4,7 +4,25 @@ import React, { useEffect, useState } from "react";
 import { getApiMethod, postApiMethod } from "../../api/api-handler";
 import Spining from "../../components/spinning/spinning.component";
 
-const SideBar = ({ id, gradeid, setReview}) => {
+const State = {
+  PENDING: 'Mới',
+  PROCESSING: 'Đang thực hiện',
+  FINAL: 'Hoàn thành',
+};
+
+const getState = (state) => {
+  switch (state) {
+    case "PENDING":
+      return State.PENDING;
+    case "PROCESSING":
+      return State.PROCESSING;
+    case "FINAL":
+      return State.FINAL;
+    default:
+      return "";
+  }
+}
+const SideBar = ({ id, gradeid, setReview }) => {
   const [reviews, setReviews] = useState([]);
   const getGradeBoards = async () => {
     try {
@@ -22,23 +40,23 @@ const SideBar = ({ id, gradeid, setReview}) => {
   }, []);
   return (
     reviews.map(item => (
-      <a onClick={()=>setReview(item)} class={"list-group-item list-group-item-action flex-column align-items-start" + (item.id.toString() === gradeid.toString() ? " active" : "")} >
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1" >Phúc Khảo {item.currentGrade.name}</h5>
-      </div>
-      <div className="user-info">
-        <img
-          src={item.user.avatar ?? "/default-avatar.png"}
-          width={24}
-          height={24}
-          className="me-2"
-          alt="member avatar"
-        ></img>
-        {item.user.fullname}{" "}
-      </div>
-      <p class="text-end">{item.status}</p>
+      <a onClick={() => setReview(item)} class={"list-group-item list-group-item-action flex-column align-items-start" + (item.id.toString() === gradeid.toString() ? " active" : "")} >
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1" >Phúc Khảo {item.currentGrade.name}</h5>
+        </div>
+        <div className="user-info">
+          <img
+            src={item.user.avatar ?? "/default-avatar.png"}
+            width={24}
+            height={24}
+            className="me-2"
+            alt="member avatar"
+          ></img>
+          {item.user.fullname}{" "}
+        </div>
+        <p class="text-end">{getState(item.status)}</p>
 
-    </a>
+      </a>
     ))
   );
 };
