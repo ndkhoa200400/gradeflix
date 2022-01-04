@@ -19,7 +19,6 @@ import AdminPage from "./pages/admin-page/admin-page";
 import AdminPrivateRoute from "./components/private-router/admin-private-router";
 import ResetPasswordPage from "./pages/reset-password/reset-password.page";
 import Activation from "./pages/activate-page/activate.page";
-import ReviewPage from "./pages/reviewgrade-page/reviewgrade.page";
 
 function App() {
 	return (

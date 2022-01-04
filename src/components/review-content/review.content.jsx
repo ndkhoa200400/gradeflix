@@ -48,7 +48,7 @@ const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, 
 };
 
 
-const ReviewContent = ({ id, gradeid, classroom }) => {
+const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
     const [showEditClass, setEditCreateClass] = useState(false);
     const [showConfirmReject, setshowConfirmReject] = useState(false);
     const params = useParams();
@@ -70,10 +70,10 @@ const ReviewContent = ({ id, gradeid, classroom }) => {
     }
     const getGradeReview = async () => {
         try {
-            const res = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeid);
+            const res = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId);
             console.log(res);
             setReview(res);
-            const resComment = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeid + "/comments");
+            const resComment = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId + "/comments");
             console.log(resComment);
             setComments(resComment);
         } catch (error) {
@@ -87,7 +87,7 @@ const ReviewContent = ({ id, gradeid, classroom }) => {
             const data = { "comment": comment };
 
             try {
-                await postApiMethod("classrooms/" + id + "/grade-reviews/" + gradeid + "/comments", data);
+                await postApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId + "/comments", data);
                 await getGradeReview();
                 setComment("");
             } catch (error) {
@@ -103,11 +103,11 @@ const ReviewContent = ({ id, gradeid, classroom }) => {
         setComments([]);
         setReview();
         getGradeReview();
-    }, gradeid);
+    }, [gradeId]);
 
 
 
-    return review && comments && gradeid != "" ? (
+    return review && comments && gradeId != "" ? (
         <div class="col py-3 ">
             <div>
                 <div>
@@ -204,7 +204,7 @@ const ReviewContent = ({ id, gradeid, classroom }) => {
                     handleClose={handleClose}
                     id={id}
                     studentid={review.studentId}
-                    reviewid={gradeid}
+                    reviewid={gradeId}
                     name={review.currentGrade.name}
                     gradeReview={getGradeReview}
                 />
@@ -213,7 +213,7 @@ const ReviewContent = ({ id, gradeid, classroom }) => {
                     handleClose={handleClose}
                     id={id}
                     studentid={review.studentId}
-                    reviewid={gradeid}
+                    reviewid={gradeId}
                     name={review.currentGrade.name}
                     gradeReview={getGradeReview}
                     grade={review.currentGrade.grade}
