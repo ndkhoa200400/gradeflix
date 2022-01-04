@@ -4,7 +4,9 @@ a {
 nav {
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
-
+nav .btn-add-classroom:hover {
+	background-color: gainsboro;
+}
 
 nav .btn-add-classroom::after,
 .avatar-dropdown:after {
@@ -177,7 +179,31 @@ nav .btn-add-classroom::after,
 }
 
 
+.notification:hover {
+	background-color: #DADDE1;
+}
+body {
+	background-color: #eee
+  }
+  
+.bdge {
+	height: 21px;
+	background-color: orange;
+	color: #fff;
+	font-size: 11px;
+	padding: 8px;
+	border-radius: 4px;
+	line-height: 3px
+  }
+  
+.comments {
+	text-decoration: underline;
+	text-underline-position: under;
+	cursor: pointer
+}
+  
 
-.notification-item:active{
-	background-color:#D3D3D3;
+  
+#sidebar-nav {
+	width: 300px;
 }
