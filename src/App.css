@@ -128,7 +128,7 @@ nav .btn-add-classroom::after,
 .h-100vh {
 	height: 100vh;
 }
-.not-found-error {
+.error-card {
 	width: fit-content;
 }
 
@@ -156,15 +156,13 @@ nav .btn-add-classroom::after,
 ::-webkit-scrollbar {
 	width: 0.5rem;
 	transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1) scale(10.6827) translateZ(-9.68267px)
-	translateZ(-2px);
+		translateZ(-2px);
 	background: white;
-
 }
 /* Track */
 ::-webkit-scrollbar-track {
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
-
 }
 
 /* Handle */
@@ -178,14 +176,10 @@ nav .btn-add-classroom::after,
 	max-height: 80vh;
 }
 
-
 .notification:hover {
-	background-color: #DADDE1;
+	background-color: #dadde1;
 }
-body {
-	background-color: #eee
-  }
-  
+
 .bdge {
 	height: 21px;
 	background-color: orange;
@@ -193,17 +187,15 @@ body {
 	font-size: 11px;
 	padding: 8px;
 	border-radius: 4px;
-	line-height: 3px
-  }
-  
+	line-height: 3px;
+}
+
 .comments {
 	text-decoration: underline;
 	text-underline-position: under;
-	cursor: pointer
+	cursor: pointer;
 }
-  
 
-  
 #sidebar-nav {
 	width: 300px;
 }

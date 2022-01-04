@@ -10,7 +10,7 @@ import TabMyInfo from "./tab-my-info";
 import TabGradeCompositions from "./tab-grade-composition";
 import TabGradeReview from "./tab-grade-review";
 import TopNavigation from "../../components/top-nav/top-nav.component";
-import ClassroomNotFound from "./classroom-not-found";
+import ErrorPage from "../error-page/error-page";
 const getContentTab = (tab, idClass, classroom, studentList, onEditedClassRoom, onEditStudentId, onGradeEdit) => {
 	if (tab === "tab-my-info") {
 		if (classroom && classroom.user.userRole === "STUDENT")
@@ -18,10 +18,8 @@ const getContentTab = (tab, idClass, classroom, studentList, onEditedClassRoom, 
 		const redirectLink = `/classrooms/${idClass}/tab-detail`;
 		return <Navigate to={redirectLink} />;
 	} else if (tab === "tab-people") return <TabPeople classroom={classroom} />;
-	else if (tab === "tab-grade")
-		return <TabGradeCompositions classroom={classroom} onGradeEdit={onGradeEdit} />;
-	else if (tab === "tab-review-grade")
-		return <TabGradeReview classroom={classroom} />;
+	else if (tab === "tab-grade") return <TabGradeCompositions classroom={classroom} onGradeEdit={onGradeEdit} />;
+	else if (tab === "tab-review-grade") return <TabGradeReview classroom={classroom} />;
 	return <TabDetail classroom={classroom} onEditedClassRoom={onEditedClassRoom} />;
 };
 
@@ -95,7 +93,7 @@ const ClassroomPage = ({ isFull = true, ...props }) => {
 			</div>
 		</div>
 	) : error ? (
-		<ClassroomNotFound errorMessage={error.message} />
+		<ErrorPage errorMessage={error.message} />
 	) : (
 		<Spining />
 	);

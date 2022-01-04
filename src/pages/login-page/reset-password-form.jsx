@@ -55,7 +55,7 @@ const ResetPasswordForm = ({ show, handleClose }) => {
 							<Form.Label>Email</Form.Label>
 							<Form.Control
 								type="email"
-								placeholder="Nhập email để đặt lại password"
+								placeholder="Nhập email"
 								{...register("email", {
 									required: "Email không được bỏ trống",
 									pattern: {
