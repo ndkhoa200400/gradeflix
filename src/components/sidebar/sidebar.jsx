@@ -37,7 +37,7 @@ const getColor = (state) => {
 }
 
 
-const SideBar = ({ id, gradeid, setReview }) => {
+const SideBar = ({ id, gradeid, setReview, state }) => {
   const getDate = (item) => {
     var date = new Date(item.createdAt);
     return dayjs(date).format("HH:mm    DD/MM/YYYY");
@@ -49,15 +49,13 @@ const SideBar = ({ id, gradeid, setReview }) => {
       const res = await getApiMethod("classrooms/" + id + "/grade-reviews");
       console.log(res);
       setReviews(res);
-
     } catch (error) {
       console.log("error", error);
     }
   };
   useEffect(() => {
     getGradeBoards();
-
-  }, [gradeid]);
+  }, [gradeid,state]);
 
 
   return (
@@ -78,7 +76,7 @@ const SideBar = ({ id, gradeid, setReview }) => {
         </div>
         <div class="row">
           <i class="text-start">{getDate(item)}</i>
-          <p class={"text-end " + getColor(item.status)}>
+          <p class={"text-end " + (item.id.toString() === gradeid.toString() ? "" : getColor(item.status))}>
             {getState(item.status)}</p>
         </div>
 

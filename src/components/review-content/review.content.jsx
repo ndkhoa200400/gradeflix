@@ -48,7 +48,7 @@ const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, 
 };
 
 
-const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
+const ReviewContent = ({ id, gradeId, classroom, setState,state }) => {
     const [showEditClass, setEditCreateClass] = useState(false);
     const [showConfirmReject, setshowConfirmReject] = useState(false);
     const params = useParams();
@@ -76,6 +76,7 @@ const ReviewContent = ({ id, gradeid: gradeId, classroom }) => {
             const resComment = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId + "/comments");
             console.log(resComment);
             setComments(resComment);
+            setState(state+1);
         } catch (error) {
             console.log("error", error);
         }
