@@ -1,11 +1,10 @@
 import "../../pages/admin-page/style.css"
-import { ListGroup ,Dropdown, Button,  } from "react-bootstrap";
+import { ListGroup , Button  } from "react-bootstrap";
 import {useState, useEffect} from 'react'
 import ClassQuickView from "./class-quick-view";
 import { getApiMethod, postApiMethod } from "../../api/api-handler";
 import ModalLockClassroom from "./admin-confirm-lock-classroom";
-import { set } from "react-hook-form";
-const AdminClasses = () =>{
+const AdminClasses = ( {recently, keyword, currentPage, pageSize, onLoading}) =>{ 
     const [modalShow, setModalShow] = useState(false);
     const onViewClick = (classroom)=>{
         setModalShow(true)
@@ -14,9 +13,17 @@ const AdminClasses = () =>{
     const [classrooms, setClassrooms] = useState([])
     const getAllClasses = async ()=>{
         try{
-            const res = await getApiMethod('admin/classrooms');
-            console.log(res)
+            //Params: có sẵn ở đầu hàm rồi, tạo filter thôi
+			//	recently: true/false, sort theo ngày tháng
+			//	keyword: string, từ khóa tìm kiếm, tìm theo email + tên
+			//	currentPage: number, page cần tìm
+			// 	pageSize: số items/ page
+              const res = await getApiMethod('admin/classrooms');
+           
             setClassrooms(res.items)
+            const totalPages = 20;
+            console.log(`Get classroom list: recently ${recently}, keyword: ${keyword}, currentPage: ${currentPage}, pageSize: ${pageSize}, totalPages: ${totalPages}`)
+			onLoading(totalPages);
         }
         catch(e){
             console.log(e)
@@ -26,7 +33,7 @@ const AdminClasses = () =>{
 		getAllClasses();
         
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [currentPage, recently, keyword]);
     const [show, setShow] = useState(false);
     const [currentClassroom, setCurrentClassroom] = useState({});
     const openModal = (classroom)=>{
@@ -42,7 +49,7 @@ const AdminClasses = () =>{
 		setSpinning(true);
 		try{
 			const res = await postApiMethod(`admin/classrooms/`+id, {active: isLocked});	
-			console.log(res);
+			
 			const newClassrooms = [...classrooms]
             for(var i = 0; i < newClassrooms.length; i++){
                 if(newClassrooms[i].id === id){
@@ -58,9 +65,11 @@ const AdminClasses = () =>{
 		
 		setSpinning(false);
     }
+   
     return (
         <>
-            <hr />
+            
+            
             <ListGroup as="ol" numbered>
                 {
                     classrooms.map((classroom) => (
@@ -72,6 +81,7 @@ const AdminClasses = () =>{
                       ))
                 }
             </ListGroup>
+         
             <ClassQuickView
                 show={modalShow}
                 handleClose={() => setModalShow(false)}
@@ -89,14 +99,7 @@ const AdminClasses = () =>{
         
     )
 }
-const style = {
-    color: 'red',
-    position: 'absolute',
-    top: -20,
-    left: -20,
-    zIndex: 9,
-    fontSize: "50px"
-}
+
 const Item = ({onViewClick, classroom, openModal}) =>{
     var host = null
     var numTeacher = 0;
@@ -117,6 +120,13 @@ const Item = ({onViewClick, classroom, openModal}) =>{
         else   
             numStudent++;
     }
+    const formatDate = (date)=>{
+		const dateObj = new Date(date);
+		const month = dateObj.getMonth()+1;
+		const day = String(dateObj.getDate()).padStart(2, '0');
+		const year = dateObj.getFullYear();
+		return `${day}/${month}/${year}`
+	}
     return (
         
             <ListGroup.Item
@@ -124,43 +134,37 @@ const Item = ({onViewClick, classroom, openModal}) =>{
             style={{margin: "5px", position: 'relative', alignItems:'start'}}
             
         >
-            {isLocked?<i className = 'fas fa-lock' style = {style} ></i>:null}
+           
      
             <div className="ms-2 me-auto "  onClick = {onViewClick} style = {{width: "100%", textAlign: 'start'}}>
-                <div className="fw-bold" >{classroom.name}</div>
-                Người tạo: {host?host.name:""} <br/>
+                <div className="fw-bold" style = {{color:isLocked?'red':'black'}}>{classroom.name}</div>
+                Người tạo: {host?host.fullname:""} <br/>
                 Thành viên: {numTeacher} Giáo viên, {numStudent} Học viên<br/>
-                Trạng thái: {isLocked?"Bị khóa":"Hoạt động"}
+                Ngày mở: {formatDate(classroom.createdAt)}<br/>
+                Trạng thái: <span style = {{fontWeight:'bold',color:isLocked?'red':'green'}}>{isLocked?"Bị khóa":"Đang hoạt động"}</span>
             </div>
-            <div>
+       
+            <Button variant="outline-primary" style = {{width: '100px', marginRight: 10}} onClick = {()=>onViewClick(classroom)} >
+				<>
+					<i className = "fas fa-eye"></i>
+				</>
+			</Button>
 
-            <Dropdown className="" style = {{zIndex: 20}}>
-                                    <Dropdown.Toggle
-                                        variant="light"
-                                        className="btn btn-light btn-add-classroom"
-                                        data-bs-toggle="dropdown"
-                                        id="addClassroomBtn"
-                                    ></Dropdown.Toggle>
-
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item
-                                            type="button"
-                                            onClick={onViewClick}
-                                        >
-                                            Xem
-                                        </Dropdown.Item>
-                                        <Dropdown.Item
-                                            type="button"
-                                            onClick={() => {
-                                                openModal(classroom);
-                                            }}
-                                        >
-                                            {isLocked?"Mở khóa": "Khóa"}
-                                        </Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
+			<Button variant={isLocked?"success":"danger"} style = {{width: '100px'}} onClick = {()=>openModal(classroom)} >
+				{isLocked?
+					<>
+						<i className = "fas fa-unlock"></i> 
+					</>
+					
+				: 
+					<>
+						<i className = "fas fa-lock"></i> 
+					</>
+					
+				}
+			</Button>
+           
                
-            </div>
               
         </ListGroup.Item>
        
