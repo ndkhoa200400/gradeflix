@@ -14,6 +14,7 @@ import AdminPrivateRoute from "./components/private-router/admin-private-router"
 import ResetPasswordPage from "./pages/reset-password/reset-password.page";
 import Activation from "./pages/activate-page/activate.page";
 import ActivationRequest from "./pages/activate-page/activate-request";
+import ErrorPage from "./pages/error-page/error-page";
 
 function App() {
 	return (
@@ -86,6 +87,11 @@ function App() {
 						/>
 
 						<Route path="/reset-password" element={<ResetPasswordPage />} />
+
+						<Route
+							path="/locked"
+							element={<ErrorPage errorMessage={"Tài khoản của bạn đã bị khóa."} navigateLink="/login" />}
+						/>
 					</Switch>
 				</Router>
 			</SocketIOProvider>

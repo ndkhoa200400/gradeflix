@@ -19,13 +19,12 @@ const AdminPrivateRoute = ({ children })=>{
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [auth]);
 	savePreUrl(location.pathname);
-	var result = null;
 	if (!auth){
 		return <Navigate to="/login" />;
 	}
 	if (user.role !== "ADMIN")
 		return <Navigate to="/" />;
-	
+
 	return children;
 }
 

@@ -1,7 +1,27 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Row, Container, Nav } from "react-bootstrap";
+import { useSocket } from "../../custome-hook";
+import { useEffect, useState } from "react";
+import ErrorAlert from "../alert/error-alert.component";
 
 const Tab = ({ id, classroom }) => {
+	const socket = useSocket();
+	const navigate = useNavigate();
+	const [errorMessage, setErrorMessage] = useState("");
+
+	useEffect(() => {
+		if (socket?.socket) {
+			socket.socket.on("classroomLocked", (classroomId) => {
+				if (classroomId === id) {
+					setErrorMessage("Lớp học này đã bị khóa. Vui lòng liên hệ quản trị viên để biết thêm thông tin.");
+				}
+			});
+		}
+	}, [socket, id]);
+
+	const onHideError = () => {
+		navigate("/", { replace: true });
+	};
 	const urlTab1 = "/classrooms/" + id + "/tab-detail";
 	const urlTab2 = "/classrooms/" + id + "/tab-people";
 	const urlTab3 = "/classrooms/" + id + "/tab-my-info";
@@ -44,6 +64,7 @@ const Tab = ({ id, classroom }) => {
 					</Nav.Item>
 				</Nav>
 			</Row>
+			<ErrorAlert show={errorMessage} setHide={onHideError} message={errorMessage} />
 		</Container>
 	);
 };

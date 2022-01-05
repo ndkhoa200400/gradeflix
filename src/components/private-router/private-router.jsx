@@ -1,25 +1,37 @@
 import React from "react";
 import * as AuthService from "../../services/auth.service";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { savePreUrl } from "../../services/location.service";
 import { useSocket } from "../../custome-hook";
 import { useEffect } from "react";
 function PrivateRoute({ children }) {
 	const location = useLocation();
 	const socket = useSocket();
-
+	const navigate = useNavigate();
 	const auth = AuthService.isLoggedIn();
-	const user = AuthService.getUserInfo();
-	console.log(user);
+	var user = AuthService.getUserInfo();
 	useEffect(() => {
-		if (auth) {
-			//const user = AuthService.getUserInfo();
-			socket.addNewUser(user);
-		}
+		const getAuth = async () => {
+			if (auth) {
+				socket.addNewUser(user);
+			}
+		};
+		return getAuth();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [auth]);
+
+	useEffect(() => {
+		if (socket?.socket) {
+			socket.socket.on("accountLocked", () => {
+				AuthService.logOut();
+				socket.logOut();
+				navigate("/locked");
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [socket.socket]);
+
 	savePreUrl(`${location.pathname}${location.search}`);
-	var result = null;
 	if (!auth) {
 		return <Navigate to="/login" />;
 	}

@@ -34,7 +34,7 @@ const Avatar = () => {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item type="button" href="/me">
+        <Dropdown.Item type="button" onClick={()=>navigate('/me')}>
           Thông tin cá nhân
         </Dropdown.Item>
         <Dropdown.Item type="button" onClick={logout}>
