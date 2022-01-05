@@ -19,7 +19,7 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 	return (
 		<div className="tab-detail pb-3 ">
 			<Row>
-				<Col sm={3}>
+				<Col md={4} lg={3}>
 					{classroom && classroom.user.userRole === "STUDENT" ? (
 						<Card>
 							<Card.Header>
@@ -96,7 +96,7 @@ const TabDetail = ({ classroom, onEditedClassRoom }) => {
 					)}
 				</Col>
 
-				<Col sm={9}>
+				<Col md={8} lg={9} className="mt-2 mt-md-0">
 					<Card className="my-3 my-sm-0">
 						<Card.Header>
 							<Card.Title>Thông tin lớp học</Card.Title>

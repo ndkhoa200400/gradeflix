@@ -9,15 +9,11 @@ const ListMember = (params) => {
 	const [teachers, setTeachers] = useState(null);
 
 	useEffect(() => {
-
 		const getMembers = async () => {
-			const data = await getApiMethod(
-				"classrooms/" + params.classroom.id.toString() + "/users"
-			);
+			const data = await getApiMethod("classrooms/" + params.classroom.id.toString() + "/users");
 			const tempTeachers = [];
 			const tempStudents = [];
 			for (const user of data) {
-
 				if (user.userRole === "TEACHER" || user.userRole === "HOST") {
 					tempTeachers.push(user);
 				} else {
@@ -27,10 +23,10 @@ const ListMember = (params) => {
 			setTeachers(tempTeachers);
 			setStudents(tempStudents);
 		};
-		return getMembers()
+		return getMembers();
 	}, [params.classroom]);
 	const onKickMember = (user) => {
-		const newTeachers = [...teachers]
+		const newTeachers = [...teachers];
 		for (let i = 0; i < newTeachers.length; i++) {
 			if (newTeachers[i].id === user.id) {
 				newTeachers.splice(i, 1);
@@ -38,7 +34,7 @@ const ListMember = (params) => {
 				return;
 			}
 		}
-		const newStudents = [...students]
+		const newStudents = [...students];
 		for (let i = 0; i < newStudents.length; i++) {
 			if (newStudents[i].id === user.id) {
 				newStudents.splice(i, 1);
@@ -46,22 +42,26 @@ const ListMember = (params) => {
 				return;
 			}
 		}
-	}
+	};
 	const onEditStudentId = (user) => {
-		const newStudents = [...students]
+		const newStudents = [...students];
 		for (var i = 0; i < newStudents.length; i++) {
 			if (newStudents[i].id === user.id) {
-
 				newStudents[i] = user;
 				setStudents(newStudents);
 				return;
 			}
 		}
-	}
+	};
 	return teachers && students ? (
 		<div className="show-list">
 			<ListTeacher list={teachers} classroom={params.classroom} onKickMember={onKickMember}></ListTeacher>
-			<ListStudent list={students} classroom={params.classroom} onKickMember={onKickMember} onEditStudentId={onEditStudentId}></ListStudent>
+			<ListStudent
+				list={students}
+				classroom={params.classroom}
+				onKickMember={onKickMember}
+				onEditStudentId={onEditStudentId}
+			></ListStudent>
 		</div>
 	) : (
 		<div>

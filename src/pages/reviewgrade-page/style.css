@@ -24,7 +24,7 @@ fieldset.no-bootstrap {
   }
 
 
-  
+
 .bdge {
 	height: 21px;
 	background-color: orange;
@@ -34,21 +34,17 @@ fieldset.no-bootstrap {
 	border-radius: 4px;
 	line-height: 3px
   }
-  
+
 .comments {
 	text-decoration: underline;
 	text-underline-position: under;
 	cursor: pointer
 }
-  
 
-  
+
+
 #sidebar-nav {
 	width: 300px;
-}
-
-.row {
-    --bs-gutter-x: 0rem;
 }
 
 .pv-archiveText {

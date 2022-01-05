@@ -4,9 +4,6 @@ a {
 nav {
 	box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
-nav .btn-add-classroom:hover {
-	background-color: gainsboro;
-}
 
 nav .btn-add-classroom::after,
 .avatar-dropdown:after {

@@ -93,7 +93,7 @@ const Profile = () => {
 	return user ? (
 		<div>
 			<TopNavigation title="Gradeflix" titleLink="/" />
-			<Container className="mt-5 ">
+			<Container className="my-5 ">
 				<div id="profile" className="row justify-content-center ">
 					<div className="avatar col-lg-5 text-center">
 						<img src={image} alt="" className="d-block rounded rounded-circle m-auto mb-4" width="300" height="300" />

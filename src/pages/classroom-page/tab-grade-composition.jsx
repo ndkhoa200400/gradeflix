@@ -75,8 +75,8 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 		setShowAlert(false);
 	};
 	return (
-		<Row className="py-3">
-			<Col sm={3}>
+		<Row className="pb-3">
+			<Col md={4} lg={3}>
 				{classroom && classroom.user.userRole !== "STUDENT" ? (
 					<div>
 						<Card style={{ marginBottom: "10px" }}>
@@ -161,7 +161,7 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 					</div>
 				) : null}
 			</Col>
-			<Col className="grade-compositions-list-tab " sm={9}>
+			<Col className="grade-compositions-list-tab mt-2 mt-md-0" md={8} lg={9}>
 				<Card style={{ position: "relative" }}>
 					<Card.Header>
 						<Card.Title>Bảng điểm</Card.Title>
