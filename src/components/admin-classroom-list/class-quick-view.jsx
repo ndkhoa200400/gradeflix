@@ -3,10 +3,10 @@ import QuickViewListMember from "./quick-view-list-member";
 const ClassQuickView = ({ show, handleClose, openModal, classroom }) => {
 	var isLocked = !classroom.active;
 	const icon = isLocked ? "fas fa-unlock" : "fas fa-lock";
-	var host = null;
+	// var host = null;
 	var teachers = [];
 	var students = [];
-	var hostId = classroom.hostId;
+	// var hostId = classroom.hostId;
 	var users = classroom.users;
 	if (!users) users = [];
 	for (var i = 0; i < users.length; i++) {
@@ -14,7 +14,7 @@ const ClassQuickView = ({ show, handleClose, openModal, classroom }) => {
 			teachers.push(users[i]);
 		} else if (users[i].userRole === "HOST") {
 			teachers.push(users[i]);
-			host = users[i];
+			// host = users[i];
 		} else students.push(users[i]);
 	}
 	const total = classroom.gradeStructure ? classroom.gradeStructure.total : "";

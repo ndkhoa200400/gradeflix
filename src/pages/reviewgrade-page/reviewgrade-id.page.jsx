@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useParams, Navigate } from "react-router-dom";
-import SideBar from "../../components/sidebar/sidebar";
-import ReviewContent from "../../components/review-content/review.content";
-import TopNavigationHome from "../../components/top-nav/top-nav-home.component";
-import "./style.css"
-import ClassroomCard from "../../components/classroom-card/classroom-card.component";
-import { getApiMethod } from "../../api/api-handler";
+import React from "react";
+import { useParams } from "react-router-dom";
+import "./style.css";
 import ClassroomPage from "../classroom-page";
 const ReviewPageId = () => {
-    const params = useParams();
-    useEffect(() => {
-		console.log(params.reviewId.toString())
-	}, []);
-    return  (
-        <ClassroomPage idReview = {params.reviewId.toString()}/>
-    )
+	const params = useParams();
+	return <ClassroomPage idReview={params.reviewId.toString()} />;
 };
 
 export default ReviewPageId;

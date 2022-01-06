@@ -5,7 +5,6 @@ import { Card, Button } from "react-bootstrap";
 import BootstrapTable from "react-bootstrap-table-next";
 import cellEditFactory from "react-bootstrap-table2-editor";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
-import { postApiMethod } from "../../api/api-handler";
 import { getApiMethod } from "../../api/api-handler";
 import * as AuthService from "../../services/auth.service";
 import AccountQuickView from "../admin-account-list/account-quick-view";
@@ -48,36 +47,12 @@ const AdminAccountAdmins = ({
 		},
 	];
 
-	const onClick = async (id, isLocked) => {
-		setSpinning(true);
-		try {
-			const res = await postApiMethod(`admin/accounts/` + id, { active: isLocked });
-			console.log(res);
-			const newAccounts = [...adminAccounts];
-			for (var i = 0; i < newAccounts.length; i++) {
-				if (newAccounts[i].id === id) {
-					const user = newAccounts[i];
-					user.active = !user.active;
-					newAccounts[i] = user;
-				}
-			}
-			setAdminAccounts(newAccounts);
-			handleClose();
-		} catch (e) {
-			console.log(e);
-		}
-
-		setSpinning(false);
-	};
+	// eslint-disable-next-line no-unused-vars
 	const [show, setShow] = useState(false);
-	const handleClose = () => {
-		setShow(false);
-		console.log("close");
-	};
+
 	const openModal = (user) => {
 		setShow(true);
 		setCurrentUser(user);
-		console.log("open");
 	};
 	const [modalShow, setModalShow] = useState(false);
 	const onViewClick = (user) => {
@@ -85,9 +60,7 @@ const AdminAccountAdmins = ({
 		setCurrentUser(user);
 	};
 	const [currentUser, setCurrentUser] = useState({});
-	const [spinning, setSpinning] = useState(false);
 
-	//Phan trang cho nay
 	const getAllUser = async () => {
 		try {
 			//Params: có sẵn ở đầu hàm rồi, tạo filter thôi

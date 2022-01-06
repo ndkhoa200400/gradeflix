@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { Button, Card, Modal } from "react-bootstrap";
 import { getApiMethod, postApiMethod } from "../../api/api-handler";
 import * as AuthService from "../../services/auth.service";
 import Spining from "../../components/spinning/spinning.component";
@@ -9,7 +8,6 @@ import dayjs from "dayjs";
 
 const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, gradeReview, grade }) => {
 	const [onSubmiting, setOnSubmiting] = useState(false);
-	const navigate = useNavigate();
 
 	const onClick = async () => {
 		setOnSubmiting(true);
@@ -50,30 +48,39 @@ const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, 
 const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 	const [showEditClass, setEditCreateClass] = useState(false);
 	const [showConfirmReject, setshowConfirmReject] = useState(false);
-	const params = useParams();
 	const handleClose = () => {
 		setEditCreateClass(false);
 		setshowConfirmReject(false);
 	};
 
-	const [show, setShow] = useState(false);
-	const openModal = () => {
-		setEditCreateClass(true);
-	};
-
 	const [review, setReview] = useState();
-	const [comments, setComments] = useState();
+	const [comments, setComments] = useState([]);
 	const [comment, setComment] = useState("");
 	const setCommentValue = (value) => {
 		setComment(value);
 	};
 	const getGradeReview = async () => {
 		try {
-			console.log(gradeId);
-			const resReview = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId);
+			const param = {
+				filter: {
+					include: [
+						{
+							relation: "comments",
+							scope: {
+								include: [
+									{
+										relation: "user",
+									},
+								],
+							},
+						},
+					],
+				},
+			};
+			const resReview = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId, param);
+
 			setReview(resReview);
-			const resComment = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId + "/comments");
-			setComments(resComment);
+			setComments(resReview.comments ?? []);
 			setState(state + 1);
 		} catch (error) {
 			console.log("error", error);
@@ -83,11 +90,12 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 		if (comment !== "") {
 			//...
 			console.log(comment);
-			const data = { comment: comment };
+			const data = { comment: comment.trim() };
 
 			try {
-				await postApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId + "/comments", data);
-				await getGradeReview();
+				const newComment = await postApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId + "/comments", data);
+				// await getGradeReview();
+				setComments([...comments, newComment]);
 				setComment("");
 			} catch (error) {
 				console.log("error", error);
@@ -121,53 +129,60 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 	};
 
 	return gradeId === "" ? null : review && comments ? (
-		<div class="col py-3 font-size-review-grade-content ">
+		<div className="col font-size-review-grade-content ">
 			<div>
-				<div>
-					<div class="d-flex justify-content-center row">
-						<div class="flex-column ">
-							<div class="d-flex flex-row align-items-center text-left comment-top p-2 bg-white border-bottom px-4">
-								<div class="d-flex flex-column ml-3 font-size-review-grade-content">
-									<div class="d-flex flex-row post-title">
-										<h5 className="user-info">
-											<img
-												src={review.user.avatar ?? "/default-avatar.png"}
-												width={24}
-												height={24}
-												className="me-2"
-												alt="member avatar"
-											></img>
-											<b> {review.user.fullname} </b>
-										</h5>
-									</div>
-									<div class="d-flex flex-row post-title">
-										<h5>Phúc khảo: {review.currentGrade.name}</h5>
-										<span class="ml-2"></span>
-									</div>
-									<div class="d-flex flex-row post-title">
-										<h5>Điểm hiện tại: {review.currentGrade.grade}</h5>
-										<span class="ml-2"></span>
-									</div>
-									<div class="d-flex flex-row post-title">
-										<h5>Điểm mong muốn: {review.expectedGrade.grade}</h5>
-										<span class="ml-2"></span>
-									</div>
-									<div class="d-flex flex-row post-title">
-										<h5>Mô tả:</h5>
-										<span class="ml-2"></span>
-									</div>
-									<div>
-										<span>{review.explanation}</span>
-									</div>
+				<Card className="d-flex justify-content-center row p-2 mb-3">
+					<div className="flex-column ">
+						<div
+							className={`d-flex flex-row align-items-center text-left comment-top p-2 bg-white px-4 ${
+								comments.length ? "border-bottom" : null
+							}`}
+						>
+							<div className="d-flex flex-column ml-3 font-size-review-grade-content">
+								<div className="d-flex flex-row post-title">
+									<h5 className="user-info">
+										<img
+											src={review.user.avatar ?? "/default-avatar.png"}
+											width={24}
+											height={24}
+											className="me-2"
+											alt="member avatar"
+										></img>
+										<b> {review.user.fullname} </b>
+									</h5>
 								</div>
+								<div className="d-flex flex-row post-title">
+									<h5>Phúc khảo cột: {review.currentGrade.name}</h5>
+									<span class="ml-2"></span>
+								</div>
+								<div className="d-flex flex-row post-title">
+									<h5>Điểm hiện tại: {review.currentGrade.grade}</h5>
+									<span class="ml-2"></span>
+								</div>
+								<div className="d-flex flex-row post-title">
+									<h5>Điểm mong muốn: {review.expectedGrade.grade}</h5>
+									<span className="ml-2"></span>
+								</div>
+								<div className="d-flex flex-row post-title">
+									<span className="ml-2"></span>
+								</div>
+								<div className="d-flex flex-row post-title">
+									<h5>Lí do:</h5>
+									<span className="ml-2"></span>
+								</div>
+								<p>{review.explanation}</p>
 							</div>
-							<div class="coment-bottom bg-white p-2 px-4">
-								{comments.map((comment) => (
-									<div class="commented-section mt-2">
+						</div>
+						{comments?.length === 0 && review.status !== "FINAL" ? (
+							<div className="text-center text-muted">Không có bình luận nào</div>
+						) : (
+							<div className="coment-bottom bg-white p-2 px-4">
+								{comments.map((comment, idx) => (
+									<div key={idx} className="commented-section mt-2">
 										<td className="py-3 d-flex justify-content-between align-items-center">
 											<div className="user-info">
 												<img
-													src={comment.user.avatar ?? "/default-avatar.png"}
+													src={comment?.user?.avatar ?? "/default-avatar.png"}
 													width={24}
 													height={24}
 													className="me-2"
@@ -182,40 +197,45 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 										</div>
 									</div>
 								))}
-								{review.status === "FINAL" ? null : (
+								{review.status === "FINAL" ? (
+									<div className="text-center text-muted mt-2">
+										<div>Đã đóng bình luận</div>
+									</div>
+								) : (
 									<div>
 										<div>
-											<div class="d-flex flex-row add-comment-section mt-4 mb-4">
-												{" "}
+											<div class="d-flex align-items-center add-comment-section my-4">
 												<img
-													src={AuthService.getUserInfo().avatar ?? "/default-avatar.png"}
+													src={AuthService?.getUserInfo()?.avatar ?? "/default-avatar.png"}
 													width={24}
 													height={24}
 													className="me-2"
 													alt="member avatar"
 												></img>
-												<input
-													type="text"
-													class="form-control mr-3"
-													placeholder="Add comment"
-													value={comment}
-													onInput={(value) => setCommentValue(value.target.value)}
-												/>
-												<button class="btn btn-primary" type="button" onClick={() => onSubmitComment()}>
-													Comment
-												</button>
+												<div className="input-group">
+													<input
+														type="text"
+														class="form-control"
+														placeholder="Thêm bình luận"
+														value={comment}
+														onInput={(value) => setCommentValue(value.target.value)}
+													/>
+													<button className="btn btn-primary " type="button" onClick={() => onSubmitComment()}>
+														Bình luận
+													</button>
+												</div>
 											</div>
 										</div>
 										{classroom.user.userRole === "TEACHER" || classroom.user.userRole === "HOST" ? (
 											<div>
-												<button type="button" class="btn btn-success btn-lg" onClick={() => setEditCreateClass(true)}>
-													Chấp nhận
-												</button>
 												<button
 													type="button"
-													class="btn btn-outline-danger btn-lg"
-													onClick={() => setshowConfirmReject(true)}
+													class="btn btn-outline-success me-3"
+													onClick={() => setEditCreateClass(true)}
 												>
+													Chấp nhận
+												</button>
+												<button type="button" class="btn btn-outline-danger" onClick={() => setshowConfirmReject(true)}>
 													Từ chối
 												</button>
 											</div>
@@ -223,9 +243,10 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 									</div>
 								)}
 							</div>
-						</div>
+						)}
 					</div>
-				</div>
+				</Card>
+
 				<ApproveReviewGradeForm
 					show={showEditClass}
 					handleClose={handleClose}

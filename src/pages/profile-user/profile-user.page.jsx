@@ -98,7 +98,7 @@ const Profile = () => {
 					<div className="avatar col-lg-5 text-center">
 						<img src={image} alt="" className="d-block rounded rounded-circle m-auto mb-4" width="300" height="300" />
 						<input type="file" id="upload" hidden onChange={uploadImage} />
-						<label htmlFor="upload" className="cursor-pointer btn btn-outline-primary">
+						<label htmlFor="upload" className="cursor-pointer btn btn-outline-primary mb-3">
 							Tải ảnh lên
 						</label>
 					</div>

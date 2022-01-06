@@ -55,7 +55,7 @@ fieldset.no-bootstrap {
 .hidden { display:none; }
 
 .scrollclass {
-    height:700px;
+    max-height: 70vh;
     overflow-y: scroll;
 }
 
