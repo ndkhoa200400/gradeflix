@@ -70,6 +70,9 @@ const ReviewContent = ({ id, gradeId, classroom, setState,state }) => {
     }
     const getGradeReview = async () => {
         try {
+
+            console.log("test");
+            console.log(gradeId);
             const res = await getApiMethod("classrooms/" + id + "/grade-reviews/" + gradeId);
             console.log(res);
             setReview(res);

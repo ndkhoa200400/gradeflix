@@ -15,6 +15,7 @@ import ResetPasswordPage from "./pages/reset-password/reset-password.page";
 import Activation from "./pages/activate-page/activate.page";
 import ActivationRequest from "./pages/activate-page/activate-request";
 import ErrorPage from "./pages/error-page/error-page";
+import ReviewPageID from "./pages/reviewgrade-page/reviewgrade-id.page";
 
 function App() {
 	return (
@@ -41,6 +42,9 @@ function App() {
 						<Route path="/classrooms/:id" element={<TabProxy />} />
 						<Route path="/login" element={<LoginPage />} />
 						<Route path="/signup" element={<SignupPage />} />
+						<Route path="/classrooms/:id/:tab/:reviewId" element={<PrivateRoute>
+									<ReviewPageID />
+								</PrivateRoute>} />
 						<Route path="/admin" element={<Navigate to="/admin/accounts" />} />
 						<Route
 							path="/admin/:tab"

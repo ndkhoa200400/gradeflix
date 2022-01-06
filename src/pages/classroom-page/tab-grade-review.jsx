@@ -1,9 +1,13 @@
 import ReviewPage from "../reviewgrade-page/reviewgrade.page";
 import "../reviewgrade-page/style.css"
-const TabGradeReview = ({ classroom }) => {
+import { useEffect } from "react";
+const TabGradeReview = ({ classroom, idReview }) => {
+    useEffect(() => {
+		console.log(idReview)
+	}, []);
     return (
         <div className="mx-auto">
-            <ReviewPage classroom={classroom}></ReviewPage>
+            <ReviewPage classroom={classroom} idReview={idReview}></ReviewPage>
         </div>
 
     );
