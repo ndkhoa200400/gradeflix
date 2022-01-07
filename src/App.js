@@ -16,6 +16,7 @@ import Activation from "./pages/activate-page/activate.page";
 import ActivationRequest from "./pages/activate-page/activate-request";
 import ErrorPage from "./pages/error-page/error-page";
 import ReviewPageID from "./pages/reviewgrade-page/reviewgrade-id.page";
+import UserProfile from "./pages/profile-user/user-profile.page";
 
 function App() {
 	return (
@@ -59,6 +60,14 @@ function App() {
 							element={
 								<PrivateRoute>
 									<Profile />
+								</PrivateRoute>
+							}
+						/>
+							<Route
+							path="/users/:id"
+							element={
+								<PrivateRoute>
+									<UserProfile />
 								</PrivateRoute>
 							}
 						/>

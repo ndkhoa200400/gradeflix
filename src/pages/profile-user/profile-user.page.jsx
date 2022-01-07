@@ -20,7 +20,7 @@ const Profile = () => {
 	const [showChangePassword, setShowChangePassword] = useState(false);
 	const [onSubmiting, setOnSubmiting] = useState(false);
 	const [newImage, setNewImage] = useState(null);
-	const [image, setImage] = useState("./default-avatar.png");
+	const [image, setImage] = useState("/default-avatar.png");
 	const [user, setUser] = useState(null);
 	const loginEmail = AuthenService.getUserInfo().loginType === "email";
 	useEffect(() => {

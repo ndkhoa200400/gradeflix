@@ -1,8 +1,12 @@
-.form-profile 
+.form-profile
 {
     text-align: left;
 }
 
 .avatar img {
     object-fit: cover;
+}
+
+.user-information .card {
+	margin-bottom: 0.75rem;
 }

@@ -76,13 +76,19 @@ const GradeBoard = ({ gradeStructure, students, onUpdateGrade, classroomId, open
 		return { valid: false, message: `Phạm vi điểm 0 - ${gradeStructure.total}` };
 	};
 	const formatter = (cell, row) => {
-		if (row.account !== "")
-			return (
-				<span>
-					<Link to="#">{cell}</Link>
-				</span>
-			);
-		else return <span>{cell}</span>;
+		console.log("==== ~ formatter ~ row", row);
+		console.log("==== ~ formatter ~ cell", cell);
+
+		if (row.account !== "") {
+			if (cell.fullname) {
+				return (
+					<span>
+						<Link to={`/users/${row.account.id}`}>{cell.fullname}</Link>
+					</span>
+				);
+			}
+		}
+		return <span>{cell}</span>;
 	};
 	const gradeCompositions = gradeStructure ? gradeStructure.gradeCompositions : [];
 	const defaultSorted = [
@@ -143,8 +149,9 @@ const GradeBoard = ({ gradeStructure, students, onUpdateGrade, classroomId, open
 	});
 
 	const data = [];
+	console.log("students", students);
 	students.forEach((e) => {
-		const newObj = { studentId: e.studentId, fullName: e.fullName, account: e.user ? e.user.fullname : "" };
+		const newObj = { studentId: e.studentId, fullName: e.fullName, account: e.user ? e.user : "" };
 		var updated = false;
 		for (var i = 0; i < gradeCompositions.length; i++) {
 			if (e.grades) {
@@ -161,6 +168,8 @@ const GradeBoard = ({ gradeStructure, students, onUpdateGrade, classroomId, open
 		newObj["total"] = e["total"] ? e["total"] : "";
 		data.push(newObj);
 	});
+
+	console.log("==== ~ students.forEach ~ data", data);
 
 	const beforeSaveCell = async (oldValue, newValue, row, column, done) => {
 		console.log(oldValue, newValue, oldValue === undefined && newValue === "");
