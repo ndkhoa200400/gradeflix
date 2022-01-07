@@ -197,7 +197,10 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 										</div>
 									</div>
 								))}
-								{review.status === "FINAL" ? (
+								
+							</div>
+						)}
+                        {review.status === "FINAL" ? (
 									<div className="text-center text-muted mt-2">
 										<div>Đã đóng bình luận</div>
 									</div>
@@ -242,8 +245,6 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 										) : null}
 									</div>
 								)}
-							</div>
-						)}
 					</div>
 				</Card>
 
