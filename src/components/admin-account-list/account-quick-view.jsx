@@ -132,14 +132,20 @@ const AccountQuickView = ({ show, handleClose, openModal, user, onStudentIdChang
 				<Button variant="secondary" onClick={handleClose}>
 					Đóng
 				</Button>
-				<Button
-					variant={isLocked ? "success" : "danger"}
-					onClick={() => {
-						openModal(user);
-					}}
-				>
-					<i className={icon}></i> {isLocked ? "Mở khóa" : "Khóa"}
-				</Button>
+				{user.role !== "ADMIN"?
+				
+					<Button
+						variant={isLocked ? "success" : "danger"}
+						onClick={() => {
+							openModal(user);
+						}}
+					>
+						<i className={icon}></i> {isLocked ? "Mở khóa" : "Khóa"}
+					</Button>	
+					:
+					null						
+				}
+				
 			</Modal.Footer>
 		</Modal>
 	);

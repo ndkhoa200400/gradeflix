@@ -4,7 +4,7 @@ import UploadFileForm from "../../components/upload-file-form/upload-file-form";
 import { useState, useEffect } from "react";
 import GradeBoard from "../../components/grade-board/grade-board";
 import { getApiMethod } from "../../api/api-handler";
-import { createTemplateUploadStudentList, createTemplateUploadGradeAssignment } from "../../services/xlsx.service";
+import { createTemplateUploadStudentList, createTemplateUploadGradeAssignment, exportGradeBoard } from "../../services/xlsx.service";
 import GradeCompositionFinalization from "../../components/grade-composition-finalization/grade-composition-finalization";
 const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 	const [showForm, setShowForm] = useState(false);
@@ -49,6 +49,7 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 		try {
 			const res = await getApiMethod("classrooms/" + classroom.id + "/student-list");
 			setStudents(res);
+			console.log(res)
 		} catch (error) {
 			console.log("error", error);
 		}
@@ -155,6 +156,20 @@ const TabGradeCompositions = ({ classroom, onGradeEdit }) => {
 									}}
 								>
 									Nhập danh sách sinh viên từ xlsx
+								</Button>
+								<Button
+									disabled = {students.length === 0}
+									variant="outline-primary"
+									className="mb-3"
+									onClick={() => {
+									//	setEndPoint("student-list");
+									//	setTitle("Tải lên danh sách sinh viên");
+									//	setShowUploadFileForm(true);
+									//	setGradeForm(false);
+										exportGradeBoard(students, "", classroom.gradeStructure);
+									}}
+								>
+									Xuất bảng điểm
 								</Button>
 							</Card.Body>
 						</Card>

@@ -45,6 +45,7 @@ const SideBar = ({ id, gradeid, setReview, state }) => {
 		try {
 			const res = await getApiMethod("classrooms/" + id + "/grade-reviews");
 			setReviews(res);
+			
 		} catch (error) {
 			console.log("error", error);
 		}
@@ -65,7 +66,7 @@ const SideBar = ({ id, gradeid, setReview, state }) => {
 				}
 			>
 				<div class="d-flex justify-content-between">
-					<h5 class="mb-1">Phúc Khảo {item.currentGrade.name}</h5>
+					<h5 class="mb-1">Phúc khảo {item.currentGrade.name}</h5>
 				</div>
 				<div className="user-info">
 					<img

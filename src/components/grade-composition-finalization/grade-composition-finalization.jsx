@@ -66,12 +66,13 @@ const GradeCompositionFinalization = ({ show, handleClose, onGradeEdit, classroo
 						<Form.Group as={Row} className="mb-3">
 							<Col sm="12">
 								<Form.Check
+									disabled = {isFinal}
 									checked={isFinal}
 									column
 									sm="12"
 									id={`checked-${index}`}
 									type={"checkbox"}
-									label={`Công bố điểm`}
+									label={isFinal?"Đã công bố điểm":`Công bố điểm`}
 									onChange={(val) => onFinalStatusChange(val, index)}
 								/>
 							</Col>
