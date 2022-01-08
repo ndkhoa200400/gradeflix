@@ -35,8 +35,8 @@ function PrivateRoute({ children }) {
 	if (!auth) {
 		return <Navigate to="/login" />;
 	}
-	if (user.role === "ADMIN") return <Navigate to="/admin/accounts" />;
-	if (!user.activated && location.pathname !== "/activation-request" && location.pathname !== "/activate") {
+	if (user?.role === "ADMIN") return <Navigate to="/admin/accounts" />;
+	if (!user?.activated && location.pathname !== "/activation-request" && location.pathname !== "/activate") {
 		return <Navigate to="/activation-request" />;
 	}
 	return children;

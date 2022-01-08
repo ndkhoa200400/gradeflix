@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+  gradeflix_web:
+    container_name: gradeflix_web
+    image: gradeflix_web
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - .env
+    environment:
+      - REACT_APP_API_LINK=http://localhost:3003/
+    command: ["yarn", "run", "start"]
+    ports:
+      -  3000:3000
+
+
