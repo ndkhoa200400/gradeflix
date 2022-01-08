@@ -149,7 +149,6 @@ const GradeBoard = ({ gradeStructure, students, onUpdateGrade, classroomId, open
 	});
 
 	const data = [];
-	console.log("students", students);
 	students.forEach((e) => {
 		const newObj = { studentId: e.studentId, fullName: e.fullName, account: e.user ? e.user : "" };
 		var updated = false;

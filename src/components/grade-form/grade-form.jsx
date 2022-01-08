@@ -68,19 +68,42 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 		newgradeCompositions.splice(index, 1);
 		setGradeCompositions(newgradeCompositions);
 	};
-
+	const isDuplicated = (gradeCompositions) =>{
+		for (var i = 0; i < gradeCompositions.length; i++){
+			var count = 0;
+			for (var j = 0; j < gradeCompositions.length; j++){
+				if (gradeCompositions[i].name === gradeCompositions[j].name)
+					count++;
+			}
+			if (count >= 2){
+				return true;
+			}
+				
+		}
+		return false;
+	}
 	const handleSubmit = (event) => {
 		const form = event.currentTarget;
 		if (form.checkValidity() === false || !(total && +total > 0)) {
 			event.preventDefault();
 			event.stopPropagation();
 		} else {
-			var sum = 0;
-			for (var i = 0; i < gradeCompositions.length; i++) sum += +gradeCompositions[i].percent;
-			if (sum === 100) onSubmit();
-			else {
-				setErr("Tổng phần trăm các điểm thành phần phải đúng 100%");
+			
+			
+			if (isDuplicated(gradeCompositions) === true){
+				setErr("Tên các cột điểm không được trùng nhau");
 			}
+			else{
+				var sum = 0;
+				for (var i = 0; i < gradeCompositions.length; i++) sum += +gradeCompositions[i].percent;
+				if (sum === 100) onSubmit();
+				else {
+					setErr("Tổng phần trăm các điểm thành phần phải đúng 100%");
+				}
+			}
+				
+			
+			
 		}
 		setValidated(true);
 		event.preventDefault();
