@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { postApiMethod } from "../../api/api-handler";
 import ErrorAlert from "../../components/alert/error-alert.component";
 import InfoAlert from "../../components/alert/info-alert.component";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 
 export const CreateAdminForm = ({ show, handleClose, adminAccounts, setAdminAccounts }) => {
 	const [onSubmiting, setOnSubmiting] = useState(false);
@@ -35,7 +35,7 @@ export const CreateAdminForm = ({ show, handleClose, adminAccounts, setAdminAcco
 			<Modal show={show} onHide={handleClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Tạo tài khoản Admin</Modal.Title>
-					{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+					{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
 				</Modal.Header>
 				<Modal.Body>
 					<Form className="px-3 py-2" noValidate onSubmit={handleSubmit(onSubmit)}>

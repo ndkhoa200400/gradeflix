@@ -2,7 +2,7 @@ import ListStudent from "../list-student/list-student.component";
 import ListTeacher from "../list-teacher/list-teacher.component";
 import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
-import Spining from "../spinning/spinning.component";
+import Spinning from "../spinning/spinning.component";
 
 const ListMember = (params) => {
 	const [students, setStudents] = useState(null);
@@ -65,7 +65,7 @@ const ListMember = (params) => {
 		</div>
 	) : (
 		<div>
-			<Spining isFull={false} className="mx-auto my-5"></Spining>
+			<Spinning isFull={false} className="mx-auto my-5"></Spinning>
 		</div>
 	);
 };

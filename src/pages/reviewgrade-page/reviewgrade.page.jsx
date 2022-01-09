@@ -7,7 +7,7 @@ const ReviewPage = ({ classroom, idReview }) => {
 	const [state, setState] = useState(idReview);
 	const setID = (item) => {
 		setReviewId(item.id.toString());
-		window.history.replaceState('', '', "/classrooms/" + classroom.id + "/tab-review-grade/" + item.id);
+		window.history.replaceState("", "", "/classrooms/" + classroom.id + "/tab-review-grade/" + item.id);
 	};
 
 	return (

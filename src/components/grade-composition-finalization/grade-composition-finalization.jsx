@@ -51,7 +51,7 @@ const GradeCompositionFinalization = ({ show, handleClose, onGradeEdit, classroo
 
 	const renderGradeComposition = (name, isFinal, index) => {
 		return (
-			<div>
+			<div key={index}>
 				<Card>
 					<Card.Body>
 						<Form.Group as={Row} className="mb-3">
@@ -66,13 +66,13 @@ const GradeCompositionFinalization = ({ show, handleClose, onGradeEdit, classroo
 						<Form.Group as={Row} className="mb-3">
 							<Col sm="12">
 								<Form.Check
-									disabled = {isFinal}
+									disabled={classroom?.gradeStructure?.gradeCompositions[index]?.isFinal}
 									checked={isFinal}
 									column
 									sm="12"
 									id={`checked-${index}`}
 									type={"checkbox"}
-									label={isFinal?"Đã công bố điểm":`Công bố điểm`}
+									label={isFinal ? "Đã công bố điểm" : `Công bố điểm`}
 									onChange={(val) => onFinalStatusChange(val, index)}
 								/>
 							</Col>
@@ -83,6 +83,7 @@ const GradeCompositionFinalization = ({ show, handleClose, onGradeEdit, classroo
 			</div>
 		);
 	};
+
 	return (
 		<Modal show={show} onHide={closeModal}>
 			<Form onSubmit={onSubmit}>

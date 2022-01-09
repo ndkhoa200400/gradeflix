@@ -3,7 +3,7 @@ import TopNavigationHome from "../../components/top-nav/top-nav-home.component";
 import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
 
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 const HomePage = () => {
 	const [classrooms, setClassrooms] = useState();
 
@@ -36,7 +36,7 @@ const HomePage = () => {
 					<ClassroomList classrooms={classrooms} />
 				</div>
 			) : (
-				<Spining />
+				<Spinning />
 			)}
 		</div>
 	);

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Modal } from "react-bootstrap";
 import { getApiMethod, postApiMethod } from "../../api/api-handler";
 import * as AuthService from "../../services/auth.service";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 import ApproveReviewGradeForm from "../approve-review-grade-form/approve-review-grade-form";
 import dayjs from "dayjs";
+import ErrorAlert from "../alert/error-alert.component";
 
 const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, gradeReview, grade }) => {
 	const [onSubmiting, setOnSubmiting] = useState(false);
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const onClick = async () => {
 		setOnSubmiting(true);
@@ -22,26 +24,31 @@ const ModalConFirmReject = ({ show, id, studentid, reviewid, name, handleClose, 
 			handleClose();
 			gradeReview();
 		} catch (error) {
-			alert("Đã xảy ra lỗi! Vui lòng thử lại");
+			console.log(error);
+			setErrorMessage(error.message);
 		}
 		setOnSubmiting(false);
 	};
 	return (
-		<Modal show={show} onHide={handleClose}>
-			<Modal.Header closeButton>
-				<Modal.Title>Bạn có chắc muốn hủy yêu cầu phúc khảo?</Modal.Title>
-				{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
-			</Modal.Header>
+		<div>
+			{" "}
+			<Modal show={show} onHide={handleClose}>
+				<Modal.Header closeButton>
+					<Modal.Title>Bạn có chắc muốn hủy yêu cầu phúc khảo?</Modal.Title>
+					{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
+				</Modal.Header>
 
-			<Modal.Footer>
-				<Button variant="outline-secondary" onClick={handleClose}>
-					Đóng
-				</Button>
-				<Button variant="outline-primary" onClick={onClick}>
-					Hủy yêu cầu
-				</Button>
-			</Modal.Footer>
-		</Modal>
+				<Modal.Footer>
+					<Button variant="outline-secondary" onClick={handleClose}>
+						Đóng
+					</Button>
+					<Button variant="outline-primary" onClick={onClick}>
+						Hủy yêu cầu
+					</Button>
+				</Modal.Footer>
+			</Modal>
+			<ErrorAlert show={errorMessage} setHide={() => setErrorMessage("")} message={errorMessage} />
+		</div>
 	);
 };
 
@@ -52,6 +59,7 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 		setEditCreateClass(false);
 		setshowConfirmReject(false);
 	};
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const [review, setReview] = useState();
 	const [comments, setComments] = useState([]);
@@ -84,6 +92,7 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 			setState(state + 1);
 		} catch (error) {
 			console.log("error", error);
+			setErrorMessage(error.message);
 		}
 	};
 	const onSubmitComment = async () => {
@@ -99,7 +108,7 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 				setComment("");
 			} catch (error) {
 				console.log("error", error);
-				alert(error.message);
+				setErrorMessage(error.message);
 			}
 		}
 	};
@@ -197,57 +206,52 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 										</div>
 									</div>
 								))}
-								
 							</div>
 						)}
-                        {review.status === "FINAL" ? (
-									<div className="text-center text-muted mt-2">
-										<div>Đã đóng bình luận</div>
-									</div>
-								) : (
-									<div>
-										<div>
-											<div class="d-flex align-items-center add-comment-section my-4">
-												<img
-													src={AuthService?.getUserInfo()?.avatar ?? "/default-avatar.png"}
-													width={24}
-													height={24}
-													className="me-2"
-													alt="member avatar"
-												></img>
-												<div className="input-group">
-													<input
-														type="text"
-														class="form-control"
-														placeholder="Thêm bình luận"
-														value={comment}
-														onInput={(value) => setCommentValue(value.target.value)}
-													/>
-													<button className="btn btn-primary " type="button" onClick={() => onSubmitComment()}>
-														Bình luận
-													</button>
-												</div>
-											</div>
+						{review.status === "FINAL" ? (
+							<div className="text-center text-muted mt-2">
+								<div>Đã đóng bình luận</div>
+							</div>
+						) : (
+							<div>
+								<div>
+									<div class="d-flex align-items-center add-comment-section my-4">
+										<img
+											src={AuthService?.getUserInfo()?.avatar ?? "/default-avatar.png"}
+											width={24}
+											height={24}
+											className="me-2"
+											alt="member avatar"
+										></img>
+										<div className="input-group">
+											<input
+												type="text"
+												class="form-control"
+												placeholder="Thêm bình luận"
+												value={comment}
+												onInput={(value) => setCommentValue(value.target.value)}
+											/>
+											<button className="btn btn-primary " type="button" onClick={() => onSubmitComment()}>
+												Bình luận
+											</button>
 										</div>
-										{classroom.user.userRole === "TEACHER" || classroom.user.userRole === "HOST" ? (
-											<div>
-												<button
-													type="button"
-													class="btn btn-outline-success me-3"
-													onClick={() => setEditCreateClass(true)}
-												>
-													Chấp nhận
-												</button>
-												<button type="button" class="btn btn-outline-danger" onClick={() => setshowConfirmReject(true)}>
-													Từ chối
-												</button>
-											</div>
-										) : null}
 									</div>
-								)}
+								</div>
+								{classroom.user.userRole === "TEACHER" || classroom.user.userRole === "HOST" ? (
+									<div>
+										<button type="button" class="btn btn-outline-success me-3" onClick={() => setEditCreateClass(true)}>
+											Chấp nhận
+										</button>
+										<button type="button" class="btn btn-outline-danger" onClick={() => setshowConfirmReject(true)}>
+											Từ chối
+										</button>
+									</div>
+								) : null}
+							</div>
+						)}
 					</div>
 				</Card>
-
+				<ErrorAlert show={errorMessage} setHide={() => setErrorMessage("")} message={errorMessage} />
 				<ApproveReviewGradeForm
 					show={showEditClass}
 					handleClose={handleClose}
@@ -269,11 +273,7 @@ const ReviewContent = ({ id, gradeId, classroom, setState, state }) => {
 				/>
 			</div>
 		</div>
-	) : (
-		<div>
-			<Spining isFull={false} className="mx-auto my-5"></Spining>
-		</div>
-	);
+	) : null;
 };
 
 export default ReviewContent;

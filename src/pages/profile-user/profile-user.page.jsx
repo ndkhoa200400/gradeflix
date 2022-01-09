@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Container, Form, Button, Card } from "react-bootstrap";
 import TopNavigation from "../../components/top-nav/top-nav.component";
 import { useForm } from "react-hook-form";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 import * as AuthenService from "../../services/auth.service";
 
 import { postApiMethod } from "../../api/api-handler";
 import dayjs from "dayjs";
 
 import "./style.css";
+import ErrorAlert from "../../components/alert/error-alert.component";
+import InfoAlert from "../../components/alert/info-alert.component";
 const Profile = () => {
 	const { register, handleSubmit, setValue } = useForm();
 	const {
@@ -22,6 +24,8 @@ const Profile = () => {
 	const [newImage, setNewImage] = useState(null);
 	const [image, setImage] = useState("/default-avatar.png");
 	const [user, setUser] = useState(null);
+	const [errorMessage, setErrorMessage] = useState("");
+	const [infoMessage, setInfoMessage] = useState("");
 	const loginEmail = AuthenService.getUserInfo().loginType === "email";
 	useEffect(() => {
 		const user = AuthenService.getUserInfo();
@@ -47,12 +51,13 @@ const Profile = () => {
 		try {
 			const res = await postApiMethod("users/me/password", data);
 			AuthenService.saveToken(res.token);
-			alert("Đổi mật khẩu thành công");
+			setInfoMessage("Đổi mật khẩu thành công");
 		} catch (error) {
 			//console.log("error", error);
 			if (error.statusCode === 401) {
-				alert(error.message);
+				setErrorMessage(error.message);
 			}
+			setErrorMessage("Có lỗi xảy ra, vui lòng thử lại");
 		}
 	};
 
@@ -65,17 +70,7 @@ const Profile = () => {
 					body: newImage,
 				});
 				const data = await res.json();
-				// .then((res) => res.json())
-				// .then((data) => {
-				// 	//console.log("data", data);
 
-				// 	userBody.avatar = data["secure_url"];
-
-				// 	setNewImage(false);
-				// })
-				// .catch((error) => {
-				// 	console.log("error posting image", error);
-				// });
 				userBody.avatar = data["secure_url"];
 				setNewImage(false);
 			}
@@ -84,9 +79,9 @@ const Profile = () => {
 			setUser(res);
 			AuthenService.saveUserInfo(res);
 
-			alert("Đổi thông tin thành công!");
+			setInfoMessage("Đổi thông tin thành công!");
 		} catch (error) {
-			alert(error.message);
+			setErrorMessage(error.message);
 		}
 		setOnSubmiting(false);
 	};
@@ -146,7 +141,7 @@ const Profile = () => {
 									<Button variant="outline-primary" type="submit" className="px-4 py-2">
 										Lưu
 									</Button>
-									{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+									{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
 								</div>
 							</Form>
 
@@ -188,16 +183,18 @@ const Profile = () => {
 									<Button variant="outline-primary" type="submit" className="px-4 py-2">
 										Lưu
 									</Button>
-									{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+									{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
 								</div>
 							</Form>
 						</Card.Body>
 					</Card>
 				</div>
+				<ErrorAlert show={errorMessage} setHide={() => setErrorMessage("")} message={errorMessage} />
+				<InfoAlert show={infoMessage} setHide={() => setInfoMessage("")} message={infoMessage} />
 			</Container>
 		</div>
 	) : (
-		<Spining isFull={true} />
+		<Spinning isFull={true} />
 	);
 };
 export default Profile;

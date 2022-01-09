@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Container } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { getApiMethod, postApiMethod } from "../../api/api-handler";
-import Spining from "../../components/spinning/spinning.component";
+import ErrorAlert from "../../components/alert/error-alert.component";
+import Spinning from "../../components/spinning/spinning.component";
 import TopNavigation from "../../components/top-nav/top-nav.component";
 import { useQuery } from "../../custome-hook";
 // query string:
@@ -14,6 +15,7 @@ const Invitation = () => {
 	const navigate = useNavigate();
 	const [invitationInfo, setInvitationInfo] = useState(null);
 
+	const [errorMessage, setErrorMessage] = useState("");
 
 
 	useEffect(() => {
@@ -22,7 +24,7 @@ const Invitation = () => {
 			const role = query.get("role");
 			const token = query.get("token");
 			if (!classroomId || !role) {
-				alert("Đường dẫn bị lỗi. Vui lòng truy cập lại sau!");
+				setErrorMessage("Đường dẫn bị lỗi. Vui lòng truy cập lại sau!");
 				navigate(`/`, {
 					replace: true,
 				});
@@ -51,7 +53,7 @@ const Invitation = () => {
 
 	const acceptInviataion = async () => {
 		if (!invitationInfo) {
-			alert("Đã xảy ra lỗi. Vui lòng thử lại sau");
+			setErrorMessage("Đã xảy ra lỗi. Vui lòng thử lại sau");
 			navigate(`/`, {
 				replace: true,
 			});
@@ -69,7 +71,7 @@ const Invitation = () => {
 				replace: true,
 			});
 		} catch (error) {
-			alert(error.message);
+			setErrorMessage(error.message);
 		}
 	};
 
@@ -103,10 +105,11 @@ const Invitation = () => {
 						</Button>
 					</Card.Body>
 				</Card>
+				<ErrorAlert show={errorMessage} setHide={() => setErrorMessage("")} message={errorMessage} />
 			</Container>
 		</div>
 	) : (
-		<Spining isFull={true} />
+		<Spinning isFull={true} />
 	);
 };
 

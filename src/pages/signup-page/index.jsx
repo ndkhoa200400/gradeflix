@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 //'/users/register
 import { postApiMethod } from "../../api/api-handler";
 import * as AuthenService from "../../services/auth.service";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 const SignupPage = () => {
   const [onSubmiting, setOnSubmiting] = useState(false);
   const {
@@ -55,7 +55,7 @@ const SignupPage = () => {
               justifyContent: "center",
             }}
           >
-            {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+            {onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
           </div>
         </Card.Header>
         <Card.Body>

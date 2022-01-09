@@ -1,6 +1,6 @@
 import { Modal, Button, Card, Row, Col, Form } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import Spining from "../spinning/spinning.component";
+import Spinning from "../spinning/spinning.component";
 
 import { postApiMethod } from "../../api/api-handler";
 const AccountQuickView = ({ show, handleClose, openModal, user, onStudentIdChange }) => {
@@ -109,7 +109,7 @@ const AccountQuickView = ({ show, handleClose, openModal, user, onStudentIdChang
 											</Form.Group>
 											<div style={{ color: "red", marginBottom: 20 }}>{err}</div>
 											<div className="d-flex" style={{ justifyContent: "flex-end" }}>
-												{spinning ? <Spining isFull={false} className="mx-2" /> : null}
+												{spinning ? <Spinning isFull={false} className="mx-2" /> : null}
 												<Button
 													style={{ width: 100 }}
 													variant="primary"
@@ -133,7 +133,7 @@ const AccountQuickView = ({ show, handleClose, openModal, user, onStudentIdChang
 					Đóng
 				</Button>
 				{user.role !== "ADMIN"?
-				
+
 					<Button
 						variant={isLocked ? "success" : "danger"}
 						onClick={() => {
@@ -141,11 +141,11 @@ const AccountQuickView = ({ show, handleClose, openModal, user, onStudentIdChang
 						}}
 					>
 						<i className={icon}></i> {isLocked ? "Mở khóa" : "Khóa"}
-					</Button>	
+					</Button>
 					:
-					null						
+					null
 				}
-				
+
 			</Modal.Footer>
 		</Modal>
 	);

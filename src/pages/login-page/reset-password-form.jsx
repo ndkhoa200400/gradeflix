@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { postApiMethod } from "../../api/api-handler";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 import InfoAlert from "../../components/alert/info-alert.component";
 import ErrorAlert from "../../components/alert/error-alert.component";
 const ResetPasswordForm = ({ show, handleClose }) => {
@@ -44,7 +44,7 @@ const ResetPasswordForm = ({ show, handleClose }) => {
 			<Modal show={show} onHide={onHide}>
 				<Modal.Header closeButton>
 					<Modal.Title>Đặt lại mật khẩu</Modal.Title>
-					{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+					{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
 				</Modal.Header>
 				<Modal.Body>
 					<p className="text-start text-muted">

@@ -1,7 +1,7 @@
 import { Button, Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { postApiMethod } from "../../api/api-handler";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 import { useNavigate } from "react-router-dom";
 const ModalConFirmOutRoom = ({ show, handleClose, classroom }) => {
 	const [onSubmiting, setOnSubmiting] = useState(false);
@@ -22,7 +22,7 @@ const ModalConFirmOutRoom = ({ show, handleClose, classroom }) => {
 		<Modal show={show} onHide={handleClose}>
 			<Modal.Header closeButton>
 				<Modal.Title>Bạn có chắc muốn rời khỏi lớp?</Modal.Title>
-				{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+				{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
 			</Modal.Header>
 
 			<Modal.Footer>

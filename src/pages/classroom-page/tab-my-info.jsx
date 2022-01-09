@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Col, Row, Card, Button } from "react-bootstrap";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 import EditStudentIdModal from "./edit-student-id-modal";
 import StudentGrade from "../../components/student-grade/student-grade";
 import ListGradeCompositions from "../../components/list-grade-composition/list-grade-composition.component";
@@ -15,7 +15,7 @@ const TabMyInfo = ({ classroom, onEditStudentId, studentList }) => {
 	return (
 		<div>
 			{!classroom ? (
-				<Spining />
+				<Spinning />
 			) : (
 				<Row className="pb-3">
 					<Col lg={3}>

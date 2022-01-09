@@ -3,7 +3,7 @@ import Tab from "../../components/tab/tab.component";
 import { useParams, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getApiMethod } from "../../api/api-handler";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 import TabDetail from "./tab-detail";
 import TabPeople from "./tab-people";
 import TabMyInfo from "./tab-my-info";
@@ -97,7 +97,7 @@ const ClassroomPage = ({ idReview ="", isFull = true, ...props }) => {
 	) : error ? (
 		<ErrorPage errorMessage={error.message} />
 	) : (
-		<Spining />
+		<Spinning />
 	);
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { postApiMethod } from "../../api/api-handler";
-import Spining from "../spinning/spinning.component";
+import Spinning from "../spinning/spinning.component";
 import { Modal, Button, Form, Col, Row, Card, CloseButton, InputGroup } from "react-bootstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -45,12 +45,7 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 		setGradeCompositions(newgradeCompositions);
 		setErr("");
 	};
-	const onFinalStatusChange = (val, index) => {
-		const newgradeCompositions = gradeCompositions.slice();
-		newgradeCompositions[index].isFinal = val.target.checked;
-		setGradeCompositions(newgradeCompositions);
-		setErr("");
-	};
+
 	const handleOnDragEnd = (result) => {
 		if (!result.destination) return;
 
@@ -68,32 +63,27 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 		newgradeCompositions.splice(index, 1);
 		setGradeCompositions(newgradeCompositions);
 	};
-	const isDuplicated = (gradeCompositions) =>{
-		for (var i = 0; i < gradeCompositions.length; i++){
+	const isDuplicated = (gradeCompositions) => {
+		for (var i = 0; i < gradeCompositions.length; i++) {
 			var count = 0;
-			for (var j = 0; j < gradeCompositions.length; j++){
-				if (gradeCompositions[i].name === gradeCompositions[j].name)
-					count++;
+			for (var j = 0; j < gradeCompositions.length; j++) {
+				if (gradeCompositions[i].name === gradeCompositions[j].name) count++;
 			}
-			if (count >= 2){
+			if (count >= 2) {
 				return true;
 			}
-				
 		}
 		return false;
-	}
+	};
 	const handleSubmit = (event) => {
 		const form = event.currentTarget;
 		if (form.checkValidity() === false || !(total && +total > 0)) {
 			event.preventDefault();
 			event.stopPropagation();
 		} else {
-			
-			
-			if (isDuplicated(gradeCompositions) === true){
+			if (isDuplicated(gradeCompositions) === true) {
 				setErr("Tên các cột điểm không được trùng nhau");
-			}
-			else{
+			} else {
 				var sum = 0;
 				for (var i = 0; i < gradeCompositions.length; i++) sum += +gradeCompositions[i].percent;
 				if (sum === 100) onSubmit();
@@ -101,9 +91,6 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 					setErr("Tổng phần trăm các điểm thành phần phải đúng 100%");
 				}
 			}
-				
-			
-			
 		}
 		setValidated(true);
 		event.preventDefault();
@@ -167,20 +154,6 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 										</InputGroup>
 									</Col>
 								</Form.Group>
-								<Form.Group as={Row} className="mb-3">
-									<Col sm="12">
-										<Form.Check
-											disabled = {isFinal}
-											checked={isFinal}
-											column
-											sm="12"
-											id={`checked-${index}`}
-											type={"checkbox"}
-											label={isFinal? "Đã công bố điểm": `Công bố điểm`}
-											onChange={(val)=> onFinalStatusChange(val, index)}
-										/>
-									</Col>
-								</Form.Group>
 							</Card.Body>
 						</Card>
 						<br />
@@ -194,7 +167,7 @@ const GradeForm = ({ show, handleClose, onGradeEdit, classroom }) => {
 			<Form validated={validated} onSubmit={handleSubmit}>
 				<Modal.Header closeButton>
 					<Modal.Title>Thang điểm</Modal.Title>
-					{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+					{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
 				</Modal.Header>
 				<Modal.Body>
 					<div style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}>

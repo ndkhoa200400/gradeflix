@@ -1,5 +1,5 @@
 import ReactLoading from "react-loading";
-const Spining = ({ isFull = true,...props }) => {
+const Spinning = ({ isFull = true,...props }) => {
   return isFull ? (
     <div className="spinning ">
       <ReactLoading
@@ -21,4 +21,4 @@ const Spining = ({ isFull = true,...props }) => {
   );
 };
 
-export default Spining;
+export default Spinning;

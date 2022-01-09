@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CreateInviteForm from "../invite-form/invite-form.component";
-import Spining from "../spinning/spinning.component";
+import Spinning from "../spinning/spinning.component";
 import { Dropdown, Modal, Table, Button } from "react-bootstrap";
 
 import { postApiMethod } from "../../api/api-handler";
@@ -22,7 +22,7 @@ const ModalConFirmKick = ({ show, handleClose, idClass, user, onKickMember }) =>
 		<Modal show={show} onHide={handleClose}>
 			<Modal.Header closeButton>
 				<Modal.Title>Mời {user ? user.fullname : ""} ra khỏi phòng?</Modal.Title>
-				{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+				{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
 			</Modal.Header>
 
 			<Modal.Footer>

@@ -1,5 +1,5 @@
 import React from "react";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 import { useForm } from "react-hook-form";
 import { Form, Button, Container, Card } from "react-bootstrap";
 import * as AuthenService from "../../services/auth.service";
@@ -85,7 +85,7 @@ const ResetPasswordPage = () => {
 							justifyContent: "center",
 						}}
 					>
-						{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+						{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
 					</div>
 				</Card.Header>
 				<Card.Body>

@@ -76,9 +76,6 @@ const GradeBoard = ({ gradeStructure, students, onUpdateGrade, classroomId, open
 		return { valid: false, message: `Phạm vi điểm 0 - ${gradeStructure.total}` };
 	};
 	const formatter = (cell, row) => {
-		console.log("==== ~ formatter ~ row", row);
-		console.log("==== ~ formatter ~ cell", cell);
-
 		if (row.account !== "") {
 			if (cell.fullname) {
 				return (
@@ -168,10 +165,9 @@ const GradeBoard = ({ gradeStructure, students, onUpdateGrade, classroomId, open
 		data.push(newObj);
 	});
 
-	console.log("==== ~ students.forEach ~ data", data);
+
 
 	const beforeSaveCell = async (oldValue, newValue, row, column, done) => {
-		console.log(oldValue, newValue, oldValue === undefined && newValue === "");
 		if (oldValue === newValue || (oldValue === undefined && newValue === "")) return;
 		const studentId = row.studentId;
 		const field = column.dataField;

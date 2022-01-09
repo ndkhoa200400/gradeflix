@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { postApiMethod } from "../../api/api-handler";
-import Spining from "../spinning/spinning.component";
+import Spinning from "../spinning/spinning.component";
 import { useForm } from "react-hook-form";
 import { Modal, Button, Form } from "react-bootstrap";
+import ErrorAlert from "../alert/error-alert.component";
 
 const ApproveReviewGradeForm = ({ show, id, studentid, reviewid, name, handleClose, gradeReview }) => {
 	const { register, handleSubmit, reset } = useForm();
@@ -12,6 +13,7 @@ const ApproveReviewGradeForm = ({ show, id, studentid, reviewid, name, handleClo
 		handleClose();
 		reset();
 	};
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const onSubmit = async (data) => {
 		setOnSubmiting(true);
@@ -27,39 +29,43 @@ const ApproveReviewGradeForm = ({ show, id, studentid, reviewid, name, handleClo
 			gradeReview();
 			reset();
 		} catch (error) {
-			alert("Đã xảy ra lỗi! Vui lòng thử lại");
+			console.log(error);
+			setErrorMessage(error.message);
 		}
 		setOnSubmiting(false);
 	};
 	return (
-		<Modal show={show} onHide={closeModal}>
-			<Modal.Header closeButton>
-				<Modal.Title>Cập nhật điểm</Modal.Title>
-				{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
-			</Modal.Header>
-			<Modal.Body>
-				<Form onSubmit={handleSubmit(onSubmit)}>
-					<Form.Group className="mb-4">
-						<Form.Label>Điểm chính thức</Form.Label>
-						<Form.Control
-							type="text"
-							{...register("grade", {
-								required: true,
-							})}
-						/>
-						<Form.Control.Feedback type="invalid">Không được bỏ trống</Form.Control.Feedback>
-					</Form.Group>
-				</Form>
-			</Modal.Body>
-			<Modal.Footer>
-				<Button variant="outline-secondary" onClick={handleClose}>
-					Hủy
-				</Button>
-				<Button variant="outline-primary" onClick={handleSubmit(onSubmit)}>
-					Cập nhật
-				</Button>
-			</Modal.Footer>
-		</Modal>
+		<div>
+			<Modal show={show} onHide={closeModal}>
+				<Modal.Header closeButton>
+					<Modal.Title>Cập nhật điểm</Modal.Title>
+					{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
+				</Modal.Header>
+				<Modal.Body>
+					<Form onSubmit={handleSubmit(onSubmit)}>
+						<Form.Group className="mb-4">
+							<Form.Label>Điểm chính thức</Form.Label>
+							<Form.Control
+								type="text"
+								{...register("grade", {
+									required: true,
+								})}
+							/>
+							<Form.Control.Feedback type="invalid">Không được bỏ trống</Form.Control.Feedback>
+						</Form.Group>
+					</Form>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="outline-secondary" onClick={handleClose}>
+						Hủy
+					</Button>
+					<Button variant="outline-primary" onClick={handleSubmit(onSubmit)}>
+						Cập nhật
+					</Button>
+				</Modal.Footer>
+			</Modal>
+			<ErrorAlert show={errorMessage} setHide={() => setErrorMessage("")} message={errorMessage} />
+		</div>
 	);
 };
 

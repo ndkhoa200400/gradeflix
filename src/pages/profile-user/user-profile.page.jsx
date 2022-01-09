@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Card } from "react-bootstrap";
 import TopNavigation from "../../components/top-nav/top-nav.component";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 import { getApiMethod } from "../../api/api-handler";
 import "./style.css";
 import { useParams } from "react-router-dom";
@@ -69,7 +69,7 @@ const UserProfile = () => {
 			</Container>
 		</div>
 	) : (
-		<Spining isFull={true} />
+		<Spinning isFull={true} />
 	);
 };
 export default UserProfile;

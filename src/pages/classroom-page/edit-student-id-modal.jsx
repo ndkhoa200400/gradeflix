@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { postApiMethod } from "../../api/api-handler";
-import Spining from "../../components/spinning/spinning.component"
+import Spinning from "../../components/spinning/spinning.component"
 import { useForm } from "react-hook-form";
 import { Modal, Button, Form } from "react-bootstrap";
 const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) => {
@@ -52,7 +52,7 @@ const EditStudentIdModal = ({ show, handleClose, onEditStudentId,classroom }) =>
     <Modal show={show} onHide={closeModal}>
       <Modal.Header closeButton>
         <Modal.Title>Chỉnh sửa mã số sinh viên</Modal.Title>
-        {onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+        {onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={handleSubmit(onSubmit)} noValidate>

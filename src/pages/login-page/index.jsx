@@ -6,7 +6,7 @@ import { useNavigate, Link, Navigate } from "react-router-dom";
 import { postApiMethod } from "../../api/api-handler";
 import GoogleLogin from "react-google-login";
 import * as AuthenService from "../../services/auth.service";
-import Spining from "../../components/spinning/spinning.component";
+import Spinning from "../../components/spinning/spinning.component";
 import { loadPreUrl, savePreUrl } from "../../services/location.service";
 import ResetPasswordForm from "./reset-password-form";
 const client_id = process.env.REACT_APP_CLIENT_GOOGLE;
@@ -92,7 +92,7 @@ const LoginPage = () => {
 							justifyContent: "center",
 						}}
 					>
-						{onSubmiting ? <Spining isFull={false} className="mx-2" /> : null}
+						{onSubmiting ? <Spinning isFull={false} className="mx-2" /> : null}
 					</div>
 				</Card.Header>
 				<Card.Body>
