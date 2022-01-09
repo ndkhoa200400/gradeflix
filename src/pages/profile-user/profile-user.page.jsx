@@ -26,7 +26,7 @@ const Profile = () => {
 	const [user, setUser] = useState(null);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [infoMessage, setInfoMessage] = useState("");
-	const loginEmail = AuthenService.getUserInfo().loginType === "email";
+	const loginEmail = AuthenService.getUserInfo().googleId === null;
 	useEffect(() => {
 		const user = AuthenService.getUserInfo();
 
