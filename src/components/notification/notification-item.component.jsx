@@ -1,10 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getApiMethod } from "../../api/api-handler";
 import dayjs from "dayjs";
 import { Dropdown } from "react-bootstrap";
 
 const NotificationItem = ({ notification, updateNotification }) => {
+	const navigate = useNavigate();
 	const markRead = async () => {
 		try {
 			const newNotification = await getApiMethod(`notifications/${notification.id}/mark-read`);
@@ -12,6 +13,13 @@ const NotificationItem = ({ notification, updateNotification }) => {
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const goTo = async () => {
+		if (!notification.isRead) {
+			await markRead();
+		}
+		navigate(notification.link, { replace: true });
 	};
 
 	const now = dayjs();
@@ -38,14 +46,16 @@ const NotificationItem = ({ notification, updateNotification }) => {
 				notification.isRead ? "text-muted" : " fw-bold"
 			}`}
 		>
-			<Link className="col-10  text-dark" onClick={markRead} to={notification.link}>
-				<div className="notification-content text-wrap">{notification.content}</div>
+			<div className="col-10  text-dark cursor-pointer">
+				<div className="notification-content text-wrap" onClick={goTo}>
+					{notification.content}
+				</div>
 				{!notification.isRead ? (
 					<span className="fs-6 text  text-primary"> {dayDifference}</span>
 				) : (
 					<span className="fs-6 text"> {dayDifference}</span>
 				)}
-			</Link>
+			</div>
 
 			{!notification.isRead ? (
 				<div className="col align-items-center d-flex justify-content-center" onClick={markRead}>
