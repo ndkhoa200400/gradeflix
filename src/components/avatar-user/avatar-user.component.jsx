@@ -30,6 +30,7 @@ const Avatar = () => {
           width={40}
           height={40}
           roundedCircle
+					style={{objectFit:"cover"}}
         />
       </Dropdown.Toggle>
 

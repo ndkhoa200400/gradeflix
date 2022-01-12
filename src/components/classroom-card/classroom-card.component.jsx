@@ -10,17 +10,11 @@ const ClassroomCard = ({ classroom }) => {
 	const user = AuthenService.getUserInfo();
 	const isHost = classroom.hostId === user.id;
 	const image = classroom?.host?.avatar ?? "./default-avatar.png";
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	return classroom ? (
 		<div className="card classroom-item m-3" onClick={() => navigate("/classrooms/" + classroom.id + "/tab-detail")}>
-			<div
-				className="header d-flex flex-column justify-content-between"
-			>
-				<img
-					src={classroom.banner}
-					alt="classroom banner"
-					className="classroom-banner img-fluid card-img-top"
-				/>
+			<div className="header d-flex flex-column justify-content-between">
+				<img src={classroom.banner} alt="classroom banner" className="classroom-banner img-fluid card-img-top" />
 				<div className="dark-overlay"></div>
 
 				<Link
@@ -32,21 +26,12 @@ const ClassroomCard = ({ classroom }) => {
 					<span className="classroom-subject">{classroom.subject}</span>
 				</Link>
 
-				{!isHost && (
-					<div className="classroom-host">{classroom.host.fullname}</div>
-				)}
+				{!isHost && <div className="classroom-host">{classroom?.host?.fullname ?? ""}</div>}
 			</div>
 
 			<div className="card-body">{classroom.description}</div>
-			{
-				<img
-					src={image}
-					className="host-avatar rounded rounded-circle"
-					alt="host"
-				></img>
-			}
+			{<img src={image} className="host-avatar rounded rounded-circle" alt="host" style={{ objectFit: "cover" }}></img>}
 		</div>
-
 	) : null;
 };
 

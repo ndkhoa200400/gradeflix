@@ -6,6 +6,8 @@ const StudentGrade = ({ classroom, studentList }) => {
 	useEffect(() => {
 		if (studentList) {
 			const mapping = {};
+			// if true => show total
+			let isAllFinalized = true;
 			const studentGrade = studentList.grades ?? [];
 			if (classroom?.gradeStructure)
 				for (const gradeCompositions of classroom?.gradeStructure?.gradeCompositions) {
@@ -13,8 +15,12 @@ const StudentGrade = ({ classroom, studentList }) => {
 					if (gradeCompositions.isFinal && grade?.grade) mapping[gradeCompositions.name] = grade.grade;
 					else {
 						mapping[gradeCompositions.name] = "Chưa công bố";
+						isAllFinalized = false;
 					}
 				}
+			if (studentList?.total && isAllFinalized) {
+				mapping["total"] = studentList.total ?? 0;
+			}
 			setMappingGrades(mapping);
 		}
 	}, [studentList, classroom]);
@@ -41,6 +47,16 @@ const StudentGrade = ({ classroom, studentList }) => {
 					classroom={classroom}
 				/>
 			))}
+			{mappingGrades["total"] ? (
+				<Row className="p-2">
+					<Col className="border border-2 border-end-0 p-3" sm={8}>
+						Tổng kết
+					</Col>
+					<Col className="border border-2 p-3">
+						<div className="d-flex justify-content-between">{mappingGrades["total"]}</div>
+					</Col>
+				</Row>
+			) : null}
 		</div>
 	) : (
 		<div>
