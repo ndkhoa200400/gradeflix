@@ -38,7 +38,6 @@ const NotificationItem = ({ notification, updateNotification }) => {
 			: now.diff(dayjs(notification.createdAt), "week") < 4
 			? `${now.diff(dayjs(notification.createdAt), "week")} tuần trước`
 			: `${now.diff(dayjs(notification.createdAt), "month")} tháng trước`;
-	console.log("==== ~ NotificationItem ~ dayDifference", dayDifference);
 
 	return (
 		<Dropdown.Item

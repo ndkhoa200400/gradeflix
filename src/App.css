@@ -170,7 +170,7 @@ nav .btn-add-classroom::after,
 }
 .notification-list {
 	overflow-y: scroll;
-	max-height: 80vh;
+		max-height: 80vh;
 }
 
 .notification:hover {
